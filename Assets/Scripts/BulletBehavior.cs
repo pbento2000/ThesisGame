@@ -7,6 +7,8 @@ public class BulletBehavior : MonoBehaviour
 
     [SerializeField] float speed = 1f;
     private float damage = 5f;
+    private bool hitSomeone = false;
+    private float impactStrength = 0.4f;
 
     // Start is called before the first frame update
     void Start()
@@ -18,5 +20,14 @@ public class BulletBehavior : MonoBehaviour
     void FixedUpdate()
     {
         transform.position += transform.right * Time.deltaTime * speed;
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if(col.gameObject.tag == "Enemy" && !hitSomeone){
+            hitSomeone = true;
+            col.gameObject.GetComponent<EnemyBehavior>().receiveDamage(damage, transform.right, impactStrength);
+            Destroy(gameObject);
+        }
     }
 }
