@@ -24,7 +24,7 @@ public class BulletBehavior : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.tag == "Enemy" && !hitSomeone){
+        if(col.gameObject.tag == "PlayerEnemy" && !hitSomeone){
             hitSomeone = true;
             col.gameObject.GetComponent<EnemyBehavior>().receiveDamage(damage, transform.right, impactStrength);
             Destroy(gameObject);
