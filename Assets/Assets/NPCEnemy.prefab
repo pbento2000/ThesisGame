@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7557096130442091354}
   - component: {fileID: 5876969196387428891}
   - component: {fileID: 1827830800306478989}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NPCEnemy
   m_TagString: NPCEnemy
   m_Icon: {fileID: 0}
