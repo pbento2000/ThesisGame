@@ -26,7 +26,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         Vector3 vectorFromPlayer = transform.position - player.transform.position;
 
-        transform.position = transform.position - vectorFromPlayer.normalized*Time.deltaTime;
+        transform.position = transform.position - vectorFromPlayer.normalized*Time.fixedDeltaTime;
 
         if(impacted){
             transform.position = transform.position + impactVector * impactTimer * impactStrength;
