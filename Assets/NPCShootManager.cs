@@ -11,6 +11,7 @@ public class NPCShootManager : MonoBehaviour
     [SerializeField] Collider2D[] enemies;
     [SerializeField] float radius;
     [SerializeField] LayerMask mask;
+    [SerializeField] Transform player;
     float delay = 0.7f;
     float delayTimer = 0f;
     bool onCooldown = false;
@@ -64,10 +65,12 @@ public class NPCShootManager : MonoBehaviour
                 if (transform.position.y <= enemyPosition.y)
                 {
                     bulletRotation = Quaternion.Euler(0f, 0f, angle);
+                    pistol.rotation = Quaternion.Euler(0f, 0f, angle);
                 }
                 else
                 {
                     bulletRotation = Quaternion.Euler(0f, 0f, 360f - angle);
+                    pistol.rotation = Quaternion.Euler(0f, 0f, 360f - angle);
                 }
 
                 Instantiate(bullet, pistol.position, bulletRotation);
@@ -88,23 +91,53 @@ public class NPCShootManager : MonoBehaviour
 
         //Code for Movement
 
-        Vector2 movementVector = new Vector2(0, 0);
+        Vector3 movementVector = new Vector2(0, 0);
+        Vector3 playerPosition = player.position;
 
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i].tag == "NPCEnemy")
             {
-                Debug.Log(i);
+                
                 Vector2 enemyPosition = enemies[i].gameObject.transform.position;
-                movementVector += (npcPosition - enemyPosition)/ Mathf.Pow(Vector3.Distance(transform.position, enemyPosition), 6f);
+                Vector3 npcEnemyVector = (npcPosition - enemyPosition) / Mathf.Pow(Vector3.Distance(transform.position, enemyPosition), 6f);
+
+                //movementVector += finalVector;
+
+                movementVector += npcEnemyVector;
+
+                /*
+                Vector3 enemyPosition = enemies[i].gameObject.transform.position;
+                Vector3 playerNpcVector = (playerPosition - transform.position);
+                Vector3 npcEnemyVector = (transform.position - enemyPosition);
+
+                float enemyThreat = Mathf.Pow(10/npcEnemyVector.magnitude,2f);
+                float playerImportance = playerNpcVector.magnitude;
+
+                Debug.Log(playerImportance / enemyThreat);
+                */
             }
         }
 
+        Vector3 playerNpcVector = (playerPosition - transform.position) / (1 / Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 2f));
+        
+        float enemyThreat = movementVector.magnitude;
+        float playerImportance = playerNpcVector.magnitude;
 
+        if (movementVector.magnitude == 0f && playerNpcVector.magnitude > 3f)
+        {
+            movementVector = ((playerPosition - transform.position) /(1/Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 6f))).normalized;
+        }
+        else if(movementVector.magnitude == 0f && playerNpcVector.magnitude <= 3f)
+        {
+            movementVector = Vector3.zero;
+        }
+        else
+        {
+            movementVector += Vector3.Slerp(movementVector, playerNpcVector, playerImportance / enemyThreat).normalized;
+        }
 
         Vector3 movement = movementVector.normalized;
-
-        Debug.Log(movementVector.normalized);
 
         transform.position += movement * Time.deltaTime;
     }
