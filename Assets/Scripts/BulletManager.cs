@@ -21,8 +21,8 @@ public class BulletManager : MonoBehaviour
     void FixedUpdate()
     {
         if(Input.GetButton("Fire") && !onCooldown){
-            Instantiate(bullet, pistol.position, pistol.rotation);
             onCooldown = true;
+            Instantiate(bullet, pistol.position, pistol.rotation);
             delayTimer = delay;
         }
 

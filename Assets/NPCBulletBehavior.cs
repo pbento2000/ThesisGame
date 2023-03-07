@@ -26,7 +26,7 @@ public class NPCBulletBehavior : MonoBehaviour
         if (col.gameObject.tag == "NPCEnemy" && !hitSomeone)
         {
             hitSomeone = true;
-            col.gameObject.GetComponent<NPCEnemyBehavior>().receiveDamage(damage, transform.right, impactStrength);
+            col.gameObject.GetComponent<EnemyBehavior>().receiveDamage(damage, transform.right, impactStrength);
             Destroy(gameObject);
         }
     }

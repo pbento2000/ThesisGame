@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,11 @@ public class EnemyBehavior : MonoBehaviour
 {
 
     private GameObject player;
-    [SerializeField] private float health = 1000f;
+    [SerializeField] private float health = 10f;
+    private Vector3 usualScale;
+    [SerializeField] bool isPlayerEnemy;
+    [SerializeField] SpriteRenderer buffSprite;
+    [SerializeField] SpriteRenderer nerfSprite;
 
     //Variables for when enemy is hit
     private float impactTimer = 0f;
@@ -14,11 +19,26 @@ public class EnemyBehavior : MonoBehaviour
     private bool impacted = false;
     private float impactStrength = 0f;
     Vector3 impactVector;
+    
+    //Multipliers affected by pulse effect and effect related variables
+    private float impactMultiplier = 1f;
+    private float movementSpeedMultiplier = 1f;
+    private float sizeMultiplier = 1f;
+    private float healthMultiplier = 1f;
+    private float effectTimer = 15f;
+    private float remainingTime = 0f;
+    private bool isAffected;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("Player");
+        if(isPlayerEnemy){
+            player = GameObject.Find("Player");
+        }else{
+            player = GameObject.Find("NPC");
+        }
+        
+        usualScale = transform.localScale;
     }
 
     // Update is called once per frame
@@ -26,10 +46,10 @@ public class EnemyBehavior : MonoBehaviour
     {
         Vector3 vectorFromPlayer = transform.position - player.transform.position;
 
-        transform.position = transform.position - vectorFromPlayer.normalized*Time.fixedDeltaTime;
+        transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier;
 
         if(impacted){
-            transform.position = transform.position + impactVector * impactTimer * impactStrength;
+            transform.position = transform.position + impactVector * impactTimer * impactStrength * impactMultiplier;
             impactTimer -= Time.deltaTime;
         }
 
@@ -37,6 +57,27 @@ public class EnemyBehavior : MonoBehaviour
             impacted = false;
             impactVector = new Vector3(0f,0f,0f);
             impactStrength = 0f;
+        }
+
+        if(isAffected){
+            remainingTime -= Time.fixedDeltaTime;
+            if(remainingTime < 0f){
+                transform.localScale = usualScale;
+                health /= healthMultiplier;
+                isAffected = false;
+
+                sizeMultiplier = 1f;
+                impactMultiplier = 1f;
+                movementSpeedMultiplier = 1f;
+                healthMultiplier = 1f;
+
+                Color nerfColor = nerfSprite.color;
+                nerfColor.a = 0f;
+                nerfSprite.color = nerfColor;
+                Color buffColor = buffSprite.color;
+                buffColor.a = 0f;
+                buffSprite.color = buffColor;
+            }
         }
     }
 
@@ -52,4 +93,41 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    public void nerf()
+    {
+        if(!isAffected){
+            isAffected = true;
+            remainingTime = effectTimer;
+            sizeMultiplier = 0.75f;
+            impactMultiplier = 1.25f;
+            movementSpeedMultiplier = 0.75f;
+            healthMultiplier = 0.75f;
+
+            transform.localScale = usualScale * sizeMultiplier;
+            health *= healthMultiplier;
+
+            Color nerfColor = nerfSprite.color;
+            nerfColor.a = 1f;
+            nerfSprite.color = nerfColor;
+        }
+    }
+
+    internal void buff()
+    {
+        if(!isAffected){
+            isAffected = true;
+            remainingTime = effectTimer;
+            sizeMultiplier = 1.25f;
+            impactMultiplier = 0.75f;
+            movementSpeedMultiplier = 1.25f;
+            healthMultiplier = 1.25f;
+
+            transform.localScale = usualScale * sizeMultiplier;
+            health *= healthMultiplier;
+
+            Color buffColor = buffSprite.color;
+            buffColor.a = 1f;
+            buffSprite.color = buffColor;
+        }
+    }
 }

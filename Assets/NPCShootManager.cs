@@ -17,7 +17,13 @@ public class NPCShootManager : MonoBehaviour
     bool onCooldown = false;
     bool foundEnemy;
 
-    //Variables for Movement
+    //Variables for effect
+    [SerializeField] GameObject specialEffect;
+    bool effectActive = false;
+    GameObject effectObject;
+    float effectCooldown = 30f;
+    float effectTimer = 0f;
+    [SerializeField] public int preferredEffect = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -140,5 +146,35 @@ public class NPCShootManager : MonoBehaviour
         Vector3 movement = movementVector.normalized;
 
         transform.position += movement * Time.deltaTime;
+
+        //Code for sending pulse
+
+        if(!effectActive){
+            int predominantEffect = Random.Range(0,2);
+            Debug.Log(predominantEffect);
+            bool isPredominant = predominantEffect == 1;
+
+            if(isPredominant){
+                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
+                effectObject.GetComponent<PulseBehavior>().setEffect(preferredEffect);
+            }else{
+                int effect = Random.Range(0,4);
+                while(effect == preferredEffect){
+                    effect = Random.Range(0,4);
+                }
+                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
+                effectObject.GetComponent<PulseBehavior>().setEffect(effect);
+            }
+            
+            effectActive = true;
+            effectTimer = effectCooldown;
+        }
+
+        if(effectTimer > 0f){
+            effectTimer -= Time.fixedDeltaTime;
+            if(effectTimer < 0f){
+                effectActive = false;
+            }
+        }
     }
 }
