@@ -25,6 +25,14 @@ public class NPCShootManager : MonoBehaviour
     float effectTimer = 0f;
     [SerializeField] public int preferredEffect = 2;
 
+    //Variables for when enemy is hit
+    private float impactTimer = 0f;
+    private float maxImpactTime = 0.2f;
+    private bool impacted = false;
+    private float impactStrength = 0f;
+    Vector3 impactVector;
+    private float strength = 0.75f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -176,5 +184,27 @@ public class NPCShootManager : MonoBehaviour
                 effectActive = false;
             }
         }
+
+        if (impacted)
+        {
+            transform.position = transform.position + impactVector * impactTimer * impactStrength;
+            impactTimer -= Time.fixedDeltaTime*0.75f;
+        }
+
+        if (impactTimer <= 0f)
+        {
+            impacted = false;
+            impactVector = new Vector3(0f, 0f, 0f);
+            impactStrength = 0f;
+        }
+    }
+
+    public void getHit(Vector3 enemyPos)
+    {
+        impactTimer = maxImpactTime;
+        impacted = true;
+        impactVector = transform.position - enemyPos;
+        impactVector = impactVector.normalized;
+        impactStrength = strength;
     }
 }

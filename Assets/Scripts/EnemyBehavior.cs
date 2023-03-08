@@ -12,6 +12,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] bool isPlayerEnemy;
     [SerializeField] SpriteRenderer buffSprite;
     [SerializeField] SpriteRenderer nerfSprite;
+    [SerializeField] InterfaceManager interfaceManager;
 
     //Variables for when enemy is hit
     private float impactTimer = 0f;
@@ -25,6 +26,7 @@ public class EnemyBehavior : MonoBehaviour
     private float movementSpeedMultiplier = 1f;
     private float sizeMultiplier = 1f;
     private float healthMultiplier = 1f;
+    private float scoreMultiplier = 1f;
     private float effectTimer = 15f;
     private float remainingTime = 0f;
     private bool isAffected;
@@ -39,6 +41,8 @@ public class EnemyBehavior : MonoBehaviour
         }
         
         usualScale = transform.localScale;
+
+        interfaceManager = GameObject.Find("Interface").GetComponent<InterfaceManager>();
     }
 
     // Update is called once per frame
@@ -70,6 +74,7 @@ public class EnemyBehavior : MonoBehaviour
                 impactMultiplier = 1f;
                 movementSpeedMultiplier = 1f;
                 healthMultiplier = 1f;
+                scoreMultiplier = 1f;
 
                 Color nerfColor = nerfSprite.color;
                 nerfColor.a = 0f;
@@ -84,6 +89,7 @@ public class EnemyBehavior : MonoBehaviour
     public void receiveDamage(float dmg, Vector3 impact, float strength){
         health -= dmg;
         if(health <= 0f){
+            interfaceManager.changeScore(5f * scoreMultiplier);
             Destroy(gameObject);
         }else{
             impactTimer = maxImpactTime;
@@ -102,6 +108,7 @@ public class EnemyBehavior : MonoBehaviour
             impactMultiplier = 1.25f;
             movementSpeedMultiplier = 0.75f;
             healthMultiplier = 0.75f;
+            scoreMultiplier = 0.75f;
 
             transform.localScale = usualScale * sizeMultiplier;
             health *= healthMultiplier;
@@ -121,6 +128,7 @@ public class EnemyBehavior : MonoBehaviour
             impactMultiplier = 0.75f;
             movementSpeedMultiplier = 1.25f;
             healthMultiplier = 1.25f;
+            scoreMultiplier = 1.25f;
 
             transform.localScale = usualScale * sizeMultiplier;
             health *= healthMultiplier;

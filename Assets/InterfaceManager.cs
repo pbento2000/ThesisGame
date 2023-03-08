@@ -6,18 +6,23 @@ using TMPro;
 public class InterfaceManager : MonoBehaviour
 {
 
-    [SerializeField] TextMeshProUGUI time;
+    [SerializeField] TextMeshProUGUI score;
+    float scoreFloat = 0f;
+
     [SerializeField] WaveManager waveManager;
+
     float timeSeconds = 300f;
     float minutes;
     float seconds;
     float second = 1f;
     int secondsInt = 0;
+    [SerializeField] RectTransform time;
+    float timeMaskSize = 1650f;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //progressBar.sizeDelta = new Vector2(0, progressBar.sizeDelta.y);
     }
 
     // Update is called once per frame
@@ -42,8 +47,13 @@ public class InterfaceManager : MonoBehaviour
 
     void DisplayTime(float timeToDisplay)
     {
-        minutes = Mathf.FloorToInt(timeToDisplay / 60);
-        seconds = Mathf.FloorToInt(timeToDisplay % 60);
-        time.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        time.sizeDelta = new Vector2(timeMaskSize / 300f * timeSeconds, time.sizeDelta.y);
+    }
+
+    public void changeScore(float score)
+    {
+        scoreFloat += score;
+        this.score.text = Mathf.CeilToInt(scoreFloat).ToString();
+        //progressBar.sizeDelta = new Vector2(progressBar.sizeDelta.x + score, progressBar.sizeDelta.y);
     }
 }
