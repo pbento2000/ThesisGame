@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (impacted)
         {
-            Debug.Log(impactVector * impactTimer * impactStrength);
+            //Debug.Log(impactVector * impactTimer * impactStrength);
             transform.position = transform.position + impactVector * impactTimer * impactStrength;
             impactTimer -= Time.fixedDeltaTime*0.75f;
         }

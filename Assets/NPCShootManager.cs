@@ -21,7 +21,7 @@ public class NPCShootManager : MonoBehaviour
     [SerializeField] GameObject specialEffect;
     bool effectActive = false;
     GameObject effectObject;
-    float effectCooldown = 30f;
+    float effectCooldown = 10f;
     float effectTimer = 0f;
     [SerializeField] public int preferredEffect = 2;
 

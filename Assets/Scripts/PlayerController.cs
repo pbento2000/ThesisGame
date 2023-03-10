@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject specialEffect;
     bool effectActive = false;
     GameObject effectObject;
-    float effectCooldown = 30f;
+    float effectCooldown = 10f;
     float effectTimer = 0f;
 
     // Start is called before the first frame update

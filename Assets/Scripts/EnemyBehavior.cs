@@ -63,6 +63,7 @@ public class EnemyBehavior : MonoBehaviour
             impactStrength = 0f;
         }
 
+        /*
         if(isAffected){
             remainingTime -= Time.fixedDeltaTime;
             if(remainingTime < 0f){
@@ -83,7 +84,7 @@ public class EnemyBehavior : MonoBehaviour
                 buffColor.a = 0f;
                 buffSprite.color = buffColor;
             }
-        }
+        }*/
     }
 
     public void receiveDamage(float dmg, Vector3 impact, float strength){
@@ -101,41 +102,64 @@ public class EnemyBehavior : MonoBehaviour
 
     public void nerf()
     {
-        if(!isAffected){
-            isAffected = true;
-            remainingTime = effectTimer;
-            sizeMultiplier = 0.75f;
-            impactMultiplier = 1.25f;
-            movementSpeedMultiplier = 0.75f;
-            healthMultiplier = 0.75f;
-            scoreMultiplier = 0.75f;
+        remainingTime = effectTimer;
+        sizeMultiplier /= 1.1f;
+        impactMultiplier /= 0.9f;
+        movementSpeedMultiplier /= 1.1f;
+        healthMultiplier /= 1.1f;
+        scoreMultiplier /= 1.1f;
 
-            transform.localScale = usualScale * sizeMultiplier;
-            health *= healthMultiplier;
+        transform.localScale = usualScale * sizeMultiplier;
+        health *= healthMultiplier;
 
-            Color nerfColor = nerfSprite.color;
-            nerfColor.a = 1f;
-            nerfSprite.color = nerfColor;
-        }
+        checkSprite();
     }
 
     internal void buff()
     {
-        if(!isAffected){
-            isAffected = true;
-            remainingTime = effectTimer;
-            sizeMultiplier = 1.25f;
-            impactMultiplier = 0.75f;
-            movementSpeedMultiplier = 1.25f;
-            healthMultiplier = 1.25f;
-            scoreMultiplier = 1.25f;
+        remainingTime = effectTimer;
+        sizeMultiplier *= 1.1f;
+        impactMultiplier *= 0.9f;
+        movementSpeedMultiplier *= 1.1f;
+        healthMultiplier *= 1.1f;
+        scoreMultiplier *= 1.1f;
 
-            transform.localScale = usualScale * sizeMultiplier;
-            health *= healthMultiplier;
+        transform.localScale = usualScale * sizeMultiplier;
+        health *= healthMultiplier;
 
+        checkSprite();
+    }
+
+    void checkSprite()
+    {
+        if(sizeMultiplier == 1f)
+        {
+            Color nerfColor = nerfSprite.color;
+            nerfColor.a = 0f;
+            nerfSprite.color = nerfColor;
+
+            Color buffColor = buffSprite.color;
+            buffColor.a = 0f;
+            buffSprite.color = buffColor;
+        }else if(sizeMultiplier < 1f)
+        {
+            Color nerfColor = nerfSprite.color;
+            nerfColor.a = 1f;
+            nerfSprite.color = nerfColor;
+
+            Color buffColor = buffSprite.color;
+            buffColor.a = 0f;
+            buffSprite.color = buffColor;
+        }
+        else
+        {
             Color buffColor = buffSprite.color;
             buffColor.a = 1f;
             buffSprite.color = buffColor;
+
+            Color nerfColor = nerfSprite.color;
+            nerfColor.a = 0f;
+            nerfSprite.color = nerfColor;
         }
     }
 }
