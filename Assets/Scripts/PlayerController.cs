@@ -7,10 +7,15 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] WeaponHandler weaponHandler;
     [SerializeField] GameObject specialEffect;
+    [SerializeField] GameObject secondaryAttack;
     bool effectActive = false;
     GameObject effectObject;
     float effectCooldown = 10f;
     float effectTimer = 0f;
+
+    float secondaryAttackCooldown = 15f;
+    float secondaryAttackTimer = 0f;
+    GameObject secondaryAttackObject;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +52,20 @@ public class PlayerController : MonoBehaviour
                 effectObject.GetComponent<PulseBehavior>().setEffect(3);
                 effectActive = true;
                 effectTimer = effectCooldown;
+            }
+        }
+
+        if(secondaryAttackTimer <= 0f && Input.GetButton("SecondaryAttack")){
+            secondaryAttackTimer = secondaryAttackCooldown;
+            secondaryAttackObject = Instantiate(secondaryAttack, transform.position, Quaternion.identity);
+        }
+
+        if(secondaryAttackTimer > 0f)
+        {
+            secondaryAttackTimer -= Time.fixedDeltaTime;
+            if(secondaryAttackTimer < 0f)
+            {
+                secondaryAttackTimer = 0f;
             }
         }
 
