@@ -9,6 +9,7 @@ public class SecondaryAttackBehavior : MonoBehaviour
     float damage = 3f;
     [SerializeField] SpriteRenderer sprite;
     float alphaColor = 1f;
+    [SerializeField] float aoeScale = 0.15f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,12 +20,14 @@ public class SecondaryAttackBehavior : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (attackScale < 0.15f)
+        if (attackScale < aoeScale)
         {
             attackScale += Time.fixedDeltaTime;
             alphaColor -= Time.fixedDeltaTime;
             transform.localScale = new Vector3(attackScale, attackScale, 0f);
-            //METER O ALPHA A MUDAR
+            Color tmp = sprite.color;
+            tmp.a -= 1/(aoeScale/Time.fixedDeltaTime);
+            sprite.color = tmp;
         }
         else
         {
