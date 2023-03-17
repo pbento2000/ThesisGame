@@ -8,6 +8,7 @@ TagManager:
   - NPCEnemy
   - PlayerEnemy
   - NPC
+  - ButtonNPC
   layers:
   - Default
   - TransparentFX
