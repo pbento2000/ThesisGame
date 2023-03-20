@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class MainMenuBehavior : MonoBehaviour
 {
 
     [SerializeField]
     Tuple<int, string> info;
+
+    [SerializeField]
+    GameObject TutorialMenu;
+
+    [SerializeField]
+    GameObject PlayButton;
 
     [SerializeField]
     GameObject[] npcButtons;
@@ -19,6 +26,8 @@ public class MainMenuBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        TutorialMenu.SetActive(false);
+
         for(int i = 0; i < 4; i++)
         {
             npcButtonsPositions[i] = npcButtons[i].transform.position;
@@ -35,5 +44,34 @@ public class MainMenuBehavior : MonoBehaviour
     public void setTypeOfNPC(int type)
     {
         storage.setTypeOfNPC(type);
+    }
+
+    public void Play(){
+        PlayButton.SetActive(false);
+
+        for(int i = 0; i < 4; i++)
+        {
+            npcButtons[i].SetActive(false);
+        }
+        TutorialMenu.SetActive(true);
+    }
+
+    public void Back(){
+        PlayButton.SetActive(true);
+
+        for(int i = 0; i < 4; i++)
+        {
+            npcButtons[i].SetActive(true);
+        }
+
+        TutorialMenu.SetActive(false);
+    }
+
+    public void Yes(){
+        //Load Tutorial Scene
+    }
+
+    public void No(){
+        SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
     }
 }
