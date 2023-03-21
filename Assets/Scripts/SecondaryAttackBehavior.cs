@@ -10,6 +10,7 @@ public class SecondaryAttackBehavior : MonoBehaviour
     [SerializeField] SpriteRenderer sprite;
     float alphaColor = 1f;
     [SerializeField] float aoeScale = 0.15f;
+    string typeOfEnemy = "";
 
     // Start is called before the first frame update
     void Start()
@@ -37,9 +38,14 @@ public class SecondaryAttackBehavior : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "PlayerEnemy")
+        if (other.tag == typeOfEnemy)
         {
             other.gameObject.GetComponent<EnemyBehavior>().receiveDamage(damage, other.gameObject.transform.position - transform.position, 0.2f);
         }
+    }
+
+    public void setEnemy(string type)
+    {
+        typeOfEnemy = type;
     }
 }

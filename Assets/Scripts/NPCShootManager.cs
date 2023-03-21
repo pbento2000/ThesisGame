@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NPCShootManager : MonoBehaviour
 {
-
     //Variables for Shooting
     [SerializeField] GameObject bullet;
     [SerializeField] Transform pistol;
@@ -33,16 +32,22 @@ public class NPCShootManager : MonoBehaviour
     Vector3 impactVector;
     private float strength = 0.75f;
 
+    //Variables for secondaryAttack
+    [SerializeField] GameObject secondaryAttack;
+    float secondaryAttackCooldown = 1f;
+    float secondaryAttackTimer = 0f;
+    GameObject secondaryAttackObject;
+
     // Start is called before the first frame update
     void Start()
     {
         pistol = GameObject.Find("NPCWeapon").GetComponent<Transform>();
+        preferredEffect = GameObject.Find("Storage").GetComponent<Storage>().getTypeOfNPC();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
         enemies = Physics2D.OverlapCircleAll(transform.position, radius, mask);
         Vector2 npcPosition = transform.position;
 
@@ -138,6 +143,8 @@ public class NPCShootManager : MonoBehaviour
         float enemyThreat = movementVector.magnitude;
         float playerImportance = playerNpcVector.magnitude;
 
+        //Debug.Log(enemyThreat);
+
         if (movementVector.magnitude == 0f && playerNpcVector.magnitude > 3f)
         {
             movementVector = ((playerPosition - transform.position) /(1/Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 6f))).normalized;
@@ -155,9 +162,27 @@ public class NPCShootManager : MonoBehaviour
 
         transform.position += movement * Time.deltaTime;
 
+        //Code for secondaryAttack
+
+        if (secondaryAttackTimer <= 0f && enemyThreat > 0.33f)
+        {
+            secondaryAttackTimer = secondaryAttackCooldown;
+            secondaryAttackObject = Instantiate(secondaryAttack, transform.position, Quaternion.identity);
+            secondaryAttackObject.GetComponent<SecondaryAttackBehavior>().setEnemy("NPCEnemy");
+        }
+
+        if (secondaryAttackTimer > 0f)
+        {
+            secondaryAttackTimer -= Time.fixedDeltaTime;
+            if (secondaryAttackTimer < 0f)
+            {
+                secondaryAttackTimer = 0f;
+            }
+        }
+
         //Code for sending pulse
 
-        if(!effectActive){
+        if (!effectActive){
             int predominantEffect = Random.Range(0,2);
             Debug.Log(predominantEffect);
             bool isPredominant = predominantEffect == 1;

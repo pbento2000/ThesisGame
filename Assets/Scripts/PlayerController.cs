@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
         if(secondaryAttackTimer <= 0f && Input.GetButton("SecondaryAttack")){
             secondaryAttackTimer = secondaryAttackCooldown;
             secondaryAttackObject = Instantiate(secondaryAttack, transform.position, Quaternion.identity);
+            secondaryAttackObject.GetComponent<SecondaryAttackBehavior>().setEnemy("PlayerEnemy");
         }
 
         if(secondaryAttackTimer > 0f)
