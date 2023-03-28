@@ -20,7 +20,7 @@ public class EnemyBehavior : MonoBehaviour
     private bool impacted = false;
     private float impactStrength = 0f;
     Vector3 impactVector;
-    
+
     //Multipliers affected by pulse effect and effect related variables
     private float impactMultiplier = 1f;
     private float movementSpeedMultiplier = 1f;
@@ -31,15 +31,24 @@ public class EnemyBehavior : MonoBehaviour
     private float remainingTime = 0f;
     private bool isAffected;
 
+    //Variables for avoiding enemy overlap
+    List<float> vectorTimes = new List<float>();
+    List<Vector3> vectors = new List<Vector3>();
+    Vector3 avoidVector = Vector3.zero;
+    GameObject lastImpact;
+
     // Start is called before the first frame update
     void Start()
     {
-        if(isPlayerEnemy){
+        if (isPlayerEnemy)
+        {
             player = GameObject.Find("Player");
-        }else{
+        }
+        else
+        {
             player = GameObject.Find("NPC");
         }
-        
+
         usualScale = transform.localScale;
 
         interfaceManager = GameObject.Find("Interface").GetComponent<InterfaceManager>();
@@ -49,21 +58,33 @@ public class EnemyBehavior : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 vectorFromPlayer = transform.position - player.transform.position;
+        vectorFromPlayer = vectorFromPlayer.normalized;
+
+        if(avoidVector != Vector3.zero)
+        {
+            vectorFromPlayer += avoidVector;
+            avoidVector = Vector3.zero;
+        }
 
         transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier;
 
-        if(impacted){
+        if (impacted)
+        {
             transform.position = transform.position + impactVector * impactTimer * impactStrength * impactMultiplier;
             impactTimer -= Time.deltaTime;
         }
 
-        if(impactTimer <= 0f){
+        if (impactTimer <= 0f)
+        {
             impacted = false;
-            impactVector = new Vector3(0f,0f,0f);
+            impactVector = new Vector3(0f, 0f, 0f);
             impactStrength = 0f;
         }
 
+        
+
         /*
+         * Code for temporary buffs/nerfs
         if(isAffected){
             remainingTime -= Time.fixedDeltaTime;
             if(remainingTime < 0f){
@@ -87,12 +108,16 @@ public class EnemyBehavior : MonoBehaviour
         }*/
     }
 
-    public void receiveDamage(float dmg, Vector3 impact, float strength){
+    public void receiveDamage(float dmg, Vector3 impact, float strength)
+    {
         health -= dmg;
-        if(health <= 0f){
+        if (health <= 0f)
+        {
             interfaceManager.changeScore(5f * scoreMultiplier);
             Destroy(gameObject);
-        }else{
+        }
+        else
+        {
             impactTimer = maxImpactTime;
             impacted = true;
             impactVector = impact;
@@ -115,7 +140,7 @@ public class EnemyBehavior : MonoBehaviour
         checkSprite();
     }
 
-    internal void buff()
+    public void buff()
     {
         remainingTime = effectTimer;
         sizeMultiplier *= 1.1f;
@@ -130,9 +155,14 @@ public class EnemyBehavior : MonoBehaviour
         checkSprite();
     }
 
+    public void setLastImpact(GameObject last)
+    {
+        lastImpact = last;
+    }
+
     void checkSprite()
     {
-        if(sizeMultiplier == 1f)
+        if (sizeMultiplier == 1f)
         {
             Color nerfColor = nerfSprite.color;
             nerfColor.a = 0f;
@@ -141,7 +171,8 @@ public class EnemyBehavior : MonoBehaviour
             Color buffColor = buffSprite.color;
             buffColor.a = 0f;
             buffSprite.color = buffColor;
-        }else if(sizeMultiplier < 1f)
+        }
+        else if (sizeMultiplier < 1f)
         {
             Color nerfColor = nerfSprite.color;
             nerfColor.a = 1f;
@@ -160,6 +191,28 @@ public class EnemyBehavior : MonoBehaviour
             Color nerfColor = nerfSprite.color;
             nerfColor.a = 0f;
             nerfSprite.color = nerfColor;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if ((col.gameObject.tag == "PlayerEnemy" && this.gameObject.tag == "PlayerEnemy") || (col.gameObject.tag == "NPCEnemy" && this.gameObject.tag == "NPCEnemy"))
+        {
+            if (impacted && col.gameObject != lastImpact)
+            {
+                EnemyBehavior enemyBehavior = col.gameObject.GetComponent<EnemyBehavior>();
+                enemyBehavior.receiveDamage(0f, (-transform.position + col.transform.position).normalized, impactStrength / 1.2f);
+                enemyBehavior.setLastImpact(this.gameObject);
+            }
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D col)
+    {
+        if ((col.gameObject.tag == "PlayerEnemy" && this.gameObject.tag == "PlayerEnemy") || (col.gameObject.tag == "NPCEnemy" && this.gameObject.tag == "NPCEnemy"))
+        {
+            Vector3 avoidDirection = transform.position - col.transform.position;
+            avoidVector -= avoidDirection.normalized;
         }
     }
 }

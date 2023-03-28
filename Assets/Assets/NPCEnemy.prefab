@@ -301,7 +301,7 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &7570943293064979413
@@ -320,3 +320,4 @@ MonoBehaviour:
   isPlayerEnemy: 0
   buffSprite: {fileID: 5806114232050791834}
   nerfSprite: {fileID: 7963931891182025854}
+  interfaceManager: {fileID: 0}

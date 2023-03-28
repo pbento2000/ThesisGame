@@ -299,6 +299,7 @@ MonoBehaviour:
   isPlayerEnemy: 1
   buffSprite: {fileID: 3918683330681094171}
   nerfSprite: {fileID: 2059622715599712800}
+  interfaceManager: {fileID: 0}
 --- !u!50 &-7975065002065149042
 Rigidbody2D:
   serializedVersion: 4
@@ -317,6 +318,6 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 0

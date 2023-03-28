@@ -184,7 +184,7 @@ public class NPCShootManager : MonoBehaviour
 
         if (!effectActive){
             int predominantEffect = Random.Range(0,2);
-            Debug.Log(predominantEffect);
+            //Debug.Log(predominantEffect);
             bool isPredominant = predominantEffect == 1;
 
             if(isPredominant){
