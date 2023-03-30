@@ -8,10 +8,12 @@ public class EnemyBehavior : MonoBehaviour
 
     private GameObject player;
     [SerializeField] private float health = 10f;
+    private float maxHealth;
     private Vector3 usualScale;
     [SerializeField] bool isPlayerEnemy;
     [SerializeField] SpriteRenderer buffSprite;
     [SerializeField] SpriteRenderer nerfSprite;
+    [SerializeField] Transform lifeTransform;
     [SerializeField] InterfaceManager interfaceManager;
 
     //Variables for when enemy is hit
@@ -30,6 +32,7 @@ public class EnemyBehavior : MonoBehaviour
     private float effectTimer = 15f;
     private float remainingTime = 0f;
     private bool isAffected;
+    private int scaleCounter = 0;
 
     //Variables for avoiding enemy overlap
     List<float> vectorTimes = new List<float>();
@@ -40,6 +43,7 @@ public class EnemyBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth = health;
         if (isPlayerEnemy)
         {
             player = GameObject.Find("Player");
@@ -122,6 +126,7 @@ public class EnemyBehavior : MonoBehaviour
             impacted = true;
             impactVector = impact;
             impactStrength = strength;
+            lifeTransform.localScale = new Vector3(1f, health/maxHealth, 1f);
         }
     }
 
@@ -133,9 +138,11 @@ public class EnemyBehavior : MonoBehaviour
         movementSpeedMultiplier /= 1.1f;
         healthMultiplier /= 1.1f;
         scoreMultiplier /= 1.1f;
+        scaleCounter -= 1;
 
-        transform.localScale = usualScale * sizeMultiplier;
-        health *= healthMultiplier;
+        transform.localScale = usualScale / (1 + scaleCounter * 0.1f);
+        health /= 1.1f;
+        maxHealth /= 1.1f;
 
         checkSprite();
     }
@@ -148,9 +155,11 @@ public class EnemyBehavior : MonoBehaviour
         movementSpeedMultiplier *= 1.1f;
         healthMultiplier *= 1.1f;
         scoreMultiplier *= 1.1f;
+        scaleCounter += 1;
 
-        transform.localScale = usualScale * sizeMultiplier;
-        health *= healthMultiplier;
+        transform.localScale = usualScale / (1 + scaleCounter * 0.1f);
+        health *= 1.1f;
+        maxHealth *= 1.1f;
 
         checkSprite();
     }

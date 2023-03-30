@@ -23,6 +23,12 @@ public class NPCShootManager : MonoBehaviour
     float effectCooldown = 10f;
     float effectTimer = 0f;
     [SerializeField] public int preferredEffect = 2;
+    int effectOnHOld = -1;
+    int npcEnemiesCounter = 0;
+    int playerEnemiesCounter = 0;
+    Vector3 playerEnemiesPosition = Vector3.zero;
+    [SerializeField] float playerRadius = 6f;
+    Collider2D[] playerEnemies;
 
     //Variables for when enemy is hit
     private float impactTimer = 0f;
@@ -52,12 +58,11 @@ public class NPCShootManager : MonoBehaviour
         Vector2 npcPosition = transform.position;
 
         //Code for Shooting
-
+        float minDistance = 9f;
         if (!onCooldown)
         {
             //Find closest enemy
             foundEnemy = false;
-            float minDistance = 10f;
             Collider2D minEnemy = null;
             
             for(int i = 0; i < enemies.Length; i++)
@@ -108,16 +113,21 @@ public class NPCShootManager : MonoBehaviour
             onCooldown = false;
         }
 
+        npcEnemiesCounter = 0;
+        playerEnemiesCounter = 0;
+
         //Code for Movement
 
         Vector3 movementVector = new Vector2(0, 0);
         Vector3 playerPosition = player.position;
 
+        npcEnemiesCounter = 0;
+
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i].tag == "NPCEnemy")
             {
-                
+                npcEnemiesCounter += 1;
                 Vector2 enemyPosition = enemies[i].gameObject.transform.position;
                 Vector3 npcEnemyVector = (npcPosition - enemyPosition) / Mathf.Pow(Vector3.Distance(transform.position, enemyPosition), 6f);
 
@@ -139,6 +149,39 @@ public class NPCShootManager : MonoBehaviour
         }
 
         Vector3 playerNpcVector = (playerPosition - transform.position) / (1 / Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 2f));
+
+        if(effectOnHOld == 0 || effectOnHOld == 1){
+            if(npcEnemiesCounter > 7){
+                sendPulse(effectOnHOld);
+            }
+        }
+
+        if(effectOnHOld == 2 || effectOnHOld == 3){
+
+            playerEnemiesCounter = 0;
+            playerEnemiesPosition = Vector3.zero;
+
+            playerEnemies = Physics2D.OverlapCircleAll(transform.position, playerRadius, mask);
+
+            for(int i = 0; i < playerEnemies.Length; i++){
+
+                if(enemies[i].tag == "PlayerEnemy"){
+                    playerEnemiesCounter += 1;
+                    playerEnemiesPosition += playerEnemies[i].gameObject.transform.position;
+                }
+            }
+
+            if(playerEnemiesCounter >= 6){
+                playerEnemiesPosition += 2*playerPosition;
+                playerEnemiesPosition /= playerEnemiesCounter;
+                playerNpcVector = (playerEnemiesPosition - transform.position) / (1 / Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 2f));
+
+                if(Vector3.Distance(playerEnemiesPosition, transform.position) < 3f){
+                    sendPulse(effectOnHOld);
+                }
+            }
+
+        }
         
         float enemyThreat = movementVector.magnitude;
         float playerImportance = playerNpcVector.magnitude;
@@ -180,27 +223,22 @@ public class NPCShootManager : MonoBehaviour
             }
         }
 
-        //Code for sending pulse
-
-        if (!effectActive){
+        //Code for choosing pulse
+        if (!effectActive && effectOnHOld == -1){
             int predominantEffect = Random.Range(0,2);
             //Debug.Log(predominantEffect);
             bool isPredominant = predominantEffect == 1;
 
             if(isPredominant){
-                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
-                effectObject.GetComponent<PulseBehavior>().setEffect(preferredEffect);
+                effectOnHOld = preferredEffect;
             }else{
                 int effect = Random.Range(0,4);
                 while(effect == preferredEffect){
                     effect = Random.Range(0,4);
                 }
-                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
-                effectObject.GetComponent<PulseBehavior>().setEffect(effect);
+                effectOnHOld = effect;
             }
-            
-            effectActive = true;
-            effectTimer = effectCooldown;
+            Debug.Log(effectOnHOld);
         }
 
         if(effectTimer > 0f){
@@ -222,6 +260,15 @@ public class NPCShootManager : MonoBehaviour
             impactVector = new Vector3(0f, 0f, 0f);
             impactStrength = 0f;
         }
+    }
+
+    void sendPulse(int activeEffect){
+        effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
+        effectObject.GetComponent<PulseBehavior>().setEffect(activeEffect);
+
+        effectActive = true;
+        effectTimer = effectCooldown;
+        effectOnHOld = -1;
     }
 
     public void getHit(Vector3 enemyPos)

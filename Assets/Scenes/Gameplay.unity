@@ -1889,7 +1889,7 @@ MonoBehaviour:
   bullet: {fileID: 8528670307353066516, guid: 1d43ab84353a2e84aa4cf77816229c7d, type: 3}
   pistol: {fileID: 1448633553}
   enemies: []
-  radius: 10
+  radius: 9
   mask:
     serializedVersion: 2
     m_Bits: 8
@@ -3401,4 +3401,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d223444daea3a964d9f5f6adf937f3df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 519420031}
+  cam: {fileID: 519420031}

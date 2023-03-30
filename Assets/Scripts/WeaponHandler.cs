@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponHandler : MonoBehaviour
 {
 
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera cam;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +20,7 @@ public class WeaponHandler : MonoBehaviour
     }
 
     public void updateWeaponRotation(Vector2 position){
-        Vector2 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
         position = new Vector2(transform.position.x, transform.position.y);
         
         float angle = Vector2.Angle(mousePosition - position, new Vector2(1f, 0f));

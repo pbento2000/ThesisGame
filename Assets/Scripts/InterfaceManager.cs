@@ -15,7 +15,6 @@ public class InterfaceManager : MonoBehaviour
     private int comboMultiplier = 0;
     private float comboTimer = 1.5f;
     private float activeCombo = 0.0f;
-    private float activeSpecial = 0.0f;
     private bool isActiveCombo = false;
 
     [SerializeField] WaveManager waveManager;

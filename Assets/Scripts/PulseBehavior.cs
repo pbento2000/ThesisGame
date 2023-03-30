@@ -8,26 +8,24 @@ public class PulseBehavior : MonoBehaviour
 
     enum effects {buffNPCEnemy, nerfNPCEnemy, buffPlayerEnemy, nerfPlayerEnemy};
     [SerializeField] effects effect;
-
-    float maskRadius = 0.95f;
     float pulseRadius = 0f;
-
-    Transform mask;
+    SpriteRenderer pulseSprite;
 
     // Start is called before the first frame update
     void Start()
     {
-        mask = transform.GetChild(0).gameObject.transform;
+        pulseSprite = gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(maskRadius < 1.01f){
-            maskRadius += Time.fixedDeltaTime * 0.02f;
-            mask.localScale = new Vector3(maskRadius, maskRadius, 0);
+        if(pulseRadius < 25f){
             pulseRadius += Time.fixedDeltaTime * 10f;
             transform.localScale = new Vector3(pulseRadius, pulseRadius, 0);
+            Color pulseColor = pulseSprite.color;
+            pulseColor.a -= Time.fixedDeltaTime * 10f /25f;
+            pulseSprite.color = pulseColor;
         }else{
             Destroy(this.gameObject);
         }
