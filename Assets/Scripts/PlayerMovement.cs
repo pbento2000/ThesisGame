@@ -33,8 +33,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            transform.Translate(Input.GetAxis("Horizontal") * horizontalForce * 0.9f, 0f, 0f);
-            transform.Translate(0f, Input.GetAxis("Vertical") * verticalForce * 0.9f, 0f);
+            transform.Translate(Input.GetAxis("Horizontal") * horizontalForce * 40f * Time.fixedDeltaTime, 0f, 0f);
+            transform.Translate(0f, Input.GetAxis("Vertical") * verticalForce * 40f * Time.fixedDeltaTime, 0f);
         }
 
         if (impactTimer <= 0f)

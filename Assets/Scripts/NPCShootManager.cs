@@ -44,6 +44,8 @@ public class NPCShootManager : MonoBehaviour
     float secondaryAttackTimer = 0f;
     GameObject secondaryAttackObject;
 
+    [SerializeField] InterfaceManager interfaceManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -173,13 +175,15 @@ public class NPCShootManager : MonoBehaviour
 
             if(playerEnemiesCounter >= 6){
                 playerEnemiesPosition += 2*playerPosition;
-                playerEnemiesPosition /= playerEnemiesCounter;
+                playerEnemiesPosition /= playerEnemiesCounter+2;
                 playerNpcVector = (playerEnemiesPosition - transform.position) / (1 / Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 2f));
 
                 if(Vector3.Distance(playerEnemiesPosition, transform.position) < 3f){
                     sendPulse(effectOnHOld);
                 }
             }
+
+            Debug.DrawLine(transform.position,playerNpcVector);
 
         }
         
@@ -212,6 +216,7 @@ public class NPCShootManager : MonoBehaviour
             secondaryAttackTimer = secondaryAttackCooldown;
             secondaryAttackObject = Instantiate(secondaryAttack, transform.position, Quaternion.identity);
             secondaryAttackObject.GetComponent<SecondaryAttackBehavior>().setEnemy("NPCEnemy");
+            interfaceManager.setAoeNPCCooldown(secondaryAttackCooldown);
         }
 
         if (secondaryAttackTimer > 0f)
@@ -269,6 +274,8 @@ public class NPCShootManager : MonoBehaviour
         effectActive = true;
         effectTimer = effectCooldown;
         effectOnHOld = -1;
+
+        interfaceManager.setEffectNPCCooldown(effectCooldown);
     }
 
     public void getHit(Vector3 enemyPos)

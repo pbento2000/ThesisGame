@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] WeaponHandler weaponHandler;
     [SerializeField] GameObject specialEffect;
     [SerializeField] GameObject secondaryAttack;
+    [SerializeField] InterfaceManager interfaceManager;
     bool effectActive = false;
     GameObject effectObject;
     float effectCooldown = 10f;
@@ -17,48 +18,19 @@ public class PlayerController : MonoBehaviour
     float secondaryAttackTimer = 0f;
     GameObject secondaryAttackObject;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    bool isInMenu = false;
+    float menuCooldown;
 
     // Update is called once per frame
     void FixedUpdate()
     {
         weaponHandler.updateWeaponRotation(new Vector2(transform.position.x, transform.position.y));
 
-        if(!effectActive){
-            if(Input.GetButton("BuffNPCEnemy")){
-                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
-                effectObject.GetComponent<PulseBehavior>().setEffect(0);
-                effectActive = true;
-                effectTimer = effectCooldown;
-            }
-            if(Input.GetButton("NerfNPCEnemy")){
-                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
-                effectObject.GetComponent<PulseBehavior>().setEffect(1);
-                effectActive = true;
-                effectTimer = effectCooldown;
-            }
-            if(Input.GetButton("BuffEnemy")){
-                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
-                effectObject.GetComponent<PulseBehavior>().setEffect(2);
-                effectActive = true;
-                effectTimer = effectCooldown;
-            }
-            if(Input.GetButton("NerfEnemy")){
-                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
-                effectObject.GetComponent<PulseBehavior>().setEffect(3);
-                effectActive = true;
-                effectTimer = effectCooldown;
-            }
-        }
-
         if(secondaryAttackTimer <= 0f && Input.GetButton("SecondaryAttack")){
             secondaryAttackTimer = secondaryAttackCooldown;
             secondaryAttackObject = Instantiate(secondaryAttack, transform.position, Quaternion.identity);
             secondaryAttackObject.GetComponent<SecondaryAttackBehavior>().setEnemy("PlayerEnemy");
+            interfaceManager.setAoeCooldown(secondaryAttackCooldown);
         }
 
         if(secondaryAttackTimer > 0f)
@@ -74,6 +46,34 @@ public class PlayerController : MonoBehaviour
             effectTimer -= Time.fixedDeltaTime;
             if(effectTimer < 0f){
                 effectActive = false;
+            }
+        }
+
+        if(menuCooldown > 0f){
+            menuCooldown -= Time.fixedDeltaTime;
+        }
+    }
+
+    void Update(){
+        if(Input.GetButtonDown("ChooseEffect") && !effectActive && menuCooldown <= 0f){
+            Time.timeScale = 0.2f;
+            Time.fixedDeltaTime = Time.fixedDeltaTime * Time.timeScale;
+            isInMenu = true;
+            interfaceManager.openMenu();
+        }
+        if(Input.GetButtonUp("ChooseEffect") && isInMenu){
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
+            isInMenu = false;
+            int effectChosen = interfaceManager.getEffectChosen();
+            interfaceManager.closeMenu();
+            menuCooldown = 1f;
+            if(effectChosen != -1){
+                effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
+                effectObject.GetComponent<PulseBehavior>().setEffect(effectChosen);
+                effectActive = true;
+                effectTimer = effectCooldown;
+                interfaceManager.setEffectCooldown(effectCooldown);
             }
         }
     }
