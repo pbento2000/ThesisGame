@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] InterfaceManager interfaceManager;
     bool effectActive = false;
     GameObject effectObject;
-    float effectCooldown = 10f;
+    float effectCooldown = 1f;
     float effectTimer = 0f;
 
     float secondaryAttackCooldown = 1f;

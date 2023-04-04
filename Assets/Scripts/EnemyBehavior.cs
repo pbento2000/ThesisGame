@@ -26,8 +26,6 @@ public class EnemyBehavior : MonoBehaviour
     //Multipliers affected by pulse effect and effect related variables
     private float impactMultiplier = 1f;
     private float movementSpeedMultiplier = 1f;
-    private float sizeMultiplier = 1f;
-    private float healthMultiplier = 1f;
     private float scoreMultiplier = 1f;
     private float effectTimer = 15f;
     private float remainingTime = 0f;
@@ -132,36 +130,38 @@ public class EnemyBehavior : MonoBehaviour
 
     public void nerf()
     {
-        remainingTime = effectTimer;
-        sizeMultiplier /= 1.1f;
-        impactMultiplier /= 0.9f;
-        movementSpeedMultiplier /= 1.1f;
-        healthMultiplier /= 1.1f;
-        scoreMultiplier /= 1.1f;
-        scaleCounter -= 1;
+        if(scaleCounter > -3)
+        {
+            remainingTime = effectTimer;
+            impactMultiplier /= 0.75f;
+            movementSpeedMultiplier /= 1.1f;
+            scoreMultiplier /= 2f;
+            scaleCounter -= 1;
 
-        transform.localScale = usualScale / (1 + scaleCounter * 0.1f);
-        health /= 1.1f;
-        maxHealth /= 1.1f;
+            transform.localScale = usualScale * (1 + scaleCounter * 0.15f);
+            health /= 1.5f;
+            maxHealth /= 1.5f;
 
-        checkSprite();
+            checkSprite();
+        }
     }
 
     public void buff()
     {
-        remainingTime = effectTimer;
-        sizeMultiplier *= 1.1f;
-        impactMultiplier *= 0.9f;
-        movementSpeedMultiplier *= 1.1f;
-        healthMultiplier *= 1.1f;
-        scoreMultiplier *= 1.1f;
-        scaleCounter += 1;
+        if(scaleCounter < 3)
+        {
+            remainingTime = effectTimer;
+            impactMultiplier *= 0.75f;
+            movementSpeedMultiplier *= 1.1f;
+            scoreMultiplier *= 2f;
+            scaleCounter += 1;
 
-        transform.localScale = usualScale / (1 + scaleCounter * 0.1f);
-        health *= 1.1f;
-        maxHealth *= 1.1f;
+            transform.localScale = usualScale * (1 + scaleCounter * 0.15f);
+            health *= 1.5f;
+            maxHealth *= 1.5f;
 
-        checkSprite();
+            checkSprite();
+        }
     }
 
     public void setLastImpact(GameObject last)
@@ -171,7 +171,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void checkSprite()
     {
-        if (sizeMultiplier == 1f)
+        if (transform.localScale == usualScale)
         {
             Color nerfColor = nerfSprite.color;
             nerfColor.a = 0f;
@@ -181,7 +181,7 @@ public class EnemyBehavior : MonoBehaviour
             buffColor.a = 0f;
             buffSprite.color = buffColor;
         }
-        else if (sizeMultiplier < 1f)
+        else if (transform.localScale.magnitude < usualScale.magnitude)
         {
             Color nerfColor = nerfSprite.color;
             nerfColor.a = 1f;
