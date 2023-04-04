@@ -205,7 +205,7 @@ public class NPCShootManager : MonoBehaviour
             movementVector += Vector3.Slerp(movementVector, playerNpcVector, playerImportance / enemyThreat).normalized;
         }
 
-        Vector3 movement = movementVector.normalized;
+        Vector3 movement = movementVector.normalized * 1.5f;
 
         transform.position += movement * Time.deltaTime;
 

@@ -7,12 +7,13 @@ public class EnemyBehavior : MonoBehaviour
 {
 
     private GameObject player;
-    [SerializeField] private float health = 10f;
+    [SerializeField] private float health = 14f;
     private float maxHealth;
     private Vector3 usualScale;
     [SerializeField] bool isPlayerEnemy;
-    [SerializeField] SpriteRenderer buffSprite;
-    [SerializeField] SpriteRenderer nerfSprite;
+    [SerializeField] SpriteRenderer lvlOne;
+    [SerializeField] SpriteRenderer lvlTwo;
+    [SerializeField] SpriteRenderer animationHolder;
     [SerializeField] Transform lifeTransform;
     [SerializeField] InterfaceManager interfaceManager;
 
@@ -31,6 +32,9 @@ public class EnemyBehavior : MonoBehaviour
     private float remainingTime = 0f;
     private bool isAffected;
     private int scaleCounter = 0;
+    private int level = 2;
+    [SerializeField] Sprite[] effectSprites;
+    private int animationTime = 150;
 
     //Variables for avoiding enemy overlap
     List<float> vectorTimes = new List<float>();
@@ -82,32 +86,6 @@ public class EnemyBehavior : MonoBehaviour
             impactVector = new Vector3(0f, 0f, 0f);
             impactStrength = 0f;
         }
-
-        
-
-        /*
-         * Code for temporary buffs/nerfs
-        if(isAffected){
-            remainingTime -= Time.fixedDeltaTime;
-            if(remainingTime < 0f){
-                transform.localScale = usualScale;
-                health /= healthMultiplier;
-                isAffected = false;
-
-                sizeMultiplier = 1f;
-                impactMultiplier = 1f;
-                movementSpeedMultiplier = 1f;
-                healthMultiplier = 1f;
-                scoreMultiplier = 1f;
-
-                Color nerfColor = nerfSprite.color;
-                nerfColor.a = 0f;
-                nerfSprite.color = nerfColor;
-                Color buffColor = buffSprite.color;
-                buffColor.a = 0f;
-                buffSprite.color = buffColor;
-            }
-        }*/
     }
 
     public void receiveDamage(float dmg, Vector3 impact, float strength)
@@ -130,37 +108,40 @@ public class EnemyBehavior : MonoBehaviour
 
     public void nerf()
     {
-        if(scaleCounter > -3)
+        if(level > 0)
         {
             remainingTime = effectTimer;
             impactMultiplier /= 0.75f;
             movementSpeedMultiplier /= 1.1f;
             scoreMultiplier /= 2f;
-            scaleCounter -= 1;
+            level -= 1;
+            //scaleCounter -= 1;
 
-            transform.localScale = usualScale * (1 + scaleCounter * 0.15f);
+            //transform.localScale = usualScale * (1 + scaleCounter * 0.15f);
             health /= 1.5f;
             maxHealth /= 1.5f;
 
-            checkSprite();
+            checkSprite(false);
         }
+
     }
 
     public void buff()
     {
-        if(scaleCounter < 3)
+        if(level < 4)
         {
             remainingTime = effectTimer;
             impactMultiplier *= 0.75f;
             movementSpeedMultiplier *= 1.1f;
             scoreMultiplier *= 2f;
-            scaleCounter += 1;
+            level += 1;
+            //scaleCounter += 1;
 
-            transform.localScale = usualScale * (1 + scaleCounter * 0.15f);
+            //transform.localScale = usualScale * (1 + scaleCounter * 0.15f);
             health *= 1.5f;
             maxHealth *= 1.5f;
 
-            checkSprite();
+            checkSprite(true);
         }
     }
 
@@ -169,8 +150,38 @@ public class EnemyBehavior : MonoBehaviour
         lastImpact = last;
     }
 
-    void checkSprite()
+    void checkSprite(bool isBuff)
     {
+        if(isBuff){
+            if(level < 3)
+                StartCoroutine(buffEnemy(lvlOne.transform.localScale, effectSprites[level-1]));
+            else
+                StartCoroutine(buffEnemy(lvlOne.transform.localScale, effectSprites[level-1]));
+        }else{
+            switch(level){
+                case 0:
+                    lvlOne.sprite = null;
+                    break;
+                case 1:
+                    lvlOne.sprite = effectSprites[level-1];
+                    break;
+                case 2:
+                    lvlOne.sprite = effectSprites[level-1];
+                    lvlTwo.sprite = null;
+                    break;
+                case 3:
+                    lvlTwo.sprite = effectSprites[level-1];
+                    break;
+                case 4:
+                    lvlTwo.sprite = effectSprites[level-1];
+                    break;
+            }
+            if(level < 3)
+                StartCoroutine(nerfEnemy(lvlTwo.transform.localScale, effectSprites[level]));
+            else
+                StartCoroutine(nerfEnemy(lvlTwo.transform.localScale, effectSprites[level]));
+        }
+        /*
         if (transform.localScale == usualScale)
         {
             Color nerfColor = nerfSprite.color;
@@ -201,6 +212,7 @@ public class EnemyBehavior : MonoBehaviour
             nerfColor.a = 0f;
             nerfSprite.color = nerfColor;
         }
+        */
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -223,5 +235,63 @@ public class EnemyBehavior : MonoBehaviour
             Vector3 avoidDirection = transform.position - col.transform.position;
             avoidVector -= avoidDirection.normalized;
         }
+    }
+
+    IEnumerator buffEnemy(Vector3 scaleUpdate, Sprite spriteUpdate){
+        animationHolder.transform.localScale = scaleUpdate + new Vector3(0.01f*animationTime,0.01f*animationTime,0.01f*animationTime);
+        animationHolder.sprite = spriteUpdate;
+        
+        Color tmp = animationHolder.color;
+        tmp.a = 0f;
+        animationHolder.color = tmp;
+
+        int counter = animationTime;
+
+        while(counter > 0){
+            counter--;
+            animationHolder.transform.localScale -= new Vector3(0.01f,0.01f,0.01f);
+            tmp.a += 1f/animationTime;
+            animationHolder.color = tmp;
+            yield return null;
+        }
+
+        switch(level){
+            case 0:
+                lvlOne.sprite = null;
+                break;
+            case 1:
+                lvlOne.sprite = effectSprites[level-1];
+                break;
+            case 2:
+                lvlOne.sprite = effectSprites[level-1];
+                lvlTwo.sprite = null;
+                break;
+            case 3:
+                lvlTwo.sprite = effectSprites[level-1];
+                break;
+            case 4:
+                lvlTwo.sprite = effectSprites[level-1];
+                break;
+        }
+        yield return null;
+    }
+
+    IEnumerator nerfEnemy(Vector3 scaleUpdate, Sprite spriteUpdate){
+        animationHolder.transform.localScale = scaleUpdate;
+        animationHolder.sprite = spriteUpdate;
+        int counter = animationTime;
+
+        Color tmp = animationHolder.color;
+        tmp.a = 1f;
+        animationHolder.color = tmp;
+
+        while(counter > 0){
+            counter--;
+            animationHolder.transform.localScale += new Vector3(0.01f,0.01f,0.01f);
+            tmp.a -= 1f/animationTime;
+            animationHolder.color = tmp;
+            yield return null;
+        }
+        yield return null;
     }
 }

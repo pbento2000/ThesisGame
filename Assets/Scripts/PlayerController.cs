@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] InterfaceManager interfaceManager;
     bool effectActive = false;
     GameObject effectObject;
-    float effectCooldown = 1f;
+    float effectCooldown = 10f;
     float effectTimer = 0f;
 
     float secondaryAttackCooldown = 1f;
@@ -55,6 +55,12 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update(){
+
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
+
         if(Input.GetButtonDown("ChooseEffect") && !effectActive && menuCooldown <= 0f){
             Time.timeScale = 0.2f;
             Time.fixedDeltaTime = Time.fixedDeltaTime * Time.timeScale;
