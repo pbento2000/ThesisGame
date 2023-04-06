@@ -84,34 +84,46 @@ public class InterfaceManager : MonoBehaviour
                     if(angle > 45f && angle < 135f && effectChosen != 2){
                         effectChosen = 2;
                         clearEffectChoice();
-                        effectButtons[effectChosen].GetComponent<Image>().sprite = backgroundImgActive;
+                        effectButtons[effectChosen].GetComponent<Image>().color = new Color (0.1f,0.1f,0.1f,1f);
                     }
                     if(angle < 45f && effectChosen != 0){
                         effectChosen = 0;
                         clearEffectChoice();
-                        effectButtons[effectChosen].GetComponent<Image>().sprite = backgroundImgActive;
+                        effectButtons[effectChosen].GetComponent<Image>().color = new Color (0.1f,0.1f,0.1f,1f);
                     }
                     if(angle > 135f && effectChosen != 1){
                         effectChosen = 1;
                         clearEffectChoice();
-                        effectButtons[effectChosen].GetComponent<Image>().sprite = backgroundImgActive;
+                        effectButtons[effectChosen].GetComponent<Image>().color = new Color (0.1f,0.1f,0.1f,1f);
                     }
                 }else{
                     if(angle > 45f && angle < 135f && effectChosen != 3){
                         effectChosen = 3;
                         clearEffectChoice();
-                        effectButtons[effectChosen].GetComponent<Image>().sprite = backgroundImgActive;
+                        effectButtons[effectChosen].GetComponent<Image>().color = new Color (0.1f,0.1f,0.1f,1f);
                     }
                     if(angle < 45f && effectChosen != 0){
                         effectChosen = 0;
                         clearEffectChoice();
-                        effectButtons[effectChosen].GetComponent<Image>().sprite = backgroundImgActive;
+                        effectButtons[effectChosen].GetComponent<Image>().color = new Color (0.1f,0.1f,0.1f,1f);
                     }
                     if(angle > 135f && effectChosen != 1){
                         effectChosen = 1;
                         clearEffectChoice();
-                        effectButtons[effectChosen].GetComponent<Image>().sprite = backgroundImgActive;
+                        effectButtons[effectChosen].GetComponent<Image>().color = new Color (0.1f,0.1f,0.1f,1f);
                     }
+                }
+            }
+
+            for(int i = 0; i < effectButtons.Length; i++){
+                if(effectButtons[i].GetComponent<RectTransform>().localScale.x > 1f && i != effectChosen){
+                    effectButtons[i].GetComponent<RectTransform>().localScale -= new Vector3(0.01f,0.01f,0f);
+                }
+            }
+
+            if(effectChosen != -1){
+                if(effectButtons[effectChosen].GetComponent<RectTransform>().localScale.x < 1.1f){
+                    effectButtons[effectChosen].GetComponent<RectTransform>().localScale += new Vector3(0.01f,0.01f,0f);
                 }
             }
         }
@@ -195,7 +207,7 @@ public class InterfaceManager : MonoBehaviour
 
     void clearEffectChoice(){
         for(int i = 0; i < effectButtons.Length; i++){
-            effectButtons[i].GetComponent<Image>().sprite = backgroundImages[i];
+            effectButtons[i].GetComponent<Image>().color = new Color (0f,0f,0f,1f);
         }
     }
 

@@ -40,7 +40,7 @@ public class SecondaryAttackBehavior : MonoBehaviour
     {
         if (other.tag == typeOfEnemy)
         {
-            other.gameObject.GetComponent<EnemyBehavior>().receiveDamage(damage, other.gameObject.transform.position - transform.position, 0.2f);
+            other.gameObject.GetComponent<EnemyBehavior>().receiveDamage(damage, other.gameObject.transform.position - transform.position, 0.2f * 50f);
         }
     }
 

@@ -17,7 +17,7 @@ public class BackgroundMover : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log(backgroundSprite.bounds.size.x);
+        //Debug.Log(backgroundSprite.bounds.size.x);
         if (playerPosition.position.x - transform.position.x >= backgroundSprite.bounds.size.x *2f){
             transform.position = transform.position + new Vector3(3 * backgroundSprite.bounds.size.x, 0, 0);
         }else if (playerPosition.position.x - transform.position.x < -backgroundSprite.bounds.size.x *2f){
