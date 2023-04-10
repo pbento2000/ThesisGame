@@ -12,11 +12,15 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] Color[] colors;
     private int fontSize = 20;
 
+    [SerializeField] Sprite effectIconHolder;
+    bool playerEffectActive;
+    bool npcEffectActive;
+    [SerializeField] Image effectIcon;
+    [SerializeField] Image effectIconNPC;
+    [SerializeField] Image[] effectIcons;
     [SerializeField] GameObject[] effectButtons;
     bool isMenuOpen;
     int effectChosen = -1;
-    [SerializeField] Sprite[] backgroundImages;
-    [SerializeField] Sprite backgroundImgActive;
     [SerializeField] RectTransform effectCooldown;
     [SerializeField] RectTransform aoeCooldown;
     [SerializeField] RectTransform effectCooldownNPC;
@@ -130,6 +134,9 @@ public class InterfaceManager : MonoBehaviour
 
         if(effectCooldown.localScale.y > 0f){
             effectCooldown.localScale -= new Vector3(0f, Time.fixedDeltaTime/effectCooldownTime, 0f);
+        }else if(playerEffectActive){
+            effectIcon.sprite = effectIconHolder;
+            playerEffectActive = false;
         }
 
         if(aoeCooldown.localScale.y > 0f){
@@ -138,6 +145,9 @@ public class InterfaceManager : MonoBehaviour
 
         if(effectCooldownNPC.localScale.y > 0f){
             effectCooldownNPC.localScale -= new Vector3(0f, Time.fixedDeltaTime/effectCooldownNPCTime, 0f);
+        }else if(npcEffectActive){
+            effectIcon.sprite = effectIconHolder;
+            npcEffectActive = false;
         }
 
         if(aoeCooldownNPC.localScale.y > 0f){
@@ -192,6 +202,9 @@ public class InterfaceManager : MonoBehaviour
 
     internal void closeMenu()
     {
+        if(effectChosen != -1){
+            effectIcon.sprite = effectIcons[effectChosen].sprite;
+        }
         clearEffectChoice();
         for(int i = 0; i < effectButtons.Length; i++){
             effectButtons[i].SetActive(false);
@@ -214,6 +227,7 @@ public class InterfaceManager : MonoBehaviour
     public void setEffectCooldown(float cooldown){
         effectCooldownTime = cooldown;
         effectCooldown.localScale = new Vector3(1f,1f,1f);
+        playerEffectActive = true;
     }
 
     public void setAoeCooldown(float cooldown){
@@ -224,6 +238,7 @@ public class InterfaceManager : MonoBehaviour
     public void setEffectNPCCooldown(float cooldown){
         effectCooldownNPCTime = cooldown;
         effectCooldownNPC.localScale = new Vector3(1f,1f,1f);
+        npcEffectActive = true;
     }
 
     public void setAoeNPCCooldown(float cooldown){
