@@ -12,9 +12,13 @@ public class MainMenuBehavior : MonoBehaviour
 
     [SerializeField]
     GameObject TutorialMenu;
+    [SerializeField]
+    GameObject SettingsMenu;
 
     [SerializeField]
     GameObject PlayButton;
+    [SerializeField]
+    GameObject SettingsButton;
 
     [SerializeField]
     GameObject[] npcButtons;
@@ -26,7 +30,7 @@ public class MainMenuBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TutorialMenu.SetActive(false);
+        SettingsMenu.SetActive(false);
 
         for(int i = 0; i < 4; i++)
         {
@@ -39,39 +43,39 @@ public class MainMenuBehavior : MonoBehaviour
         {
             npcButtons[(i + choice) % 4].transform.position = npcButtonsPositions[i];
         }
+
+        TutorialMenu.SetActive(false);
     }
 
     public void setTypeOfNPC(int type)
     {
         storage.setTypeOfNPC(type);
+        Debug.Log(type);
+        SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
     }
 
     public void Play(){
         PlayButton.SetActive(false);
-
-        for(int i = 0; i < 4; i++)
-        {
-            npcButtons[i].SetActive(false);
-        }
         TutorialMenu.SetActive(true);
+        SettingsMenu.SetActive(false);
+        SettingsButton.SetActive(false);
     }
 
     public void Back(){
         PlayButton.SetActive(true);
-
-        for(int i = 0; i < 4; i++)
-        {
-            npcButtons[i].SetActive(true);
-        }
-
+        SettingsButton.SetActive(true);
         TutorialMenu.SetActive(false);
+        SettingsMenu.SetActive(false);
     }
 
-    public void Yes(){
+    public void Settings(){
+        PlayButton.SetActive(false);
+        SettingsButton.SetActive(false);
+        TutorialMenu.SetActive(false);
+        SettingsMenu.SetActive(true);
+    }
+
+    public void LoadTutorial(){
         //Load Tutorial Scene
-    }
-
-    public void No(){
-        SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
     }
 }

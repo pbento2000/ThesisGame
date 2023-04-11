@@ -44,7 +44,9 @@ public class InterfaceManager : MonoBehaviour
     float second = 1f;
     int secondsInt = 0;
     [SerializeField] RectTransform time;
-    float timeMaskSize = 1650f;
+    float timeMaskSize = 1280f;
+    [SerializeField] GameObject[] minuteFrames;
+    int frameDeleted = 0;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -57,6 +59,10 @@ public class InterfaceManager : MonoBehaviour
             if(secondsInt % 30 == 0)
             {
                 waveManager.startWave();
+            }
+            if(secondsInt % 60 == 0 && secondsInt > 0){
+                StartCoroutine(fadeMinuteFrame(frameDeleted));
+                frameDeleted += 1;
             }
             secondsInt += 1;
         }
@@ -244,5 +250,17 @@ public class InterfaceManager : MonoBehaviour
     public void setAoeNPCCooldown(float cooldown){
         aoeCooldownNPCTime = cooldown;
         aoeCooldownNPC.localScale = new Vector3(1f,1f,1f);
+    }
+
+    IEnumerator fadeMinuteFrame(int index){
+        Image frame = minuteFrames[index].GetComponent<Image>();
+        Color tmp = frame.color;
+        while(minuteFrames[index].transform.localScale.x < 1f){
+            minuteFrames[index].transform.localScale += new Vector3(0.002f, 0.002f, 0f);
+            tmp.a -= 1f/100f;
+            minuteFrames[index].GetComponent<Image>().color = tmp;
+            yield return null;
+        }
+        yield return null;
     }
 }
