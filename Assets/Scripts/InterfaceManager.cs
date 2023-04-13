@@ -48,6 +48,8 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] GameObject[] minuteFrames;
     int frameDeleted = 0;
 
+    public float timeScale = 1f;
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -61,6 +63,9 @@ public class InterfaceManager : MonoBehaviour
                 waveManager.startWave();
             }
             if(secondsInt % 60 == 0 && secondsInt > 0){
+                timeScale += 0.1f;
+                Time.timeScale = timeScale;
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
                 StartCoroutine(fadeMinuteFrame(frameDeleted));
                 frameDeleted += 1;
             }
@@ -250,6 +255,11 @@ public class InterfaceManager : MonoBehaviour
     public void setAoeNPCCooldown(float cooldown){
         aoeCooldownNPCTime = cooldown;
         aoeCooldownNPC.localScale = new Vector3(1f,1f,1f);
+    }
+
+    public float getTimeScale()
+    {
+        return timeScale;
     }
 
     IEnumerator fadeMinuteFrame(int index){

@@ -20,7 +20,7 @@ public class BulletManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(Input.GetButton("Fire") && !onCooldown){
+        if((Input.GetAxis("FireNew") > 0.1f || Input.GetButton("Fire")) && !onCooldown){
             onCooldown = true;
             Instantiate(bullet, pistol.position, pistol.rotation);
             delayTimer = delay;

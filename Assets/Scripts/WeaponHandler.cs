@@ -11,18 +11,6 @@ public class WeaponHandler : MonoBehaviour
     bool crosshairShown;
     [SerializeField] Transform crosshairPosition;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        
-    }
-
     public void updateWeaponRotation(Vector2 position){
         //Vector2 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
         //position = new Vector2(transform.position.x, transform.position.y);

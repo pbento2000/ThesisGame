@@ -68,8 +68,8 @@ public class PlayerController : MonoBehaviour
             interfaceManager.openMenu();
         }
         if(Input.GetButtonUp("ChooseEffect") && isInMenu){
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = 0.02f;
+            Time.timeScale = interfaceManager.getTimeScale();
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
             isInMenu = false;
             int effectChosen = interfaceManager.getEffectChosen();
             interfaceManager.closeMenu();
