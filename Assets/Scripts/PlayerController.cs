@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey("escape"))
         {
-            Application.Quit();
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
 
         if(Input.GetButtonDown("ChooseEffect") && !effectActive && menuCooldown <= 0f){
@@ -80,6 +81,11 @@ public class PlayerController : MonoBehaviour
                 effectActive = true;
                 effectTimer = effectCooldown;
                 interfaceManager.setEffectCooldown(effectCooldown);
+
+                GameObject tutorial = GameObject.Find("TutorialManager");
+                if(tutorial != null){
+                    tutorial.GetComponent<TutorialManager>().getEffect(effectChosen);
+                }
             }
         }
     }

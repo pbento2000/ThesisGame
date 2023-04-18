@@ -41,6 +41,8 @@ public class EnemyBehavior : MonoBehaviour
     Vector3 avoidVector = Vector3.zero;
     GameObject lastImpact;
 
+    bool isTutorial = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -96,6 +98,9 @@ public class EnemyBehavior : MonoBehaviour
         }
         if (health < 0)
         {
+            if(isTutorial){
+                GameObject.Find("TutorialManager").GetComponent<TutorialManager>().decreaseEnemyCount();
+            }
             interfaceManager.changeScore(5f * scoreMultiplier);
             Destroy(gameObject);
         }
@@ -149,6 +154,10 @@ public class EnemyBehavior : MonoBehaviour
     public void setLastImpact(GameObject last)
     {
         lastImpact = last;
+    }
+
+    public void setTutorialFlag(){
+        isTutorial = true;
     }
 
     void checkSprite(bool isBuff)

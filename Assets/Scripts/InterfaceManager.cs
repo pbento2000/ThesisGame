@@ -58,7 +58,7 @@ public class InterfaceManager : MonoBehaviour
             DisplayTime(timeSeconds);
             timeSeconds -= 1f;
             seconds = 1f;
-            if(secondsInt % 30 == 0)
+            if(secondsInt % 30 == 0 && waveManager != null)
             {
                 waveManager.startWave();
             }
@@ -168,7 +168,8 @@ public class InterfaceManager : MonoBehaviour
 
     void DisplayTime(float timeToDisplay)
     {
-        time.sizeDelta = new Vector2(timeMaskSize / 300f * timeSeconds, time.sizeDelta.y);
+        if(time != null)
+            time.sizeDelta = new Vector2(timeMaskSize / 300f * timeSeconds, time.sizeDelta.y);
     }
 
     public void changeScore(float score)

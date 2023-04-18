@@ -2178,6 +2178,7 @@ MonoBehaviour:
   PlayButton: {fileID: 196815272}
   SettingsButton: {fileID: 1299359774}
   npcButtons:
+  - {fileID: 1275471793}
   - {fileID: 469703226}
   - {fileID: 1257727184}
   - {fileID: 2042235506}
@@ -3213,7 +3214,7 @@ GameObject:
   - component: {fileID: 1468026404}
   m_Layer: 0
   m_Name: Storage
-  m_TagString: Untagged
+  m_TagString: Storage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3245,6 +3246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2895bde854b63c4da0caed1067e2473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disabledButtons: 
 --- !u!114 &1468026404
 MonoBehaviour:
   m_ObjectHideFlags: 0

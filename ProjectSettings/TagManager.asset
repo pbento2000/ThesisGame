@@ -9,6 +9,7 @@ TagManager:
   - PlayerEnemy
   - NPC
   - ButtonNPC
+  - Storage
   layers:
   - Default
   - TransparentFX
