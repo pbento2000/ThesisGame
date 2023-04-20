@@ -19,7 +19,7 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] Image effectIconNPC;
     [SerializeField] Image[] effectIcons;
     [SerializeField] GameObject[] effectButtons;
-    bool isMenuOpen;
+    public bool isMenuOpen;
     int effectChosen = -1;
     [SerializeField] RectTransform effectCooldown;
     [SerializeField] RectTransform aoeCooldown;

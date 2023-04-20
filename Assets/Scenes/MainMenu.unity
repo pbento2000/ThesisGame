@@ -2178,12 +2178,11 @@ MonoBehaviour:
   PlayButton: {fileID: 196815272}
   SettingsButton: {fileID: 1299359774}
   npcButtons:
-  - {fileID: 1275471793}
+  - {fileID: 515101398}
   - {fileID: 469703226}
   - {fileID: 1257727184}
   - {fileID: 2042235506}
   - {fileID: 1275471793}
-  storage: {fileID: 1468026403}
 --- !u!1 &1086217144
 GameObject:
   m_ObjectHideFlags: 0

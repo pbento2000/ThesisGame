@@ -49,6 +49,13 @@ public class MainMenuBehavior : MonoBehaviour
 
         List<int> listOfDisabled = storage.getDisabledButtons();
 
+        if(!listOfDisabled.Contains(0)){
+            for(int i = 1; i < 5; i++)
+            {
+                npcButtons[i].GetComponent<Button>().interactable = false;
+            }
+        }
+
         foreach(int n in listOfDisabled){
             npcButtons[n].GetComponent<Button>().interactable = false;
         }
