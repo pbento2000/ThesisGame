@@ -9,6 +9,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI tutorialText;
     [SerializeField] GameObject enemy;
     [SerializeField] Transform player;
+    [SerializeField] GameObject[] arrows;
 
     int tutorialPhase = 0;
     int lastTutorialPhase = 0;
@@ -25,7 +26,9 @@ public class TutorialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        foreach(GameObject a in arrows){
+
+        }
     }
 
     // Update is called once per frame
@@ -38,7 +41,7 @@ public class TutorialManager : MonoBehaviour
             case -1:
                 break;
             case 0:
-                if(Input.GetAxis("Horizontal") > 0.1f || Input.GetAxis("Vertical") > 0.1f){
+                if(Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f){
                     StartCoroutine(getNextTutorialPhase());
                 }
                 break;

@@ -307,7 +307,7 @@ MonoBehaviour:
   - {fileID: 7322248480234760367}
   - {fileID: 1760498406563981233}
   animationHolder: {fileID: 7336555778432469286}
-  hollowSquare: {fileID: 21300000, guid: 062bf0760b9b022438364444d17a9919, type: 3}
+  hollowSquare: {fileID: 21300000, guid: 106fe3f3f89d46b40b26601a1b246eb5, type: 3}
   fullSquare: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   interfaceManager: {fileID: 0}
 --- !u!50 &-7975065002065149042

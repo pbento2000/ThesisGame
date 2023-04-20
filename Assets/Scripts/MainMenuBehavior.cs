@@ -84,6 +84,6 @@ public class MainMenuBehavior : MonoBehaviour
 
     public void LoadTutorial(){
         storage.addButtonToDisable(0);
-        //Load Tutorial Scene
+        SceneManager.LoadScene("Tutorial", LoadSceneMode.Single);
     }
 }
