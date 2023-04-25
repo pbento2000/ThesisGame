@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
-
     private GameObject player;
     private Vector3 usualScale;
     [SerializeField] bool isPlayerEnemy;
@@ -34,6 +33,8 @@ public class EnemyBehavior : MonoBehaviour
     private int health = 2;
     private int animationTime = 150;
     private Vector3 lifeBarScale = new Vector3(0.8f,0.15f,1f);
+    bool isgettingBuffed;
+    bool shotDuringBuff;
 
     //Variables for avoiding enemy overlap
     List<float> vectorTimes = new List<float>();
@@ -93,6 +94,10 @@ public class EnemyBehavior : MonoBehaviour
     {
 
         if(dmg > 0f){
+            if(isgettingBuffed){
+                animationHolder.sprite = hollowSquare;
+                shotDuringBuff = true;
+            }
             levels[health].sprite = hollowSquare;
             health -= 1;
         }
@@ -172,6 +177,7 @@ public class EnemyBehavior : MonoBehaviour
                 level += 1;
                 spriteUpdate = hollowSquare;
             }
+            isgettingBuffed = true;
             StartCoroutine(buffEnemy(levels[level].transform.position, spriteUpdate));
         }else{
             StartCoroutine(nerfEnemy(levels[level].transform.position, levels[level].sprite));
@@ -227,10 +233,17 @@ public class EnemyBehavior : MonoBehaviour
             yield return null;
         }
 
-        levels[level].sprite = spriteUpdate;
+        if(shotDuringBuff){
+            levels[level].sprite = hollowSquare;
+        }else{
+            levels[level].sprite = spriteUpdate;
+        }
+
+        isgettingBuffed = false;
+        shotDuringBuff = false;
         animationHolder.sprite = null;
         yield return null;
-    }   
+    }
 
     IEnumerator nerfEnemy(Vector3 position, Sprite spriteUpdate){
         animationHolder.transform.position = position;
