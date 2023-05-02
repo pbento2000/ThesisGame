@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class InterfaceManager : MonoBehaviour
 {
 
     [SerializeField] TextMeshProUGUI score;
+    [SerializeField] GameObject finalScore;
     [SerializeField] TMPro.TextMeshProUGUI comboText;
     [SerializeField] Color[] colors;
     private int fontSize = 20;
@@ -29,6 +31,8 @@ public class InterfaceManager : MonoBehaviour
     float aoeCooldownTime;
     float effectCooldownNPCTime;
     float aoeCooldownNPCTime;
+    [SerializeField] Color playerColor;
+    [SerializeField] Color npcColor;
 
     float scoreFloat = 0f;
     private int comboMultiplier = 0;
@@ -50,9 +54,18 @@ public class InterfaceManager : MonoBehaviour
 
     public float timeScale = 1f;
 
+    void Start() {
+        timeScale = 1f;
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        //Time passing code
+
         if(seconds < 0f)
         {
             DisplayTime(timeSeconds);
@@ -76,6 +89,8 @@ public class InterfaceManager : MonoBehaviour
             seconds -= Time.fixedDeltaTime;
         }
 
+        //Combo Code
+
         if (activeCombo > 0.0f)
         {
             activeCombo -= Time.fixedDeltaTime;
@@ -88,6 +103,18 @@ public class InterfaceManager : MonoBehaviour
             comboText.text = "";
             isActiveCombo = false;
         }
+
+        //Game end Code
+
+        if(secondsInt == 300){
+            finalScore.SetActive(true);
+            finalScore.GetComponent<TextMeshProUGUI>().text = "Score: " + score.text;
+            timeScale = 0f;
+            Time.timeScale = 0f;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        }
+
+        //Effect Menu Code
 
         if(isMenuOpen){
             if(Mathf.Abs(Input.GetAxis("MoveWeaponHorizontal")) > 0.1f || Mathf.Abs(Input.GetAxis("MoveWeaponVertical")) > 0.1f){
@@ -148,6 +175,7 @@ public class InterfaceManager : MonoBehaviour
         }else if(playerEffectActive){
             effectIcon.sprite = effectIconHolder;
             playerEffectActive = false;
+            effectIcon.color = playerColor;
         }
 
         if(aoeCooldown.localScale.y > 0f){
@@ -157,8 +185,9 @@ public class InterfaceManager : MonoBehaviour
         if(effectCooldownNPC.localScale.y > 0f){
             effectCooldownNPC.localScale -= new Vector3(0f, Time.fixedDeltaTime/effectCooldownNPCTime, 0f);
         }else if(npcEffectActive){
-            effectIcon.sprite = effectIconHolder;
+            effectIconNPC.sprite = effectIconHolder;
             npcEffectActive = false;
+            effectIconNPC.color = npcColor;
         }
 
         if(aoeCooldownNPC.localScale.y > 0f){
@@ -216,6 +245,11 @@ public class InterfaceManager : MonoBehaviour
     {
         if(effectChosen != -1){
             effectIcon.sprite = effectIcons[effectChosen].sprite;
+            if(effectChosen < 2){
+                effectIcon.color = npcColor;
+            }else{
+                effectIcon.color = playerColor;
+            }
         }
         clearEffectChoice();
         for(int i = 0; i < effectButtons.Length; i++){
@@ -225,15 +259,29 @@ public class InterfaceManager : MonoBehaviour
         effectChosen = -1;
     }
 
+    void clearEffectChoice(){
+        for(int i = 0; i < effectButtons.Length; i++){
+            effectButtons[i].GetComponent<Image>().color = new Color (0f,0f,0f,1f);
+        }
+    }
+
     internal int getEffectChosen()
     {
         return effectChosen;
     }
 
-    void clearEffectChoice(){
-        for(int i = 0; i < effectButtons.Length; i++){
-            effectButtons[i].GetComponent<Image>().color = new Color (0f,0f,0f,1f);
-        }
+    public void returnToMenu(){
+        //Add code to store info
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+    }
+
+    public void setNPCEffectIcon(int effectChosen){
+            effectIconNPC.sprite = effectIcons[effectChosen].sprite;
+            if(effectChosen < 2){
+                effectIconNPC.color = npcColor;
+            }else{
+                effectIconNPC.color = playerColor;
+            }
     }
 
     public void setEffectCooldown(float cooldown){
@@ -266,12 +314,20 @@ public class InterfaceManager : MonoBehaviour
     IEnumerator fadeMinuteFrame(int index){
         Image frame = minuteFrames[index].GetComponent<Image>();
         Color tmp = frame.color;
-        while(minuteFrames[index].transform.localScale.x < 1f){
-            minuteFrames[index].transform.localScale += new Vector3(0.002f, 0.002f, 0f);
-            tmp.a -= 1f/100f;
-            minuteFrames[index].GetComponent<Image>().color = tmp;
-            yield return null;
-        }
+        tmp.a /= 2;
+        frame.color = tmp;
         yield return null;
     }
+/*
+    IEnumerator fadeMinuteFrame(int index){
+        Image frame = minuteFrames[index].GetComponent<Image>();
+        Color tmp = frame.color;
+        while(minuteFrames[index].transform.localScale.x < 1f){
+            minuteFrames[index].transform.localScale += new Vector3(0.005f, 0.005f, 0f);
+            tmp.a -= 1f/50f;
+            minuteFrames[index].GetComponent<Image>().color = tmp;
+            yield return new WaitForFixedUpdate();
+        }
+        yield return null;
+    }*/
 }

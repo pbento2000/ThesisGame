@@ -10,6 +10,7 @@ public class PulseBehavior : MonoBehaviour
     [SerializeField] effects effect;
     float pulseRadius = 0f;
     SpriteRenderer pulseSprite;
+    [SerializeField] Color[] colors;
 
     // Start is called before the first frame update
     void Start()
@@ -60,5 +61,9 @@ public class PulseBehavior : MonoBehaviour
     internal void setEffect(int v)
     {
         effect = (effects) v;
+        if(v < 2)
+        this.gameObject.GetComponent<SpriteRenderer>().color = colors[1];
+        else
+        this.gameObject.GetComponent<SpriteRenderer>().color = colors[0];
     }
 }

@@ -31,7 +31,7 @@ public class EnemyBehavior : MonoBehaviour
     private int scaleCounter = 0;
     private int level = 2;
     private int health = 2;
-    private int animationTime = 150;
+    private int animationTime = 25;
     private Vector3 lifeBarScale = new Vector3(0.8f,0.15f,1f);
     bool isgettingBuffed;
     bool shotDuringBuff;
@@ -216,7 +216,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     IEnumerator buffEnemy(Vector3 position, Sprite spriteUpdate){
-        animationHolder.transform.position = position + new Vector3(0f,0.02f*animationTime,0f);
+        animationHolder.transform.position = position + new Vector3(0f,0.05f*animationTime,0f);
         animationHolder.sprite = spriteUpdate;
         
         Color tmp = animationHolder.color;
@@ -227,10 +227,10 @@ public class EnemyBehavior : MonoBehaviour
 
         while(counter > 0){
             counter--;
-            animationHolder.transform.position -= new Vector3(0f,0.02f,0f);
+            animationHolder.transform.position -= new Vector3(0f,0.05f,0f);
             tmp.a += 1f/animationTime;
             animationHolder.color = tmp;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         if(shotDuringBuff){
@@ -256,10 +256,10 @@ public class EnemyBehavior : MonoBehaviour
 
         while(counter > 0){
             counter--;
-            animationHolder.transform.localScale += new Vector3(0.01f,0.001875f,0f);
+            animationHolder.transform.localScale += new Vector3(0.05f,0.009375f,0f);
             tmp.a -= 1f/animationTime;
             animationHolder.color = tmp;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         animationHolder.sprite = null;

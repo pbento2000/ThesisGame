@@ -29,6 +29,7 @@ public class NPCShootManager : MonoBehaviour
     Vector3 playerEnemiesPosition = Vector3.zero;
     [SerializeField] float playerRadius = 6f;
     Collider2D[] playerEnemies;
+    private Vector3 playerOffset = Vector3.zero;
 
     //Variables for when enemy is hit
     private float impactTimer = 0f;
@@ -121,7 +122,7 @@ public class NPCShootManager : MonoBehaviour
         //Code for Movement
 
         Vector3 movementVector = new Vector2(0, 0);
-        Vector3 playerPosition = player.position;
+        Vector3 playerPosition = randomizePlayerPosition(player.position);
 
         npcEnemiesCounter = 0;
 
@@ -207,7 +208,7 @@ public class NPCShootManager : MonoBehaviour
 
         Vector3 movement = movementVector.normalized * 1.5f;
 
-        transform.position += movement * Time.deltaTime;
+        transform.position += movement * Time.fixedDeltaTime;
 
         //Code for secondaryAttack
 
@@ -267,6 +268,13 @@ public class NPCShootManager : MonoBehaviour
         }
     }
 
+    private Vector3 randomizePlayerPosition(Vector3 playerPosition)
+    {
+        if((int) Time.timeSinceLevelLoad % 5 == 0)
+            playerOffset = Quaternion.Euler(0f,0f,Random.Range(0,360))*new Vector3(0.75f,0.75f,0f);
+        return playerPosition + playerOffset;
+    }
+
     void sendPulse(int activeEffect){
         effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
         effectObject.GetComponent<PulseBehavior>().setEffect(activeEffect);
@@ -276,6 +284,7 @@ public class NPCShootManager : MonoBehaviour
         effectOnHOld = -1;
 
         interfaceManager.setEffectNPCCooldown(effectCooldown);
+        interfaceManager.setNPCEffectIcon(activeEffect);
     }
 
     public void getHit(Vector3 enemyPos)
