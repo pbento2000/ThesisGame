@@ -14,6 +14,7 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] Color[] colors;
     private int fontSize = 20;
 
+    [SerializeField] GameObject[] interfaceButtons;
     [SerializeField] Sprite effectIconHolder;
     bool playerEffectActive;
     bool npcEffectActive;
@@ -281,22 +282,26 @@ public class InterfaceManager : MonoBehaviour
         effectCooldownTime = cooldown;
         effectCooldown.localScale = new Vector3(1f,1f,1f);
         playerEffectActive = true;
+        StartCoroutine(makeButtonAnimation(0));
     }
 
     public void setAoeCooldown(float cooldown){
         aoeCooldownTime = cooldown;
         aoeCooldown.localScale = new Vector3(1f,1f,1f);
+        StartCoroutine(makeButtonAnimation(1));
     }
 
     public void setEffectNPCCooldown(float cooldown){
         effectCooldownNPCTime = cooldown;
         effectCooldownNPC.localScale = new Vector3(1f,1f,1f);
         npcEffectActive = true;
+        StartCoroutine(makeButtonAnimation(2));
     }
 
     public void setAoeNPCCooldown(float cooldown){
         aoeCooldownNPCTime = cooldown;
         aoeCooldownNPC.localScale = new Vector3(1f,1f,1f);
+        StartCoroutine(makeButtonAnimation(3));
     }
 
     public float getTimeScale()
@@ -311,6 +316,25 @@ public class InterfaceManager : MonoBehaviour
         frame.color = tmp;
         yield return null;
     }
+
+    IEnumerator makeButtonAnimation(int index)
+    {
+        RectTransform transformButton = interfaceButtons[index].GetComponent<RectTransform>();
+        yield return new WaitForFixedUpdate();
+        transformButton.localScale = new Vector3(1.25f, 1.25f, 1f);
+        float x = 1.25f;
+        yield return new WaitForFixedUpdate();
+        float downFloat = 0.005f;
+        yield return new WaitForFixedUpdate();
+        while (x > 1f)
+        {
+            transformButton.localScale -= new Vector3(downFloat, downFloat, 0f);
+            x -= downFloat;
+            yield return new WaitForFixedUpdate();
+        }
+        yield return null;
+    }
+
 /*
     IEnumerator fadeMinuteFrame(int index){
         Image frame = minuteFrames[index].GetComponent<Image>();
