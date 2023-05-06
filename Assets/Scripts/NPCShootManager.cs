@@ -231,9 +231,9 @@ public class NPCShootManager : MonoBehaviour
 
         //Code for choosing pulse
         if (!effectActive && effectOnHOld == -1){
-            int predominantEffect = Random.Range(0,2);
-            //Debug.Log(predominantEffect);
-            bool isPredominant = predominantEffect == 1;
+            int predominantEffect = Random.Range(0,100);
+            Debug.Log(predominantEffect);
+            bool isPredominant = predominantEffect < 80;
 
             if(isPredominant){
                 effectOnHOld = preferredEffect;

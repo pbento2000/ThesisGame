@@ -4783,6 +4783,11 @@ MonoBehaviour:
   comboText: {fileID: 1963795495}
   colors:
   - {r: 1, g: 1, b: 1, a: 1}
+  interfaceButtons:
+  - {fileID: 478037475}
+  - {fileID: 57125681}
+  - {fileID: 1381242025}
+  - {fileID: 1113055137}
   effectIconHolder: {fileID: 21300000, guid: b8d2918b948e82a4e88ba94c6878323c, type: 3}
   effectIcon: {fileID: 839278784}
   effectIconNPC: {fileID: 1459251501}
