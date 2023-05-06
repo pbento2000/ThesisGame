@@ -33,6 +33,7 @@ public class InterfaceManager : MonoBehaviour
     float aoeCooldownNPCTime;
     [SerializeField] Color playerColor;
     [SerializeField] Color npcColor;
+    [SerializeField] Color white;
 
     float scoreFloat = 0f;
     private int comboMultiplier = 0;
@@ -245,11 +246,7 @@ public class InterfaceManager : MonoBehaviour
     {
         if(effectChosen != -1){
             effectIcon.sprite = effectIcons[effectChosen].sprite;
-            if(effectChosen < 2){
-                effectIcon.color = npcColor;
-            }else{
-                effectIcon.color = playerColor;
-            }
+            effectIcon.color = white;
         }
         clearEffectChoice();
         for(int i = 0; i < effectButtons.Length; i++){
@@ -277,11 +274,7 @@ public class InterfaceManager : MonoBehaviour
 
     public void setNPCEffectIcon(int effectChosen){
             effectIconNPC.sprite = effectIcons[effectChosen].sprite;
-            if(effectChosen < 2){
-                effectIconNPC.color = npcColor;
-            }else{
-                effectIconNPC.color = playerColor;
-            }
+            effectIconNPC.color = white;
     }
 
     public void setEffectCooldown(float cooldown){
