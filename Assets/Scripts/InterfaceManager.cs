@@ -35,6 +35,8 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] Color playerColor;
     [SerializeField] Color npcColor;
     [SerializeField] Color white;
+    [SerializeField] Color startTimeColor;
+    [SerializeField] Color finishTimeColor;
 
     float scoreFloat = 0f;
     private int comboMultiplier = 0;
@@ -53,6 +55,8 @@ public class InterfaceManager : MonoBehaviour
     float timeMaskSize = 1280f;
     [SerializeField] GameObject[] minuteFrames;
     int frameDeleted = 0;
+    Vector3 colorDelta;
+    [SerializeField] GameObject timeSprite;
 
     public float timeScale = 1f;
 
@@ -60,6 +64,8 @@ public class InterfaceManager : MonoBehaviour
         timeScale = 1f;
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        timeSprite.gameObject.GetComponent<Image>().color = startTimeColor;
+        colorDelta = new Vector3((startTimeColor.r - finishTimeColor.r)/timeSeconds,(startTimeColor.g - finishTimeColor.g)/timeSeconds,(startTimeColor.b - finishTimeColor.b)/timeSeconds);
     }
 
     // Update is called once per frame
@@ -201,6 +207,13 @@ public class InterfaceManager : MonoBehaviour
     {
         if(time != null)
             time.sizeDelta = new Vector2(timeMaskSize / 300f * timeSeconds, time.sizeDelta.y);
+        if(timeSprite != null){
+            Color tmp = timeSprite.gameObject.GetComponent<Image>().color;
+            tmp.r -= colorDelta[0];
+            tmp.g -= colorDelta[1];
+            tmp.b -= colorDelta[2];
+            timeSprite.gameObject.GetComponent<Image>().color = tmp;
+        }
     }
 
     public void changeScore(float score)

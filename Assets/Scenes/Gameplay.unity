@@ -4809,6 +4809,8 @@ MonoBehaviour:
   playerColor: {r: 0.9843138, g: 0.56078434, b: 0.07450981, a: 1}
   npcColor: {r: 0, g: 0.68235296, b: 0.93725497, a: 1}
   white: {r: 1, g: 1, b: 1, a: 1}
+  startTimeColor: {r: 0.28475437, g: 0.764151, b: 0.28663433, a: 0.64705884}
+  finishTimeColor: {r: 0.7735849, g: 0.28826985, b: 0.28826985, a: 0.64705884}
   waveManager: {fileID: 194802762}
   time: {fileID: 672264991}
   minuteFrames:
@@ -4817,6 +4819,7 @@ MonoBehaviour:
   - {fileID: 2067965273}
   - {fileID: 42776503}
   - {fileID: 672900523}
+  timeSprite: {fileID: 112854535}
   timeScale: 1
 --- !u!1 &1587454844
 GameObject:

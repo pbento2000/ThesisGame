@@ -3,22 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
 
     [SerializeField] TextMeshProUGUI tutorialText;
     [SerializeField] GameObject enemy;
+    [SerializeField] GameObject npcEnemy;
     [SerializeField] Transform player;
     [SerializeField] GameObject[] arrows;
     [SerializeField] InterfaceManager interfaceManager;
     [SerializeField] BulletManager shootManager;
+    [SerializeField] Sprite npcJailSprite;
+    [SerializeField] GameObject continueText;
+
+    [SerializeField] GameObject bookTutorial;
+    [SerializeField] Image bookImageTutorial;
+    [SerializeField] TextMeshProUGUI bookTextTutorial;
+    [SerializeField] Sprite[] images;
+    int bookCounter = 0;
 
     int tutorialPhase = 0;
     int lastTutorialPhase = 0;
     int enemiesAlive = 0;
     bool spawnedEnemies = false;
     bool usedDebuff = false;
+    bool usedBuff = false;
 
     string[] phrases = {"Use left joystick to move",
                         "Use right joystick to aim",
@@ -26,16 +37,25 @@ public class TutorialManager : MonoBehaviour
                         "Kill these enemies",
                         "Use L1 to debuff your enemies",
                         "Press Square to use your secondary attack and kill these enemies",
-                        "Additional notes (Press X to continue)",
-                        "There are 4 other universes, your help is needed",
-                        "One at a time, you will need to sync with the other universes and respective people",
-                        "You will not be able to damage enemies from that universe",
-                        "But you can make the life easier or harder for the other person",
-                        "The contrary applies to our universe",
-                        "Harder enemies give more points, easier ones give less",
-                        "Killing multiple enemies within a short period of time leads to a combo",
-                        "If you take damage, it will also be multiplied by your current combo, BE CAREFUL",
-                        "Press X to leave tutorial"};
+                        "Use L1 to buff blue enemies and kill them",
+                        "You can't kill them, right?",
+                        "Just as we expected...",
+                        "Ok, here. Read these instructions."};
+    
+    string[] bookPhrases = {"We discovered there exists two universes.",
+                            "We are here.",
+                            "But we only discovered that cause they are collapsing together.",
+                            "This is creating what we call the 'Splitters', hologramic creatures who are visible in both universes.",
+                            "But we can only destroy the Splitters of our universe, which will not be enough.",
+                            "Luckily we found we can have influence on the other universe in the form of pulse forces, making those Splitters easier or harder to kill.",
+                            "We were able to establish a connection with the other universe's researchers, who already gathered 4 people they think are able to restore universe peace.",
+                            "We only got you. Your job is to first understand which companion from the other universe will better fit your way of thinking and slay some Splitters together.",
+                            "From what we observe, making splitters harder to kill will make them thougher, get less impact from shots, and slightly increase their movement speed.",
+                            "Why would we make them harder to kill? To Sync, of course. The more score you and your companion do, the bigger the odds of syncing both universes, and luckily in the future we will be able to kill Splitters from both universes.",
+                            "You, or your companion, can also make them easier to kill, and try to sync by comboing, as we like to call it.",
+                            "Killing multiple Splitters in a small period of time will create a combo, meaning each consequent kill will give more sync energy. But be careful, getting hit while the combo is high is really damaging to the connection between both universes.",
+                            "This is just a hunch, but we do think your connection with your companion can be even more important than the sync energy we gather. Don't forget he is in another whole universe, light-years from us. If you can sync between yourselves, the universes might be able to sync as well.",
+                            "Wish you the best of lucks, and choose wisely."};
 
     // Start is called before the first frame update
     void Start()
@@ -48,8 +68,17 @@ public class TutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(tutorialText.text == ""){
+        if(tutorialText.text == "" && tutorialPhase < phrases.Length){
             tutorialText.text = phrases[tutorialPhase];
+        }
+        if(tutorialPhase + bookCounter == phrases.Length + bookPhrases.Length && Input.GetButtonDown("Continue"))
+        {
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        }
+        else if(bookCounter > 0 && Input.GetButtonDown("Continue")){
+            bookTextTutorial.text = bookPhrases[bookCounter];
+            bookImageTutorial.sprite = images[bookCounter];
+            bookCounter += 1;
         }
         switch(tutorialPhase){
             case -1:
@@ -108,12 +137,15 @@ public class TutorialManager : MonoBehaviour
                         enemyspawned.GetComponent<EnemyBehavior>().setTutorialFlag();
                     }
                 }else{
-                    if(enemiesAlive == 0 && usedDebuff){
+                    if(usedDebuff){
                         foreach(GameObject a in arrows)
                         {
                             a.SetActive(false);
                         }
-                        StartCoroutine(getNextTutorialPhase());
+                        tutorialText.color = new Color(0f,204,0f,1f);
+                        if(enemiesAlive == 0){
+                            StartCoroutine(getNextTutorialPhase());
+                        }
                     }else{
                         if(enemiesAlive == 0)
                             spawnedEnemies = false;
@@ -147,7 +179,7 @@ public class TutorialManager : MonoBehaviour
                 }
                 else
                 {
-                    if (enemiesAlive == 0 && usedDebuff)
+                    if (enemiesAlive == 0)
                     {
                         arrows[2].SetActive(false);
                         shootManager.canShoot = true;
@@ -155,17 +187,54 @@ public class TutorialManager : MonoBehaviour
                     }
                 }
                 break;
+            case 6:
+                if(!spawnedEnemies){
+                    enemiesAlive = 3;
+                    spawnedEnemies = true;
+                    arrows[0].SetActive(true);
+                    for (int i = 0; i < 3; i++){
+                        Vector3 enemyOffset = Quaternion.Euler(0, 0, Random.Range(0, 360)) * new Vector3(Random.Range(3f, 5f), Random.Range(3f, 5f), 0);
+                        GameObject enemyspawned = Instantiate(enemy, player.position + enemyOffset, Quaternion.Euler(0, 0, 0));
+                        enemyspawned.GetComponent<EnemyBehavior>().setTutorialFlag();
+                        GameObject npcEnemyspawned = Instantiate(npcEnemy, player.position + enemyOffset, Quaternion.Euler(0, 0, 0));
+                        npcEnemyspawned.GetComponent<SpriteRenderer>().sprite = npcJailSprite;
+                    }
+                }else{
+                    if(usedBuff){
+                        foreach(GameObject a in arrows)
+                        {
+                            a.SetActive(false);
+                        }
+                        if(enemiesAlive == 0){
+                            StartCoroutine(getNextTutorialPhase());
+                        }
+                    }else{
+                        if(enemiesAlive == 0)
+                            spawnedEnemies = false;
+                        if (Input.GetButtonDown("ChooseEffect"))
+                        {
+                            StartCoroutine(showFourthArrow());
+                        }
+                        else if (Input.GetButtonUp("ChooseEffect"))
+                        {
+                            arrows[3].SetActive(false);
+                            arrows[0].SetActive(true);
+                        }
+                    }
+                }
+                break;
         }
-        if(tutorialPhase == phrases.Length-1 && Input.GetButtonDown("Continue"))
-        {
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
-        }
-        if(tutorialPhase > 5 && Input.GetButtonDown("Continue"))
+        if(tutorialPhase > 6 && Input.GetButtonDown("Continue") && bookCounter < 1)
         {
             tutorialPhase = tutorialPhase + 1;
             tutorialText.text = "";
         }
-        
+        if(tutorialPhase == phrases.Length && Input.GetButtonDown("Continue") && bookCounter < 1){
+            bookTutorial.SetActive(true);
+            bookCounter = 1;
+            //TO DO
+            //Code to show number of pages
+        }
     }
 
     IEnumerator getNextTutorialPhase(){
@@ -183,15 +252,31 @@ public class TutorialManager : MonoBehaviour
         tutorialText.color = new Color(255f,255f,255f,1f);
         tutorialPhase = lastTutorialPhase + 1;
         spawnedEnemies = false;
+        
+        if(tutorialPhase > 6){
+            continueText.SetActive(true);
+        }
+
         yield return null;
     }
 
     IEnumerator showSecondArrow()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForFixedUpdate();
         if (interfaceManager.isMenuOpen)
         {
             arrows[1].SetActive(true);
+            arrows[0].SetActive(false);
+        }
+        yield return null;
+    }
+
+    IEnumerator showFourthArrow()
+    {
+        yield return new WaitForFixedUpdate();
+        if (interfaceManager.isMenuOpen)
+        {
+            arrows[3].SetActive(true);
             arrows[0].SetActive(false);
         }
         yield return null;
@@ -205,6 +290,9 @@ public class TutorialManager : MonoBehaviour
     internal void getEffect(int effect){
         if(effect == 3 && tutorialPhase == 4){
             usedDebuff = true;
+        }
+        if(effect == 0 && tutorialPhase == 6){
+            usedBuff = true;
         }
     }
 }

@@ -65,16 +65,18 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 vectorFromPlayer = transform.position - player.transform.position;
-        vectorFromPlayer = vectorFromPlayer.normalized;
+        if(player != null){
+            Vector3 vectorFromPlayer = transform.position - player.transform.position;
+            vectorFromPlayer = vectorFromPlayer.normalized;
 
-        if(avoidVector != Vector3.zero)
-        {
-            vectorFromPlayer += avoidVector;
-            avoidVector = Vector3.zero;
+            if(avoidVector != Vector3.zero)
+            {
+                vectorFromPlayer += avoidVector;
+                avoidVector = Vector3.zero;
+            }
+
+            transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier;
         }
-
-        transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier;
 
         if (impacted)
         {
