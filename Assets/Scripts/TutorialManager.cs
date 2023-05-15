@@ -42,20 +42,25 @@ public class TutorialManager : MonoBehaviour
                         "Just as we expected...",
                         "Ok, here. Read these instructions."};
     
-    string[] bookPhrases = {"We discovered there exists two universes.",
+    string[] bookPhrases = {"This book was made on the go, we do not have much time. Hopefully this explanation is enough. Handle with care. -Rufus",
+                            "Our team of researchers were doing significant progress on understanding paralel universes. Doing so would bring a big new boom to science as a whole.",
+                            "But, like everything in the world, people moved by greed (the rebels) where trying to get their hands onto our research. They tried so much that eventually...",
+                            "They suceeded.",
+                            "And like the smart people they are (were), decided to activate the prototype. Our team was the only shielded from such disaster. And, somehow, you.",
+                            "And just like that, what was once one universe...",
+                            "Became two.",
                             "We are here.",
-                            "But we only discovered that cause they are collapsing together.",
-                            "This is creating what we call the 'Splitters', hologramic creatures who are visible in both universes.",
-                            "But we can only destroy the Splitters of our universe, which will not be enough.",
+                            "This is creating what we call the 'Splitters', holographic creatures who are visible in both universes",
+                            "But we can only destroy the Splitters of our universe, which will not be enough",
                             "Luckily we found we can have influence on the other universe in the form of pulse forces, making those Splitters easier or harder to kill.",
-                            "We were able to establish a connection with the other universe's researchers, who already gathered 4 people they think are able to restore universe peace.",
-                            "We only got you. Your job is to first understand which companion from the other universe will better fit your way of thinking and slay some Splitters together.",
-                            "From what we observe, making splitters harder to kill will make them thougher, get less impact from shots, and slightly increase their movement speed.",
-                            "Why would we make them harder to kill? To Sync, of course. The more score you and your companion do, the bigger the odds of syncing both universes, and luckily in the future we will be able to kill Splitters from both universes.",
-                            "You, or your companion, can also make them easier to kill, and try to sync by comboing, as we like to call it.",
-                            "Killing multiple Splitters in a small period of time will create a combo, meaning each consequent kill will give more sync energy. But be careful, getting hit while the combo is high is really damaging to the connection between both universes.",
-                            "This is just a hunch, but we do think your connection with your companion can be even more important than the sync energy we gather. Don't forget he is in another whole universe, light-years from us. If you can sync between yourselves, the universes might be able to sync as well.",
-                            "Wish you the best of lucks, and choose wisely."};
+                            "We were able to establish a connection with the other universe's researchers, who already gathered 4 people they think are able to restore universe peace",
+                            "We only got you. Your job is to first understand which companion from the other universe will better fit your way of thinking and slay some Splitters together",
+                            "From what we observe, making splitters harder to kill will make them thougher, get less impact from shots, and slightly increase their movement speed",
+                            "Why would we make them harder to kill? To Sync, of course. The more score you and your companion do, the bigger the odds of syncing both universes, and luckily in the future we will be able to kill Splitters from both universes",
+                            "You, or your companion, can also make them easier to kill, and try to sync by comboing, as we like to call it",
+                            "Killing multiple Splitters in a small period of time will create a combo, meaning each consequent kill will give more sync energy. But be careful, getting hit while the combo is high is really damaging to the connection between both universes",
+                            "This is just a hunch, but we do think your connection with your companion can be even more important than the sync energy we gather. Don't forget he is in another whole universe, light-years from us. If you can sync between yourselves, the universes might be able to sync as well",
+                            "Wish you the best of lucks. Choose wisely."};
 
     // Start is called before the first frame update
     void Start()

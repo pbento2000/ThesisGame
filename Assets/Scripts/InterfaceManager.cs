@@ -45,6 +45,7 @@ public class InterfaceManager : MonoBehaviour
     private bool isActiveCombo = false;
 
     [SerializeField] WaveManager waveManager;
+    [SerializeField] Camera cameraScene;
 
     float timeSeconds = 300f;
     float minutes;
