@@ -11,6 +11,7 @@ public class BulletManager : MonoBehaviour
     float delayTimer = 0f;
     bool onCooldown = false;
     public bool canShoot = true;
+    float deadTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,13 @@ public class BulletManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        if(deadTimer > 0f){
+            deadTimer -= Time.fixedDeltaTime;
+        }else if(!canShoot){
+            canShoot = true;
+        }
+
         if((Input.GetAxis("FireNew") > 0.1f || Input.GetButton("Fire")) && !onCooldown && canShoot){
             onCooldown = true;
             Instantiate(bullet, pistol.position, pistol.rotation);
@@ -34,5 +42,10 @@ public class BulletManager : MonoBehaviour
         if(delayTimer <= 0.0f){
             onCooldown = false;
         }
+    }
+
+    public void setDeadTimer(float timer){
+        deadTimer = timer;
+        canShoot = false;
     }
 }

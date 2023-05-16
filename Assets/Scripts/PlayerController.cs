@@ -21,13 +21,22 @@ public class PlayerController : MonoBehaviour
 
     bool isInMenu = false;
     float menuCooldown;
+    float deadTimer;
+    bool canShoot;
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        if(deadTimer > 0f){
+            deadTimer -= Time.fixedDeltaTime;
+        }else if(!canShoot){
+            canShoot = true;
+        }
+
         weaponHandler.updateWeaponRotation(new Vector2(transform.position.x, transform.position.y));
 
-        if(secondaryAttackTimer <= 0f && Input.GetButton("SecondaryAttack")){
+        if(secondaryAttackTimer <= 0f && Input.GetButton("SecondaryAttack") && canShoot){
             secondaryAttackTimer = secondaryAttackCooldown;
             secondaryAttackObject = Instantiate(secondaryAttack, transform.position, Quaternion.identity);
             secondaryAttackObject.GetComponent<SecondaryAttackBehavior>().setEnemy("PlayerEnemy");
@@ -88,5 +97,9 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+    public void setDeadTimer(float timer){
+        deadTimer = timer;
+        canShoot = false;
     }
 }

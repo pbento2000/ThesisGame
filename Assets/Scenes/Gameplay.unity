@@ -4390,6 +4390,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interfaceManager: {fileID: 1527398865}
+  playerController: {fileID: 0}
+  bulletManager: {fileID: 0}
 --- !u!1 &1448633550
 GameObject:
   m_ObjectHideFlags: 0
@@ -4697,6 +4699,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interfaceManager: {fileID: 1527398865}
+  playerController: {fileID: 1021654951}
+  bulletManager: {fileID: 2069053461}
 --- !u!1 &1527398860
 GameObject:
   m_ObjectHideFlags: 0

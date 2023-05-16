@@ -40,7 +40,7 @@ public class InterfaceManager : MonoBehaviour
 
     float scoreFloat = 0f;
     private int comboMultiplier = 0;
-    private float comboTimer = 1.5f;
+    private float comboTimer = 2f;
     private float activeCombo = 0.0f;
     private bool isActiveCombo = false;
 
@@ -217,28 +217,20 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
-    public void changeScore(float score)
-    {
-        
-        if(score > 0)
-        {
+    public void addToCombo(bool positive){
+        if(positive){
             isActiveCombo = true;
             activeCombo = comboTimer;
             comboMultiplier += 1;
-            scoreFloat += score * comboMultiplier;
         }
         else
         {
             isActiveCombo = false;
+            scoreFloat -= 10f * comboMultiplier;
             activeCombo = 0f;
             comboMultiplier = 0;
-            scoreFloat += score;
             comboText.color = new Color(0f, 0f, 0f, 0f);
         }
-
-        this.comboText.fontSize = fontSize + comboMultiplier;
-        this.score.text = Mathf.CeilToInt(scoreFloat).ToString();
-
         if (comboMultiplier > 1)
         {
             comboText.text = comboMultiplier.ToString() + "x Combo";
@@ -246,6 +238,14 @@ public class InterfaceManager : MonoBehaviour
             comboText.color = colors[0];
             comboText.rectTransform.rotation = Quaternion.Euler(0f, 0f, Random.Range(-5f, 5f));
         }
+        this.comboText.fontSize = fontSize + comboMultiplier*0.75f;
+    }
+
+    public void changeScore(float score)
+    {
+        
+        scoreFloat += score * comboMultiplier;
+        this.score.text = Mathf.CeilToInt(scoreFloat).ToString();
         //progressBar.sizeDelta = new Vector2(progressBar.sizeDelta.x + score, progressBar.sizeDelta.y);
     }
 

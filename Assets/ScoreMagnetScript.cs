@@ -8,7 +8,7 @@ public class ScoreMagnetScript : MonoBehaviour
     [SerializeField] RectTransform posicao;
 
     // Start is called before the first frame update
-    void Start()
+    void FixedUpdate()
     {
         transform.position = posicao.TransformPoint(posicao.rect.center);
     }

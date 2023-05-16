@@ -12,7 +12,6 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] SpriteRenderer animationHolder;
     [SerializeField] Sprite hollowSquare;
     [SerializeField] Sprite fullSquare;
-    [SerializeField] InterfaceManager interfaceManager;
 
     //Variables for when enemy is hit
     private float impactTimer = 0f;
@@ -43,6 +42,7 @@ public class EnemyBehavior : MonoBehaviour
     GameObject lastImpact;
 
     bool isTutorial = false;
+    InterfaceManager interfaceManager;
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +58,7 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         usualScale = transform.localScale;
-
+        
         interfaceManager = GameObject.Find("Interface").GetComponent<InterfaceManager>();
     }
 
@@ -105,10 +105,18 @@ public class EnemyBehavior : MonoBehaviour
         }
         if (health < 0)
         {
+            interfaceManager.addToCombo(true);
             if(isTutorial){
                 GameObject.Find("TutorialManager").GetComponent<TutorialManager>().decreaseEnemyCount();
             }
-            interfaceManager.changeScore(5f * scoreMultiplier);
+            for(int i = 0; i < levels.Length; i++){
+                if(i <= level){
+                    levels[i].transform.parent = null;
+                    levels[i].GetComponent<HealthAnimation>().startAnimation(impact);
+                }else{
+                    Destroy(levels[i].gameObject);
+                }
+            }
             Destroy(gameObject);
         }
         else

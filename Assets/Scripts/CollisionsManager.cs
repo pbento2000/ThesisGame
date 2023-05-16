@@ -9,12 +9,8 @@ public class CollisionsManager : MonoBehaviour
     float hitTime = 3f;
     float hitTimer = 0f;
     [SerializeField] InterfaceManager interfaceManager;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] PlayerController playerController;
+    [SerializeField] BulletManager bulletManager;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -37,7 +33,9 @@ public class CollisionsManager : MonoBehaviour
             hitSomeone = true;
             hitTimer = hitTime;
             transform.parent.gameObject.GetComponent<PlayerMovement>().getHit(col.transform.position);
-            interfaceManager.changeScore(-40f);
+            interfaceManager.addToCombo(false);
+            playerController.setDeadTimer(hitTime);
+            bulletManager.setDeadTimer(hitTime);
         }
 
         if((col.gameObject.tag == "NPCEnemy" && this.gameObject.tag == "NPC" && !hitSomeone))
@@ -45,7 +43,7 @@ public class CollisionsManager : MonoBehaviour
             hitSomeone = true;
             hitTimer = hitTime;
             transform.parent.gameObject.GetComponent<NPCShootManager>().getHit(col.transform.position);
-            interfaceManager.changeScore(-40f);
+            interfaceManager.addToCombo(false);
         }
     }
 }
