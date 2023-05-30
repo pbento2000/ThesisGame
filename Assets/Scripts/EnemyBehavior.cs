@@ -19,6 +19,7 @@ public class EnemyBehavior : MonoBehaviour
     private bool impacted = false;
     private float impactStrength = 0f;
     Vector3 impactVector;
+    Coroutine buffNerfCoroutine;
 
     //Multipliers affected by pulse effect and effect related variables
     private float impactMultiplier = 1f;
@@ -33,7 +34,9 @@ public class EnemyBehavior : MonoBehaviour
     private int animationTime = 25;
     private Vector3 lifeBarScale = new Vector3(0.8f,0.15f,1f);
     bool isgettingBuffed;
+    bool isgettingNerfed;
     bool shotDuringBuff;
+    Sprite spriteDuringEffect;
 
     //Variables for avoiding enemy overlap
     List<float> vectorTimes = new List<float>();
@@ -100,8 +103,10 @@ public class EnemyBehavior : MonoBehaviour
                 animationHolder.sprite = hollowSquare;
                 shotDuringBuff = true;
             }
-            levels[health].sprite = hollowSquare;
-            health -= 1;
+            if(health >= 0){
+                levels[health].sprite = hollowSquare;
+                health -= 1;
+            }
         }
         if (health < 0)
         {
@@ -112,6 +117,7 @@ public class EnemyBehavior : MonoBehaviour
             for(int i = 0; i < levels.Length; i++){
                 if(i <= level){
                     levels[i].transform.parent = null;
+                    levels[i].GetComponent<HealthAnimation>().setParameters(i+1);
                     levels[i].GetComponent<HealthAnimation>().startAnimation(impact);
                 }else{
                     Destroy(levels[i].gameObject);
@@ -177,6 +183,26 @@ public class EnemyBehavior : MonoBehaviour
 
     void checkSprite(bool isBuff)
     {
+
+        if(isgettingBuffed){
+            StopCoroutine(buffNerfCoroutine);
+            if(shotDuringBuff){
+                levels[level].sprite = hollowSquare;
+            }else{
+                levels[level].sprite = spriteDuringEffect;
+            }
+
+            isgettingBuffed = false;
+            shotDuringBuff = false;
+            animationHolder.sprite = null;
+            isgettingBuffed = false;
+        }else if(isgettingNerfed){
+            StopCoroutine(buffNerfCoroutine);
+            isgettingNerfed = false;
+            animationHolder.sprite = null;
+            animationHolder.transform.localScale = lifeBarScale;
+        }
+
         Sprite spriteUpdate;
         if(isBuff){
             if(health == level){
@@ -188,9 +214,10 @@ public class EnemyBehavior : MonoBehaviour
                 spriteUpdate = hollowSquare;
             }
             isgettingBuffed = true;
-            StartCoroutine(buffEnemy(levels[level].transform.position, spriteUpdate));
+            buffNerfCoroutine = StartCoroutine(buffEnemy(levels[level].transform.position, spriteUpdate));
         }else{
-            StartCoroutine(nerfEnemy(levels[level].transform.position, levels[level].sprite));
+            isgettingNerfed = true;
+            buffNerfCoroutine = StartCoroutine(nerfEnemy(levels[level].transform.position, levels[level].sprite));
             levels[level].sprite = null;
             if(health == level){
                 level -= 1;
@@ -226,6 +253,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     IEnumerator buffEnemy(Vector3 position, Sprite spriteUpdate){
+        spriteDuringEffect = spriteUpdate;
         animationHolder.transform.position = position + new Vector3(0f,0.05f*animationTime,0f);
         animationHolder.sprite = spriteUpdate;
         
@@ -256,6 +284,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     IEnumerator nerfEnemy(Vector3 position, Sprite spriteUpdate){
+        spriteDuringEffect = spriteUpdate;
         animationHolder.transform.position = position;
         animationHolder.sprite = spriteUpdate;
         int counter = animationTime;
@@ -271,7 +300,7 @@ public class EnemyBehavior : MonoBehaviour
             animationHolder.color = tmp;
             yield return new WaitForFixedUpdate();
         }
-
+        isgettingNerfed = false;
         animationHolder.sprite = null;
         animationHolder.transform.localScale = lifeBarScale;
         yield return null;

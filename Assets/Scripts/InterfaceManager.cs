@@ -9,6 +9,7 @@ public class InterfaceManager : MonoBehaviour
 {
 
     [SerializeField] TextMeshProUGUI score;
+    [SerializeField] TextMeshProUGUI scoreUnable;
     [SerializeField] GameObject finalScore;
     [SerializeField] TMPro.TextMeshProUGUI comboText;
     [SerializeField] Color[] colors;
@@ -43,6 +44,9 @@ public class InterfaceManager : MonoBehaviour
     private float comboTimer = 2f;
     private float activeCombo = 0.0f;
     private bool isActiveCombo = false;
+    [SerializeField] GameObject lifePrefab;
+    GameObject scorePosition;
+    bool gainScore;
 
     [SerializeField] WaveManager waveManager;
     [SerializeField] Camera cameraScene;
@@ -62,10 +66,14 @@ public class InterfaceManager : MonoBehaviour
     public float timeScale = 1f;
 
     void Start() {
+        scorePosition = GameObject.Find("ScoreMagnet");
         timeScale = 1f;
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        timeSprite.gameObject.GetComponent<Image>().color = startTimeColor;
+
+        if(timeSprite != null)
+            timeSprite.gameObject.GetComponent<Image>().color = startTimeColor;
+            
         colorDelta = new Vector3((startTimeColor.r - finishTimeColor.r)/timeSeconds,(startTimeColor.g - finishTimeColor.g)/timeSeconds,(startTimeColor.b - finishTimeColor.b)/timeSeconds);
     }
 
@@ -73,6 +81,7 @@ public class InterfaceManager : MonoBehaviour
     void FixedUpdate()
     {
 
+        this.score.fontSize = 72f;
         //Time passing code
 
         if(seconds < 0f)
@@ -219,17 +228,22 @@ public class InterfaceManager : MonoBehaviour
 
     public void addToCombo(bool positive){
         if(positive){
-            isActiveCombo = true;
-            activeCombo = comboTimer;
-            comboMultiplier += 1;
+            if(gainScore){
+                isActiveCombo = true;
+                activeCombo = comboTimer;
+                comboMultiplier += 1;
+            }
         }
         else
         {
             isActiveCombo = false;
-            scoreFloat -= 10f * comboMultiplier;
+            scoreFloat -= (comboMultiplier > 0) ? 10f * comboMultiplier : 10f;
+            StartCoroutine(startLoseScoreAnimation((comboMultiplier > 1) ? 2 + 2 * comboMultiplier : 2));
             activeCombo = 0f;
             comboMultiplier = 0;
             comboText.color = new Color(0f, 0f, 0f, 0f);
+            scoreFloat = Mathf.Max(0f, scoreFloat);
+            this.score.text = Mathf.CeilToInt(scoreFloat).ToString();
         }
         if (comboMultiplier > 1)
         {
@@ -243,9 +257,11 @@ public class InterfaceManager : MonoBehaviour
 
     public void changeScore(float score)
     {
-        
-        scoreFloat += score * comboMultiplier;
-        this.score.text = Mathf.CeilToInt(scoreFloat).ToString();
+        if(gainScore){
+            this.score.fontSize = 86f;
+            scoreFloat += (comboMultiplier > 0) ? score * comboMultiplier : score;
+            this.score.text = Mathf.CeilToInt(scoreFloat).ToString();
+        }
         //progressBar.sizeDelta = new Vector2(progressBar.sizeDelta.x + score, progressBar.sizeDelta.y);
     }
 
@@ -323,6 +339,15 @@ public class InterfaceManager : MonoBehaviour
         return timeScale;
     }
 
+    public void setScoreUnable(bool able){
+        gainScore = able;
+        if(gainScore){
+            scoreUnable.text = "";
+        }else{
+            scoreUnable.text = "X";
+        }
+    }
+
     IEnumerator fadeMinuteFrame(int index){
         Image frame = minuteFrames[index].GetComponent<Image>();
         Color tmp = frame.color;
@@ -345,6 +370,14 @@ public class InterfaceManager : MonoBehaviour
             transformButton.localScale -= new Vector3(downFloat, downFloat, 0f);
             x -= downFloat;
             yield return new WaitForFixedUpdate();
+        }
+        yield return null;
+    }
+
+    IEnumerator startLoseScoreAnimation(int objects){
+        for(int i = 0; i < objects; i++){
+            GameObject bar = Instantiate(lifePrefab, scorePosition.transform.position, Quaternion.identity);
+            bar.GetComponent<loseScoreAnimation>().setScoreposition(scorePosition);
         }
         yield return null;
     }

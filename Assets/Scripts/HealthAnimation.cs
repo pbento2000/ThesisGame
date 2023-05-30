@@ -10,6 +10,7 @@ public class HealthAnimation : MonoBehaviour
     Coroutine coroutineHolder;
     bool go;
     Vector3 impato;
+    float points;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,11 @@ public class HealthAnimation : MonoBehaviour
     private void FixedUpdate() {
         if(go)
         Debug.DrawLine(transform.position, transform.position+impato);
+    }
+
+    public void setParameters(int i){
+        points = i;
+        this.transform.localScale = new Vector3(0.11f + i*0.03f, 0.075f, 1f);
     }
 
     IEnumerator healthToScore(Vector3 impact){
@@ -55,7 +61,7 @@ public class HealthAnimation : MonoBehaviour
             amplitudeVar += 0.00005f;
             yield return new WaitForFixedUpdate();
         }
-        interfaceManager.changeScore(1f);
+        interfaceManager.changeScore(points);
         Destroy(this.gameObject);
         yield return null;
     }

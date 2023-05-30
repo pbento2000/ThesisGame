@@ -7,7 +7,9 @@ public class Storage : MonoBehaviour
 {
 
     int typeOfNPC;
-    [SerializeField] List<int> disabledButtons;
+    [SerializeField] List<string> disabledButtons;
+    public bool alreadyChose;
+    public int choiceInt;
 
     void Awake()
     {
@@ -38,11 +40,15 @@ public class Storage : MonoBehaviour
         return typeOfNPC;
     }
 
-    public List<int> getDisabledButtons(){
+    public List<string> getDisabledButtons(){
         return disabledButtons;
     }
 
-    public void addButtonToDisable(int btn){
+    public void addButtonToDisable(string btn){
         disabledButtons.Add(btn);
+    }
+
+    public void cleanList(){
+        disabledButtons.Clear();
     }
 }

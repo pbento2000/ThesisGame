@@ -21,15 +21,28 @@ public class MainMenuBehavior : MonoBehaviour
     [SerializeField]
     GameObject SettingsButton;
 
+    bool joystickPressed;
+    [SerializeField]
+    GameObject[] mainMenuButtons;
+    int menuSelected; //{0-Main} {1-NPCButtons} {2-Settings}
+    int buttonSelected;
+
     [SerializeField]
     GameObject[] npcButtons;
+    GameObject[] npcButtonsStatik = new GameObject[6];
     Vector3[] npcButtonsPositions = new Vector3[4];
+    List<int> listOfDisabled = new List<int>();
+    List<string> listOfDisabledStrings;
 
     Storage storage;
 
     // Start is called before the first frame update
     void Start()
     {
+        for(int i = 0; i < npcButtons.Length; i++){
+            npcButtonsStatik[i] = npcButtons[i];
+        }
+
         storage = GameObject.Find("Storage").GetComponent<Storage>();
         SettingsMenu.SetActive(false);
 
@@ -38,33 +51,182 @@ public class MainMenuBehavior : MonoBehaviour
             npcButtonsPositions[i-1] = npcButtons[i].transform.position;
         }
 
-        int choice = UnityEngine.Random.Range(0, 4);
+        int choice = 0;
+
+        if(storage.alreadyChose){
+            choice = storage.choiceInt;
+        }else{
+            storage.alreadyChose = true;
+            choice = UnityEngine.Random.Range(0, 4);
+            storage.choiceInt = choice;
+        }
 
         for(int i = 1; i < 5; i++)
         {
             npcButtons[1 + (i + choice) % 4].transform.position = npcButtonsPositions[i-1];
+            npcButtonsStatik[i] = npcButtons[1 + (i + choice) % 4];
         }
 
         TutorialMenu.SetActive(false);
 
-        List<int> listOfDisabled = storage.getDisabledButtons();
+        listOfDisabledStrings = storage.getDisabledButtons();
+
+        foreach(string g in listOfDisabledStrings){
+            for(int i = 0; i < npcButtonsStatik.Length; i++){
+                if(g == npcButtonsStatik[i].name){
+                    Debug.Log(i);
+                    listOfDisabled.Add(i);
+                }
+            }
+        }
 
         if(!listOfDisabled.Contains(0)){
             for(int i = 1; i < 5; i++)
             {
                 npcButtons[i].GetComponent<Button>().interactable = false;
+                listOfDisabled.Add(i);
             }
         }
 
         foreach(int n in listOfDisabled){
-            npcButtons[n].GetComponent<Button>().interactable = false;
+            npcButtonsStatik[n].GetComponent<Button>().interactable = false;
         }
+
+        foreach(GameObject i in npcButtonsStatik){
+            Debug.Log(i.name);
+        }
+
+        mainMenuButtons[0].GetComponent<Button>().Select();
+        menuSelected = 0;
+    }
+
+    private void Update() {
+        
+        if(Input.GetAxis("Vertical") > 0.2f && !joystickPressed){
+            joystickPressed = true;
+            if(menuSelected == 0){
+                buttonSelected = 0;
+                mainMenuButtons[buttonSelected].GetComponent<Button>().Select();
+            }else if(menuSelected == 1){
+                if(buttonSelected == 5){
+                    for(int i = 4; i > -1; i--){
+                        if(!listOfDisabled.Contains(i)){
+                            buttonSelected = i;
+                            break;
+                        } 
+                    }
+                }else if(buttonSelected == 4){
+                    if(!listOfDisabled.Contains(2)){
+                        buttonSelected = 2;
+                    }else if(!listOfDisabled.Contains(1)){
+                        buttonSelected = 1;
+                    }
+                }else if(buttonSelected == 3){
+                    if(!listOfDisabled.Contains(1)){
+                        buttonSelected = 1;
+                    }else if(!listOfDisabled.Contains(2)){
+                        buttonSelected = 2;
+                    }
+                }
+                npcButtonsStatik[buttonSelected].GetComponent<Button>().Select();
+            }
+        }else if(Input.GetAxis("Vertical") < -0.2f && !joystickPressed){
+            joystickPressed = true;
+            if(menuSelected == 0){
+                buttonSelected = 1;
+                mainMenuButtons[buttonSelected].GetComponent<Button>().Select();
+            }else if(menuSelected == 1){
+                if(buttonSelected == 0){
+                    for(int i = 1; i < 6; i++){
+                        if(!listOfDisabled.Contains(i)){
+                            buttonSelected = i;
+                        } 
+                    }
+                }else if(buttonSelected == 1){
+                    if(listOfDisabled.Contains(3)){
+                        buttonSelected = 4;
+                    }else{
+                        buttonSelected = 3;
+                    }
+                }else if(buttonSelected == 2){
+                    if(listOfDisabled.Contains(4)){
+                        buttonSelected = 3;
+                    }else{
+                        buttonSelected = 4;
+                    }
+                }else if(buttonSelected == 3){
+                    buttonSelected = 5;
+                }else if(buttonSelected == 4){
+                    buttonSelected = 5;
+                }
+                    npcButtonsStatik[buttonSelected].GetComponent<Button>().Select();
+            }
+        }else if(Input.GetAxis("Horizontal") > 0.2f && !joystickPressed){
+            if(menuSelected == 1){
+                if(buttonSelected == 1){
+                    if(!listOfDisabled.Contains(2)){
+                        buttonSelected = 2;
+                    }else if(!listOfDisabled.Contains(4)){
+                        buttonSelected = 4;
+                    }
+                }else if(buttonSelected == 3){
+                    if(!listOfDisabled.Contains(4)){
+                        buttonSelected = 4;
+                    }else if(!listOfDisabled.Contains(2)){
+                        buttonSelected = 2;
+                    }
+                }
+                npcButtonsStatik[buttonSelected].GetComponent<Button>().Select();
+            }
+        }else if(Input.GetAxis("Horizontal") < -0.2f && !joystickPressed){
+            if(menuSelected == 1){
+                if(buttonSelected == 2){
+                    if(!listOfDisabled.Contains(1)){
+                        buttonSelected = 1;
+                    }else if(!listOfDisabled.Contains(3)){
+                        buttonSelected = 3;
+                    }
+                }else if(buttonSelected == 4){
+                    if(!listOfDisabled.Contains(3)){
+                        buttonSelected = 3;
+                    }else if(!listOfDisabled.Contains(1)){
+                        buttonSelected = 1;
+                    }
+                }
+                npcButtonsStatik[buttonSelected].GetComponent<Button>().Select();
+            }
+        }
+
+        //Debug.Log("Selected: " + buttonSelected);
+
+        if(Math.Abs(Input.GetAxis("Horizontal")) < 0.2f && Math.Abs(Input.GetAxis("Vertical")) < 0.2f){
+            joystickPressed = false;
+        }
+
+        if(Input.GetButtonDown("Select")){
+            if(menuSelected == 0){
+                mainMenuButtons[buttonSelected].GetComponent<Button>().onClick.Invoke();
+                menuSelected = 1;
+                if(!listOfDisabled.Contains(0))
+                    buttonSelected = 0;
+                else
+                    buttonSelected = 5;
+                npcButtonsStatik[buttonSelected].GetComponent<Button>().Select();
+            }
+            else if(menuSelected == 1){
+                npcButtonsStatik[buttonSelected].GetComponent<Button>().onClick.Invoke();
+                buttonSelected = 0;
+            }
+        }
+
+        //PlayButton.GetComponent<Button>().onClick.Invoke();
+        //PlayButton.GetComponent<Button>().Select();
     }
 
     public void setTypeOfNPC(int type)
     {
         storage.setTypeOfNPC(type);
-        storage.addButtonToDisable(type+1);
+        storage.addButtonToDisable(npcButtons[type + 1].name);
         SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
     }
 
@@ -80,6 +242,8 @@ public class MainMenuBehavior : MonoBehaviour
         SettingsButton.SetActive(true);
         TutorialMenu.SetActive(false);
         SettingsMenu.SetActive(false);
+        menuSelected = 0;
+        mainMenuButtons[0].GetComponent<Button>().Select();
     }
 
     public void Settings(){
@@ -90,7 +254,8 @@ public class MainMenuBehavior : MonoBehaviour
     }
 
     public void LoadTutorial(){
-        storage.addButtonToDisable(0);
+        storage.cleanList();
+        storage.addButtonToDisable(npcButtons[0].name);
         SceneManager.LoadScene("Tutorial", LoadSceneMode.Single);
     }
 }

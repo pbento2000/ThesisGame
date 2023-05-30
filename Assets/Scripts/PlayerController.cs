@@ -100,6 +100,6 @@ public class PlayerController : MonoBehaviour
     }
     public void setDeadTimer(float timer){
         deadTimer = timer;
-        canShoot = false;
+        //canShoot = false;
     }
 }
