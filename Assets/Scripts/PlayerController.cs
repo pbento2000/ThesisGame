@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
 
+    [SerializeField] GameObject thinkingObject;
+    [SerializeField] Sprite[] effectIcons;
+    [SerializeField] SpriteRenderer thinking;
     [SerializeField] WeaponHandler weaponHandler;
     [SerializeField] GameObject specialEffect;
     [SerializeField] GameObject secondaryAttack;
@@ -87,6 +91,9 @@ public class PlayerController : MonoBehaviour
             if(effectChosen != -1){
                 effectObject = Instantiate(specialEffect, transform.position, Quaternion.identity);
                 effectObject.GetComponent<PulseBehavior>().setEffect(effectChosen);
+                thinkingObject.SetActive(true);
+                thinking.sprite = effectIcons[effectChosen];
+                StartCoroutine(thinkingAnimation());
                 effectActive = true;
                 effectTimer = effectCooldown;
                 interfaceManager.setEffectCooldown(effectCooldown);
@@ -101,5 +108,11 @@ public class PlayerController : MonoBehaviour
     public void setDeadTimer(float timer){
         deadTimer = timer;
         //canShoot = false;
+    }
+
+    IEnumerator thinkingAnimation(){
+        yield return new WaitForSecondsRealtime(1f);
+        thinkingObject.SetActive(false);
+        yield return null;
     }
 }

@@ -24,7 +24,6 @@ public class loseScoreAnimation : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate() {
         if(amplitude < 1f){
-            Debug.Log(amplitude);
             posHolder = scorePosition.transform.position;
             transform.position = Vector3.Lerp(posHolder, posHolder + explosionPosition, amplitude);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, amplitude);

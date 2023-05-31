@@ -25,6 +25,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] Image[] progressBarImages;
     [SerializeField] Sprite progressBarFull;
     int bookCounter = 0;
+    [SerializeField] TextMeshProUGUI pageCounter;
 
     int tutorialPhase = 0;
     int lastTutorialPhase = 0;
@@ -80,6 +81,8 @@ public class TutorialManager : MonoBehaviour
         }
         if(tutorialPhase + bookCounter == phrases.Length + bookPhrases.Length && Input.GetButtonDown("Continue"))
         {
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
         else if(bookCounter > 0 && Input.GetButtonDown("Continue")){
@@ -87,6 +90,7 @@ public class TutorialManager : MonoBehaviour
             bookImageTutorial.sprite = images[bookCounter];
             progressBarImages[bookCounter].sprite = progressBarFull;
             bookCounter += 1;
+            pageCounter.text = "Page " + bookCounter + " of " + bookPhrases.Length;
         }
         switch(tutorialPhase){
             case -1:
@@ -241,6 +245,9 @@ public class TutorialManager : MonoBehaviour
             bookTutorial.SetActive(true);
             progressBarImages[bookCounter].sprite = progressBarFull;
             bookCounter = 1;
+            pageCounter.text = "Page 1 of " + bookPhrases.Length;
+            Time.timeScale = 0f;
+            Time.fixedDeltaTime = 0f;
         }
     }
 
