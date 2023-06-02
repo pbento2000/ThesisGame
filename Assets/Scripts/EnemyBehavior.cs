@@ -38,6 +38,8 @@ public class EnemyBehavior : MonoBehaviour
     bool shotDuringBuff;
     Sprite spriteDuringEffect;
 
+    float distanceFromCenter = 10f;
+
     //Variables for avoiding enemy overlap
     List<float> vectorTimes = new List<float>();
     List<Vector3> vectors = new List<Vector3>();
@@ -78,7 +80,10 @@ public class EnemyBehavior : MonoBehaviour
                 avoidVector = Vector3.zero;
             }
 
-            transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier;
+            float farFromScreen = Mathf.Max(1f, Mathf.Pow(Vector3.Distance(transform.position, player.transform.position) / 10f, 5f));
+            Debug.Log(farFromScreen);
+
+            transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier * farFromScreen;
         }
 
         if (impacted)

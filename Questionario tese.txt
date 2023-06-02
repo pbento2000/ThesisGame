@@ -1,0 +1,20 @@
+Questionário da tese:
+
+=======================================
+"Usei buffs e debuffs porque a situação assim o exigiu" (Likert Scale)
+=======================================
+"Usei buffs e debuffs simplesmente porque tinha essa escolha, sem influência de fatores externos" (Likert scale)
+=======================================
+Diga de mais usado (1), para menos usado (4), que tipo de efeito usou.
+
+. Buff aos inimigos do meu companheiro
+. Nerf aos inimigos do meu companheiro
+. Buff aos meus inimigos
+. Nerf aos meus inimigos
+=======================================
+Diga-nos o motivo que o levou a usar mais o efeito acima escolhido:
+[Resposta Curta]
+=======================================
+Diga-nos o motivo que o levou a usar menos o efeito acima escolhido:
+[Resposta Curta]
+=======================================
