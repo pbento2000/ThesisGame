@@ -49,3 +49,4 @@ O que fazer:
 Guardar métricas (buffs usados, tanto pelo companion como pelo jogador; quantas vezes morreu; score)
 Meter algum identificador de qual é o companheiro que está a ser jogado
 Comando a vibrar
+Fazer imagem 14.5
