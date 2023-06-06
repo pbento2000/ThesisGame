@@ -1,5 +1,31 @@
 Questionário da tese:
 
+ID do estudo, Nome, idade, grau académico
+=======================================
+#### Secção dos companions ####
+=======================================
+{Foto do modelo de interação}
+"Identifica os 4 companions no modelo de interação"
+1.
+2.
+3.
+4.
+Opções:
+Other's Facilitator
+Self Facilitator
+Other's Complicator
+Self Complicator
+===============
+Dos quatro companions, qual foi aquele que mais se destacou em termos de social presence:
+[Escolha multipla de 1 a 4, com mais uma a dizer "todos iguais"]
+===============
+Dos quatro companions, qual foi aquele com que te divertiste mais a jogar
+[Escolha multipla de 1 a 4, com mais uma a dizer "todos iguais"]
+===============
+Sendo totalmente imparcial no que toca ao score, qual dos companions sentes que trouxe uma melhor experiência de jogo
+[Escolha multipla de 1 a 4, com mais uma a dizer "todos iguais"]
+=======================================
+#### Secção do uso de bufs ####
 =======================================
 "Usei buffs e debuffs porque a situação assim o exigiu" (Likert Scale)
 =======================================
