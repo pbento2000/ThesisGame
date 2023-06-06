@@ -44,3 +44,8 @@ Diga-nos o motivo que o levou a usar mais o efeito acima escolhido:
 Diga-nos o motivo que o levou a usar menos o efeito acima escolhido:
 [Resposta Curta]
 =======================================
+
+O que fazer:
+Guardar métricas (buffs usados, tanto pelo companion como pelo jogador; quantas vezes morreu; score)
+Meter algum identificador de qual é o companheiro que está a ser jogado
+Comando a vibrar
