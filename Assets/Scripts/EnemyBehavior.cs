@@ -81,7 +81,7 @@ public class EnemyBehavior : MonoBehaviour
             }
 
             float farFromScreen = Mathf.Max(1f, Mathf.Pow(Vector3.Distance(transform.position, player.transform.position) / 10f, 5f));
-            Debug.Log(farFromScreen);
+            //Debug.Log(farFromScreen);
 
             transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier * farFromScreen;
         }
