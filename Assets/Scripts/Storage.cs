@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class Storage : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class Storage : MonoBehaviour
     [SerializeField] List<string> disabledButtons;
     public bool alreadyChose;
     public int choiceInt;
+    List<InputEntry> entries;
+    int studyId;
+    InputEntry currentEntry;
+    string filename;
 
     void Awake()
     {
@@ -18,6 +23,14 @@ public class Storage : MonoBehaviour
         if (objs.Length > 1)
         {
             Destroy(this.gameObject);
+        }else{
+            filename = this.gameObject.GetComponent<InputHandler>().getFilename();
+            entries = this.gameObject.GetComponent<InputHandler>().getEntries();
+            if(entries.Count == 0){
+                studyId = 0;
+            }else{
+                studyId = entries[entries.Count-1].studyId;
+            }
         }
 
         DontDestroyOnLoad(this.gameObject);
@@ -33,6 +46,8 @@ public class Storage : MonoBehaviour
     {
         Debug.Log(type);
         typeOfNPC = type;
+
+        currentEntry = new InputEntry(studyId);
     }
 
     public int getTypeOfNPC()
@@ -50,5 +65,17 @@ public class Storage : MonoBehaviour
 
     public void cleanList(){
         disabledButtons.Clear();
+    }
+
+    internal void saveInfo()
+    {
+        entries.Add(currentEntry);
+        currentEntry = null;
+        FileHandler.SaveToJSON<List<InputEntry>>(entries, filename);
+    }
+
+    internal void saveScore(float scoreFloat)
+    {
+        currentEntry.score = (int) scoreFloat;
     }
 }

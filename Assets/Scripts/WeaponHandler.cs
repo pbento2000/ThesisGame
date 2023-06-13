@@ -37,7 +37,7 @@ public class WeaponHandler : MonoBehaviour
                 crosshair.color = tmp;
             }
 
-            crosshairPosition.position = position + joystickPosition*3f;
+            crosshairPosition.position = position + joystickPosition*2.5f;
 
         }else if(crosshairShown){
             Color tmp = crosshair.color;

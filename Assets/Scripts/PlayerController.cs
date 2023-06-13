@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     float effectCooldown = 10f;
     float effectTimer = 0f;
 
-    float secondaryAttackCooldown = 1f;
+    float secondaryAttackCooldown = 5f;
     float secondaryAttackTimer = 0f;
     GameObject secondaryAttackObject;
 

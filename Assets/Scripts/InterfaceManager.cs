@@ -299,6 +299,10 @@ public class InterfaceManager : MonoBehaviour
     }
 
     public void returnToMenu(){
+        Storage storage = GameObject.FindGameObjectWithTag("Storage").GetComponent<Storage>();
+        storage.saveScore(scoreFloat);
+
+        storage.saveInfo();
         //Add code to store info
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
