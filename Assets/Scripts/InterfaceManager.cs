@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -62,6 +61,7 @@ public class InterfaceManager : MonoBehaviour
     int frameDeleted = 0;
     Vector3 colorDelta;
     [SerializeField] GameObject timeSprite;
+    Storage storage;
 
     public float timeScale = 1f;
 
@@ -70,6 +70,7 @@ public class InterfaceManager : MonoBehaviour
         timeScale = 1f;
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        storage = GameObject.FindGameObjectWithTag("Storage").GetComponent<Storage>();
 
         if(timeSprite != null)
             timeSprite.gameObject.GetComponent<Image>().color = startTimeColor;
@@ -278,6 +279,11 @@ public class InterfaceManager : MonoBehaviour
         if(effectChosen != -1){
             effectIcon.sprite = effectIcons[effectChosen].sprite;
             effectIcon.color = white;
+            try{
+            storage.addBuffToPlayer(secondsInt, effectChosen);
+            }catch(System.Exception e){
+                Debug.Log(e.Message);
+            }
         }
         clearEffectChoice();
         for(int i = 0; i < effectButtons.Length; i++){
@@ -299,10 +305,9 @@ public class InterfaceManager : MonoBehaviour
     }
 
     public void returnToMenu(){
-        Storage storage = GameObject.FindGameObjectWithTag("Storage").GetComponent<Storage>();
         storage.saveScore(scoreFloat);
-
         storage.saveInfo();
+
         //Add code to store info
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
@@ -310,6 +315,7 @@ public class InterfaceManager : MonoBehaviour
     public void setNPCEffectIcon(int effectChosen){
             effectIconNPC.sprite = effectIcons[effectChosen].sprite;
             effectIconNPC.color = white;
+            storage.addBuffToNPC(secondsInt, effectChosen);
     }
 
     public void setEffectCooldown(float cooldown){
@@ -323,6 +329,7 @@ public class InterfaceManager : MonoBehaviour
         aoeCooldownTime = cooldown;
         aoeCooldown.localScale = new Vector3(1f,1f,1f);
         StartCoroutine(makeButtonAnimation(1));
+        storage.addSecondaryAttackToPlayer(secondsInt);
     }
 
     public void setEffectNPCCooldown(float cooldown){
@@ -336,6 +343,7 @@ public class InterfaceManager : MonoBehaviour
         aoeCooldownNPCTime = cooldown;
         aoeCooldownNPC.localScale = new Vector3(1f,1f,1f);
         StartCoroutine(makeButtonAnimation(3));
+        storage.addSecondaryAttackToNPC(secondsInt);
     }
 
     public float getTimeScale()
@@ -343,12 +351,18 @@ public class InterfaceManager : MonoBehaviour
         return timeScale;
     }
 
-    public void setScoreUnable(bool able){
+    public void setScoreUnable(bool able, int who = -1){
         gainScore = able;
         if(gainScore){
             scoreUnable.text = "";
         }else{
             scoreUnable.text = "X";
+        }
+
+        if(who == 0){
+            storage.addDeathToPlayer(secondsInt);
+        }else if(who == 1){
+            storage.addDeathToNPC(secondsInt);
         }
     }
 

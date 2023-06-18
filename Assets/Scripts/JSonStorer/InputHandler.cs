@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class InputHandler : MonoBehaviour {
 
     [SerializeField] string filename;
     List<InputEntry> entries = new List<InputEntry> ();
 
-    private void Start () {
+    private void Awake () {
         entries = FileHandler.ReadListFromJSON<InputEntry> (filename);
     }
 

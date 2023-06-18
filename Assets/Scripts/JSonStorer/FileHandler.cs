@@ -9,7 +9,14 @@ public static class FileHandler {
 
     public static void SaveToJSON<T> (List<T> toSave, string filename) {
         Debug.Log (GetPath (filename));
-        string content = JsonConvert.SerializeObject(toSave.ToArray ());
+        string content = JsonConvert.SerializeObject(toSave.ToArray());
+        /*
+        string content = JsonConvert.SerializeObject(toSave.ToArray(), Formatting.Indented,
+        new JsonSerializerSettings() {
+            ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        }
+        );
+        */
         WriteFile (GetPath (filename), content);
     }
 
@@ -25,7 +32,7 @@ public static class FileHandler {
             return new List<T> ();
         }
 
-        List<T> res = JsonHelper.FromJson<T> (content).ToList ();
+        List<T> res = JsonConvert.DeserializeObject<T[]>(content).ToList ();
 
         return res;
 

@@ -23,14 +23,6 @@ public class Storage : MonoBehaviour
         if (objs.Length > 1)
         {
             Destroy(this.gameObject);
-        }else{
-            filename = this.gameObject.GetComponent<InputHandler>().getFilename();
-            entries = this.gameObject.GetComponent<InputHandler>().getEntries();
-            if(entries.Count == 0){
-                studyId = 0;
-            }else{
-                studyId = entries[entries.Count-1].studyId;
-            }
         }
 
         DontDestroyOnLoad(this.gameObject);
@@ -40,6 +32,13 @@ public class Storage : MonoBehaviour
     void Start()
     {
         typeOfNPC = Random.Range(0, 4);
+        filename = this.gameObject.GetComponent<InputHandler>().getFilename();
+        entries = this.gameObject.GetComponent<InputHandler>().getEntries();
+        if(entries.Count == 0){
+            studyId = 0;
+        }else{
+            studyId = entries[entries.Count-1].studyId + 1;
+        }
     }
 
     public void setTypeOfNPC(int type)
@@ -70,12 +69,36 @@ public class Storage : MonoBehaviour
     internal void saveInfo()
     {
         entries.Add(currentEntry);
+        FileHandler.SaveToJSON<InputEntry>(entries, filename);
         currentEntry = null;
-        FileHandler.SaveToJSON<List<InputEntry>>(entries, filename);
     }
 
     internal void saveScore(float scoreFloat)
     {
         currentEntry.score = (int) scoreFloat;
+    }
+
+    public void addBuffToPlayer(int second, int effect){
+        currentEntry.addBuffToPlayer(second, effect);
+    }
+
+    public void addBuffToNPC(int second, int effect){
+        currentEntry.addBuffToNPC(second, effect);
+    }
+
+    public void addDeathToPlayer(int second){
+        currentEntry.addDeathToPlayer(second);
+    }
+
+    public void addDeathToNPC(int second){
+        currentEntry.addDeathToNPC(second);
+    }
+
+    public void addSecondaryAttackToPlayer(int second){
+        currentEntry.addSecondaryAttackToPlayer(second);
+    }
+
+    public void addSecondaryAttackToNPC(int second){
+        currentEntry.addSecondaryAttackToNPC(second);
     }
 }

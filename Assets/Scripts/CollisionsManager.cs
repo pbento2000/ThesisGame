@@ -55,7 +55,7 @@ public class CollisionsManager : MonoBehaviour
             hitTimer = hitTime;
             transform.parent.gameObject.GetComponent<PlayerMovement>().getHit(col.transform.position);
             interfaceManager.addToCombo(false);
-            interfaceManager.setScoreUnable(false);
+            interfaceManager.setScoreUnable(false, 0);
             playerController.setDeadTimer(hitTime);
             bulletManager.setDeadTimer(hitTime);
         }
@@ -67,7 +67,7 @@ public class CollisionsManager : MonoBehaviour
             hitTimerNPC = hitTime;
             transform.parent.gameObject.GetComponent<NPCShootManager>().getHit(col.transform.position);
             interfaceManager.addToCombo(false);
-            interfaceManager.setScoreUnable(false);
+            interfaceManager.setScoreUnable(false, 1);
         }
     }
 }
