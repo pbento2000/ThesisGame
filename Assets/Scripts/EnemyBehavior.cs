@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour
 {
     private GameObject player;
+    private GameObject playerPos;
     private Vector3 usualScale;
     [SerializeField] bool isPlayerEnemy;
     [SerializeField] SpriteRenderer[] levels;
@@ -39,6 +40,7 @@ public class EnemyBehavior : MonoBehaviour
     Sprite spriteDuringEffect;
 
     float distanceFromCenter = 10f;
+    float farFromScreen = 1f;
 
     //Variables for avoiding enemy overlap
     List<float> vectorTimes = new List<float>();
@@ -60,6 +62,7 @@ public class EnemyBehavior : MonoBehaviour
         else
         {
             player = GameObject.Find("NPC");
+            playerPos = GameObject.Find("Player");
         }
 
         usualScale = transform.localScale;
@@ -80,7 +83,12 @@ public class EnemyBehavior : MonoBehaviour
                 avoidVector = Vector3.zero;
             }
 
-            float farFromScreen = Mathf.Max(1f, Mathf.Pow(Vector3.Distance(transform.position, player.transform.position) / 10f, 5f));
+            if(isPlayerEnemy){
+                farFromScreen = Mathf.Clamp(Mathf.Pow(Vector3.Distance(transform.position, player.transform.position) / 10f, 5f), 1f, 5f);
+            }else{
+                farFromScreen = Mathf.Clamp(Mathf.Pow(Vector3.Distance(transform.position, playerPos.transform.position) / 10f, 5f), 1f, 5f);
+            }
+            
             //Debug.Log(farFromScreen);
 
             transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier * farFromScreen;

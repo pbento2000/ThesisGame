@@ -50,13 +50,14 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] WaveManager waveManager;
     [SerializeField] Camera cameraScene;
 
+    [SerializeField] TextMeshProUGUI timeText;
     float timeSeconds = 300f;
     float minutes;
     float seconds;
     float second = 1f;
     int secondsInt = 0;
     [SerializeField] RectTransform time;
-    float timeMaskSize = 1280f;
+    float timeMaskSize = 960f;
     [SerializeField] GameObject[] minuteFrames;
     int frameDeleted = 0;
     Vector3 colorDelta;
@@ -98,10 +99,12 @@ public class InterfaceManager : MonoBehaviour
                 timeScale += 0.1f;
                 Time.timeScale = timeScale;
                 Time.fixedDeltaTime = 0.02f * Time.timeScale;
-                StartCoroutine(fadeMinuteFrame(frameDeleted));
+                //StartCoroutine(fadeMinuteFrame(frameDeleted));
                 frameDeleted += 1;
             }
             secondsInt += 1;
+            if(timeText != null)
+                timeText.text = (((int) timeSeconds)%60) >= 10 ? "" + (int) Mathf.Floor((timeSeconds)/60f) + ":" + ((int) timeSeconds)%60 : "" + (int) Mathf.Floor((timeSeconds)/60f) + ":0" + ((int) timeSeconds)%60;
         }
         else
         {
