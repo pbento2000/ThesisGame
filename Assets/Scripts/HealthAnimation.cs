@@ -11,11 +11,17 @@ public class HealthAnimation : MonoBehaviour
     bool go;
     Vector3 impato;
     float points;
+    public bool isOrange;
 
     // Start is called before the first frame update
     void Start()
     {
-        scorePosition = GameObject.Find("ScoreMagnet");
+        if(isOrange){
+            scorePosition = GameObject.Find("ScoreMagnetOrange");
+        }
+        else{
+            scorePosition = GameObject.Find("ScoreMagnetBlue");
+        }
         interfaceManager = GameObject.Find("Interface").GetComponent<InterfaceManager>();
     }
 
@@ -61,7 +67,7 @@ public class HealthAnimation : MonoBehaviour
             amplitudeVar += 0.00005f;
             yield return new WaitForFixedUpdate();
         }
-        interfaceManager.changeScore(points);
+        interfaceManager.changeScore(points, isOrange);
         Destroy(this.gameObject);
         yield return null;
     }

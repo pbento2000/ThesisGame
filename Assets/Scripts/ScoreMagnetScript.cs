@@ -10,6 +10,6 @@ public class ScoreMagnetScript : MonoBehaviour
     // Start is called before the first frame update
     void FixedUpdate()
     {
-        transform.position = posicao.TransformPoint(posicao.rect.center);
+        transform.position = posicao.TransformPoint(posicao.pivot);
     }
 }

@@ -38,14 +38,22 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] Color startTimeColor;
     [SerializeField] Color finishTimeColor;
 
+    [SerializeField] RectTransform orangeUniverse;
+    [SerializeField] RectTransform blueUniverse;
     float scoreFloat = 0f;
     private int comboMultiplier = 0;
     private float comboTimer = 2f;
     private float activeCombo = 0.0f;
     private bool isActiveCombo = false;
     [SerializeField] GameObject lifePrefab;
+    GameObject scorePositionOrange;
+    GameObject scorePositionBlue;
     GameObject scorePosition;
     bool gainScore;
+    [SerializeField] GameObject[] orangeStars;
+    [SerializeField] GameObject[] blueStars;
+    GameObject orangeUniversePos;
+    GameObject blueUniversePos;
 
     [SerializeField] WaveManager waveManager;
     [SerializeField] Camera cameraScene;
@@ -67,6 +75,8 @@ public class InterfaceManager : MonoBehaviour
     public float timeScale = 1f;
 
     void Start() {
+        scorePositionOrange = GameObject.Find("ScoreMagnetOrange");
+        scorePositionBlue = GameObject.Find("ScoreMagnetBlue");
         scorePosition = GameObject.Find("ScoreMagnet");
         timeScale = 1f;
         Time.timeScale = 1f;
@@ -83,6 +93,8 @@ public class InterfaceManager : MonoBehaviour
     void FixedUpdate()
     {
 
+        orangeUniverse.localScale = new Vector2(1f,1f);
+        blueUniverse.localScale = new Vector2(1f,1f);
         this.score.fontSize = 72f;
         //Time passing code
 
@@ -124,6 +136,10 @@ public class InterfaceManager : MonoBehaviour
             comboMultiplier = 0;
             comboText.text = "";
             isActiveCombo = false;
+            for(int i = 2; i < orangeStars.Length; i++){
+                orangeStars[i].SetActive(false);
+                blueStars[i].SetActive(false);
+            }
         }
 
         //Game end Code
@@ -248,6 +264,10 @@ public class InterfaceManager : MonoBehaviour
             comboText.color = new Color(0f, 0f, 0f, 0f);
             scoreFloat = Mathf.Max(0f, scoreFloat);
             this.score.text = Mathf.CeilToInt(scoreFloat).ToString();
+            for(int i = 0; i < orangeStars.Length; i++){
+                orangeStars[i].SetActive(false);
+                blueStars[i].SetActive(false);
+            }
         }
         if (comboMultiplier > 1)
         {
@@ -257,14 +277,25 @@ public class InterfaceManager : MonoBehaviour
             comboText.rectTransform.rotation = Quaternion.Euler(0f, 0f, Random.Range(-5f, 5f));
         }
         this.comboText.fontSize = fontSize + comboMultiplier*0.75f;
+        if(comboMultiplier <= 45){
+            orangeStars[(comboMultiplier/5)*2].SetActive(true);
+            orangeStars[(comboMultiplier/5)*2+1].SetActive(true);
+            blueStars[(comboMultiplier/5)*2].SetActive(true);
+            blueStars[(comboMultiplier/5)*2+1].SetActive(true);
+        }
     }
 
-    public void changeScore(float score)
+    public void changeScore(float score, bool isOrange)
     {
         if(gainScore){
             this.score.fontSize = 86f;
             scoreFloat += (comboMultiplier > 0) ? score * comboMultiplier : score;
             this.score.text = Mathf.CeilToInt(scoreFloat).ToString();
+            if(isOrange){
+                orangeUniverse.localScale = new Vector2(1.1f,1.1f);
+            }else{
+                blueUniverse.localScale = new Vector2(1.1f,1.1f);
+            }
         }
         //progressBar.sizeDelta = new Vector2(progressBar.sizeDelta.x + score, progressBar.sizeDelta.y);
     }
