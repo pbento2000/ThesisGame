@@ -58,14 +58,15 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] WaveManager waveManager;
     [SerializeField] Camera cameraScene;
 
+    [SerializeField] GameObject timeFrame;
     [SerializeField] TextMeshProUGUI timeText;
-    float timeSeconds = 300f;
+    float timeSeconds = 180f;
     float minutes;
     float seconds;
     float second = 1f;
     int secondsInt = 0;
     [SerializeField] RectTransform time;
-    float timeMaskSize = 960f;
+    float timeMaskSize = 320f;
     [SerializeField] GameObject[] minuteFrames;
     int frameDeleted = 0;
     Vector3 colorDelta;
@@ -92,8 +93,9 @@ public class InterfaceManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
+        if(orangeUniverse != null)
         orangeUniverse.localScale = new Vector2(1f,1f);
+        if(blueUniverse != null)
         blueUniverse.localScale = new Vector2(1f,1f);
         this.score.fontSize = 72f;
         //Time passing code
@@ -144,8 +146,11 @@ public class InterfaceManager : MonoBehaviour
 
         //Game end Code
 
-        if(secondsInt == 300){
+        if(secondsInt == 180){
             finalScore.SetActive(true);
+            timeFrame.SetActive(false);
+            timeText.gameObject.SetActive(false);
+            time.gameObject.SetActive(false);
             finalScore.GetComponent<TextMeshProUGUI>().text = "Score: " + score.text;
             timeScale = 0f;
             Time.timeScale = 0f;
@@ -236,7 +241,7 @@ public class InterfaceManager : MonoBehaviour
     void DisplayTime(float timeToDisplay)
     {
         if(time != null)
-            time.sizeDelta = new Vector2(timeMaskSize / 300f * timeSeconds, time.sizeDelta.y);
+            time.sizeDelta = new Vector2(timeMaskSize / 180f * timeSeconds, time.sizeDelta.y);
         if(timeSprite != null){
             Color tmp = timeSprite.gameObject.GetComponent<Image>().color;
             tmp.r -= colorDelta[0];
@@ -277,7 +282,7 @@ public class InterfaceManager : MonoBehaviour
             comboText.rectTransform.rotation = Quaternion.Euler(0f, 0f, Random.Range(-5f, 5f));
         }
         this.comboText.fontSize = fontSize + comboMultiplier*0.75f;
-        if(comboMultiplier <= 45){
+        if(comboMultiplier <= 45 && orangeStars.Length != 0 && blueStars.Length != 0){
             orangeStars[(comboMultiplier/5)*2].SetActive(true);
             orangeStars[(comboMultiplier/5)*2+1].SetActive(true);
             blueStars[(comboMultiplier/5)*2].SetActive(true);

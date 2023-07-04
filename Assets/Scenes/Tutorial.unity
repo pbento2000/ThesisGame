@@ -4641,7 +4641,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 333d066250e5f1f42bd1d7095d3a251d, type: 3}
   - {fileID: 21300000, guid: 721589fb71e216748a1b7da7df336e0c, type: 3}
   - {fileID: 21300000, guid: 721589fb71e216748a1b7da7df336e0c, type: 3}
-  - {fileID: 21300000, guid: 197c7f29793866e42a27fd1a2bc2f412, type: 3}
+  - {fileID: 21300000, guid: 510bf1e74e26d1a40bff8f7e01c155a3, type: 3}
   - {fileID: 21300000, guid: 0eaaec8907868ad44979822c0d986c0e, type: 3}
   - {fileID: 21300000, guid: 0eaaec8907868ad44979822c0d986c0e, type: 3}
   progressBarImages:
@@ -5509,9 +5509,15 @@ MonoBehaviour:
   white: {r: 1, g: 1, b: 1, a: 1}
   startTimeColor: {r: 0, g: 0, b: 0, a: 0}
   finishTimeColor: {r: 0, g: 0, b: 0, a: 0}
+  orangeUniverse: {fileID: 0}
+  blueUniverse: {fileID: 0}
   lifePrefab: {fileID: 0}
+  orangeStars: []
+  blueStars: []
   waveManager: {fileID: 0}
   cameraScene: {fileID: 0}
+  timeFrame: {fileID: 0}
+  timeText: {fileID: 0}
   time: {fileID: 0}
   minuteFrames:
   - {fileID: 0}

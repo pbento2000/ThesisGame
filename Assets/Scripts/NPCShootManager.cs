@@ -49,7 +49,7 @@ public class NPCShootManager : MonoBehaviour
 
     //Variables for secondaryAttack
     [SerializeField] GameObject secondaryAttack;
-    float secondaryAttackCooldown = 1f;
+    float secondaryAttackCooldown = 5f;
     float secondaryAttackTimer = 0f;
     GameObject secondaryAttackObject;
 

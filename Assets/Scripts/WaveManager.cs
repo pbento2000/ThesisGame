@@ -20,7 +20,7 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator spawnWave(int number)
     { 
-        int enemies = number * 2 + 7;
+        int enemies = number * 3 + 7;
         Vector3 playerEnemyOffset = Vector3.zero;
         Vector3 npcEnemyOffset = Vector3.zero;
 

@@ -5,17 +5,16 @@ using Newtonsoft.Json;
 
 public class InputHandler : MonoBehaviour {
 
-    [SerializeField] string filename;
+    [SerializeField] string filenameJSON;
+    [SerializeField] string filenameCSV;
     List<InputEntry> entries = new List<InputEntry> ();
 
     private void Awake () {
-        entries = FileHandler.ReadListFromJSON<InputEntry> (filename);
+        entries = FileHandler.ReadListFromJSON<InputEntry> (filenameJSON);
     }
 
     public void AddNameToList () {
-        //entries.Add (new InputEntry ());
-
-        FileHandler.SaveToJSON<InputEntry> (entries, filename);
+        FileHandler.SaveToJSON<InputEntry> (entries, filenameJSON);
     }
 
     public List<InputEntry> getEntries(){
@@ -23,6 +22,6 @@ public class InputHandler : MonoBehaviour {
     }
 
     public string getFilename(){
-        return filename;
+        return filenameJSON;
     }
 }
