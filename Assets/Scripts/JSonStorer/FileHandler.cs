@@ -52,7 +52,10 @@ public static class FileHandler {
     }
 
     private static string GetPath (string filename) {
-        return Application.persistentDataPath + "/" + filename;
+        Directory.CreateDirectory(Application.streamingAssetsPath 
+                      + "/Results/"+"EventsData");
+        return Application.streamingAssetsPath 
+                      + "/Results/"+"EventsData/" + filename;
     }
 
     private static void WriteFile (string path, string content) {

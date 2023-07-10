@@ -15,6 +15,7 @@ public class Storage : MonoBehaviour
     int studyId;
     InputEntry currentEntry;
     string filename;
+    FileLogManager fileManager = new FileLogManager();
 
     void Awake()
     {
@@ -75,30 +76,57 @@ public class Storage : MonoBehaviour
 
     internal void saveScore(float scoreFloat)
     {
-        currentEntry.score = (int) scoreFloat;
+        if(currentEntry != null){
+            currentEntry.score = (int) scoreFloat;
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.saveScore((int) scoreFloat, studyId, typeOfNPC), false));
+        }
     }
 
-    public void addBuffToPlayer(int second, int effect){
-        currentEntry.addBuffToPlayer(second, effect);
+    public void addBuffToPlayer(int second, int effect)
+    {
+        if(currentEntry != null){
+            currentEntry.addBuffToPlayer(second, effect);
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addBuffToPlayer(second, effect, studyId, typeOfNPC), false));
+        }
     }
 
-    public void addBuffToNPC(int second, int effect){
-        currentEntry.addBuffToNPC(second, effect);
+    public void addBuffToNPC(int second, int effect)
+    {
+        if(currentEntry != null){
+            currentEntry.addBuffToNPC(second, effect);
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addBuffToNPC(second, effect, studyId, typeOfNPC), false));
+        }
     }
 
-    public void addDeathToPlayer(int second){
-        currentEntry.addDeathToPlayer(second);
+    public void addDeathToPlayer(int second)
+    {
+        if(currentEntry != null){
+            currentEntry.addDeathToPlayer(second);
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addDeathToPlayer(second, studyId, typeOfNPC), false));
+        }
     }
 
-    public void addDeathToNPC(int second){
-        currentEntry.addDeathToNPC(second);
+    public void addDeathToNPC(int second)
+    {
+        if(currentEntry != null){
+            currentEntry.addDeathToNPC(second);
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addDeathToNPC(second, studyId, typeOfNPC), false));
+        }
     }
 
-    public void addSecondaryAttackToPlayer(int second){
-        currentEntry.addSecondaryAttackToPlayer(second);
+    public void addSecondaryAttackToPlayer(int second)
+    {
+        if(currentEntry != null){
+            currentEntry.addSecondaryAttackToPlayer(second);
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addSecondaryAttackToPlayer(second, studyId, typeOfNPC), false));
+        }
     }
 
-    public void addSecondaryAttackToNPC(int second){
-        currentEntry.addSecondaryAttackToNPC(second);
+    public void addSecondaryAttackToNPC(int second)
+    {
+        if(currentEntry != null){
+            currentEntry.addSecondaryAttackToNPC(second);
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addSecondaryAttackToNPC(second, studyId, typeOfNPC), false));
+        }
     }
 }
