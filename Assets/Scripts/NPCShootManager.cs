@@ -63,6 +63,7 @@ public class NPCShootManager : MonoBehaviour
         Debug.Log(preferredEffect);
         effectsTemplate.Remove(preferredEffect);
         shuffleEffect();
+        Random.InitState(42);
     }
 
     // Update is called once per frame

@@ -73,6 +73,7 @@ public class TutorialManager : MonoBehaviour
         foreach(GameObject a in arrows){
             a.SetActive(false);
         }
+        Random.InitState(42);
     }
 
     // Update is called once per frame

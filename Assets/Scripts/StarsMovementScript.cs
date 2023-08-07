@@ -16,6 +16,7 @@ public class StarsMovementScript : MonoBehaviour
     void Start()
     {
         rectPos = this.gameObject.GetComponent<RectTransform>();
+        Random.InitState(42);
     }
 
     // Update is called once per frame

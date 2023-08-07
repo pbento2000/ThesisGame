@@ -319,7 +319,7 @@ public class InterfaceManager : MonoBehaviour
             effectIcon.sprite = effectIcons[effectChosen].sprite;
             effectIcon.color = white;
             try{
-            storage.addBuffToPlayer(secondsInt, effectChosen);
+            storage.addBuffToPlayer(secondsInt, effectChosen, scoreFloat, comboMultiplier);
             }catch(System.Exception e){
                 Debug.Log(e.Message);
             }
@@ -344,7 +344,7 @@ public class InterfaceManager : MonoBehaviour
     }
 
     public void returnToMenu(){
-        storage.saveScore(scoreFloat);
+        storage.saveScore(scoreFloat, comboMultiplier);
         storage.saveInfo();
 
         //Add code to store info
@@ -354,7 +354,7 @@ public class InterfaceManager : MonoBehaviour
     public void setNPCEffectIcon(int effectChosen){
             effectIconNPC.sprite = effectIcons[effectChosen].sprite;
             effectIconNPC.color = white;
-            storage.addBuffToNPC(secondsInt, effectChosen);
+            storage.addBuffToNPC(secondsInt, effectChosen, scoreFloat, comboMultiplier);
     }
 
     public void setEffectCooldown(float cooldown){
@@ -368,7 +368,7 @@ public class InterfaceManager : MonoBehaviour
         aoeCooldownTime = cooldown;
         aoeCooldown.localScale = new Vector3(1f,1f,1f);
         StartCoroutine(makeButtonAnimation(1));
-        storage.addSecondaryAttackToPlayer(secondsInt);
+        storage.addSecondaryAttackToPlayer(secondsInt, scoreFloat, comboMultiplier);
     }
 
     public void setEffectNPCCooldown(float cooldown){
@@ -382,7 +382,7 @@ public class InterfaceManager : MonoBehaviour
         aoeCooldownNPCTime = cooldown;
         aoeCooldownNPC.localScale = new Vector3(1f,1f,1f);
         StartCoroutine(makeButtonAnimation(3));
-        storage.addSecondaryAttackToNPC(secondsInt);
+        storage.addSecondaryAttackToNPC(secondsInt, scoreFloat, comboMultiplier);
     }
 
     public float getTimeScale()
@@ -399,9 +399,9 @@ public class InterfaceManager : MonoBehaviour
         }
 
         if(who == 0){
-            storage.addDeathToPlayer(secondsInt);
+            storage.addDeathToPlayer(secondsInt, scoreFloat, comboMultiplier);
         }else if(who == 1){
-            storage.addDeathToNPC(secondsInt);
+            storage.addDeathToNPC(secondsInt, scoreFloat, comboMultiplier);
         }
     }
 
@@ -439,16 +439,31 @@ public class InterfaceManager : MonoBehaviour
         yield return null;
     }
 
-/*
-    IEnumerator fadeMinuteFrame(int index){
-        Image frame = minuteFrames[index].GetComponent<Image>();
-        Color tmp = frame.color;
-        while(minuteFrames[index].transform.localScale.x < 1f){
-            minuteFrames[index].transform.localScale += new Vector3(0.005f, 0.005f, 0f);
-            tmp.a -= 1f/50f;
-            minuteFrames[index].GetComponent<Image>().color = tmp;
-            yield return new WaitForFixedUpdate();
-        }
-        yield return null;
-    }*/
+    internal void saveKill(bool isPlayerEnemy)
+    {
+        storage.saveKill(secondsInt, scoreFloat, comboMultiplier, isPlayerEnemy);
+    }
+
+    internal void saveHit(bool isPlayerEnemy)
+    {
+        storage.saveHit(secondsInt, scoreFloat, comboMultiplier, isPlayerEnemy);
+    }
+
+    internal void saveMiss()
+    {
+        storage.saveMiss(secondsInt, scoreFloat, comboMultiplier);
+    }
+
+    /*
+        IEnumerator fadeMinuteFrame(int index){
+            Image frame = minuteFrames[index].GetComponent<Image>();
+            Color tmp = frame.color;
+            while(minuteFrames[index].transform.localScale.x < 1f){
+                minuteFrames[index].transform.localScale += new Vector3(0.005f, 0.005f, 0f);
+                tmp.a -= 1f/50f;
+                minuteFrames[index].GetComponent<Image>().color = tmp;
+                yield return new WaitForFixedUpdate();
+            }
+            yield return null;
+        }*/
 }

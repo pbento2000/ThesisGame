@@ -11,6 +11,11 @@ public class WaveManager : MonoBehaviour
     int waveNumber = 0;
     IEnumerator coroutine;
 
+    void Start()
+    {
+        Random.InitState(42);
+    }
+
     public void startWave()
     {
         waveNumber += 1;

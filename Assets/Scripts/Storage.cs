@@ -74,59 +74,74 @@ public class Storage : MonoBehaviour
         currentEntry = null;
     }
 
-    internal void saveScore(float scoreFloat)
+    internal void saveScore(float scoreFloat, int combo)
     {
         if(currentEntry != null){
             currentEntry.score = (int) scoreFloat;
-            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.saveScore((int) scoreFloat, studyId, typeOfNPC), false));
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.saveScore((int) scoreFloat, studyId, typeOfNPC, combo), false));
         }
     }
 
-    public void addBuffToPlayer(int second, int effect)
+    public void addBuffToPlayer(int second, int effect, float scoreFloat, int combo)
     {
         if(currentEntry != null){
             currentEntry.addBuffToPlayer(second, effect);
-            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addBuffToPlayer(second, effect, studyId, typeOfNPC), false));
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addBuffToPlayer(second, effect, studyId, typeOfNPC, (int) scoreFloat, combo), false));
         }
     }
 
-    public void addBuffToNPC(int second, int effect)
+    public void addBuffToNPC(int second, int effect, float scoreFloat, int combo)
     {
         if(currentEntry != null){
             currentEntry.addBuffToNPC(second, effect);
-            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addBuffToNPC(second, effect, studyId, typeOfNPC), false));
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addBuffToNPC(second, effect, studyId, typeOfNPC, (int) scoreFloat, combo), false));
         }
     }
 
-    public void addDeathToPlayer(int second)
+    public void addDeathToPlayer(int second, float scoreFloat, int combo)
     {
         if(currentEntry != null){
             currentEntry.addDeathToPlayer(second);
-            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addDeathToPlayer(second, studyId, typeOfNPC), false));
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addDeathToPlayer(second, studyId, typeOfNPC, (int) scoreFloat, combo), false));
         }
     }
 
-    public void addDeathToNPC(int second)
+    public void addDeathToNPC(int second, float scoreFloat, int combo)
     {
         if(currentEntry != null){
             currentEntry.addDeathToNPC(second);
-            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addDeathToNPC(second, studyId, typeOfNPC), false));
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addDeathToNPC(second, studyId, typeOfNPC, (int) scoreFloat, combo), false));
         }
     }
 
-    public void addSecondaryAttackToPlayer(int second)
+    public void addSecondaryAttackToPlayer(int second, float scoreFloat, int combo)
     {
         if(currentEntry != null){
             currentEntry.addSecondaryAttackToPlayer(second);
-            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addSecondaryAttackToPlayer(second, studyId, typeOfNPC), false));
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addSecondaryAttackToPlayer(second, studyId, typeOfNPC, (int) scoreFloat, combo), false));
         }
     }
 
-    public void addSecondaryAttackToNPC(int second)
+    public void addSecondaryAttackToNPC(int second, float scoreFloat, int combo)
     {
         if(currentEntry != null){
             currentEntry.addSecondaryAttackToNPC(second);
-            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addSecondaryAttackToNPC(second, studyId, typeOfNPC), false));
+            StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.addSecondaryAttackToNPC(second, studyId, typeOfNPC, (int) scoreFloat, combo), false));
         }
+    }
+
+    internal void saveKill(int second, float scoreFloat, int combo, bool isPlayerEnemy)
+    {
+        StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.saveKill(second, studyId, typeOfNPC, (int) scoreFloat, combo, isPlayerEnemy), false));
+    }
+
+    internal void saveHit(int second, float scoreFloat, int combo, bool isPlayerEnemy)
+    {
+        StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.saveHit(second, studyId, typeOfNPC, (int) scoreFloat, combo, isPlayerEnemy), false));
+    }
+
+    internal void saveMiss(int second, float scoreFloat, int combo)
+    {
+        StartCoroutine(fileManager.WriteToLog("EventsData", "Events", EventManager.saveMiss(second, studyId, typeOfNPC, (int) scoreFloat, combo), false));
     }
 }
