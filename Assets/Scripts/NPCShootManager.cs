@@ -38,6 +38,7 @@ public class NPCShootManager : MonoBehaviour
     Collider2D[] playerEnemies;
     private Vector3 playerOffset = Vector3.zero;
     float randomizePositionCooldown;
+    int impossibleEffect = -1;
 
     //Variables for when enemy is hit
     private float impactTimer = 0f;
@@ -63,6 +64,7 @@ public class NPCShootManager : MonoBehaviour
         Debug.Log(preferredEffect);
         effectsTemplate.Remove(preferredEffect);
         shuffleEffect();
+        setImpossibleEffect();
         Random.InitState(42);
     }
 
@@ -140,6 +142,9 @@ public class NPCShootManager : MonoBehaviour
 
         npcEnemiesCounter = 0;
 
+        Vector2 newVector = Vector2.zero;
+        Vector2 newVectorForPlayer = Vector2.zero;
+
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i].tag == "NPCEnemy")
@@ -152,6 +157,8 @@ public class NPCShootManager : MonoBehaviour
 
                 movementVector += npcEnemyVector;
 
+                newVector += (new Vector2(player.position.x, player.position.y) - enemyPosition) / Mathf.Pow(Vector3.Distance(player.position, enemyPosition), 2f);
+
                 /*
                 Vector3 enemyPosition = enemies[i].gameObject.transform.position;
                 Vector3 playerNpcVector = (playerPosition - transform.position);
@@ -163,12 +170,30 @@ public class NPCShootManager : MonoBehaviour
                 Debug.Log(playerImportance / enemyThreat);
                 */
             }
+            if(enemies[i].tag == "PlayerEnemy")
+            {
+                Vector2 enemyPosition = enemies[i].gameObject.transform.position;
+                newVectorForPlayer += (new Vector2(player.position.x, player.position.y) - enemyPosition) / Mathf.Pow(Vector3.Distance(player.position, enemyPosition), 2f);
+            }
         }
+
+        //Code for different npc positioning based on its personality
+
+        if (preferredEffect == 0)
+            playerPosition = new Vector2(player.position.x, player.position.y) - newVector.normalized;
+        if (preferredEffect == 1)
+            playerPosition = new Vector2(player.position.x, player.position.y) + newVector.normalized;
+        if (preferredEffect == 2)
+            playerPosition = new Vector2(player.position.x, player.position.y) + newVectorForPlayer.normalized;
+        if (preferredEffect == 3)
+            playerPosition = new Vector2(player.position.x, player.position.y) - newVectorForPlayer.normalized;
+
+        Debug.DrawLine(player.position, playerPosition);
 
         Vector3 playerNpcVector = (playerPosition - transform.position) / (1 / Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 2f));
 
         if(effectOnHOld == 0 || effectOnHOld == 1){
-            if(npcEnemiesCounter > 2 + (int)bulletCounter/50){
+            if(npcEnemiesCounter > 2 + (int)bulletCounter/100){
                 sendPulse(effectOnHOld);
             }
         }
@@ -188,7 +213,7 @@ public class NPCShootManager : MonoBehaviour
                 }
             }
 
-            if(playerEnemiesCounter >= 2 + (int)bulletCounter/50){
+            if(playerEnemiesCounter >= 2 + (int)bulletCounter/100){
                 playerEnemiesPosition += 2*playerPosition;
                 playerEnemiesPosition /= playerEnemiesCounter+2;
                 playerNpcVector = (playerEnemiesPosition - transform.position) / (1 / Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 2f));
@@ -198,10 +223,10 @@ public class NPCShootManager : MonoBehaviour
                 }
             }
 
-            Debug.DrawLine(transform.position,playerNpcVector);
-
         }
-        
+
+        //Debug.DrawLine(transform.position, playerNpcVector);
+
         float enemyThreat = movementVector.magnitude;
         float playerImportance = playerNpcVector.magnitude;
 
@@ -295,7 +320,13 @@ public class NPCShootManager : MonoBehaviour
 
     void shuffleEffect(){
         int differentEffectPos = Random.Range(0,5);
-        effects[differentEffectPos] = effectsTemplate[Random.Range(0,3)];
+        int differentEffect = Random.Range(0, 3);
+        while(differentEffect == impossibleEffect || differentEffect == preferredEffect)
+        {
+            differentEffect = Random.Range(0, 3);
+        }
+        
+        effects[differentEffectPos] = differentEffect;
         for(int i = 0; i < effects.Length; i++){
             if(effects[i] == -1){
                 effects[i] = preferredEffect;
@@ -338,6 +369,25 @@ public class NPCShootManager : MonoBehaviour
         impactVector = transform.position - enemyPos;
         impactVector = impactVector.normalized;
         impactStrength = strength;
+    }
+
+    public void setImpossibleEffect()
+    {
+        switch (preferredEffect)
+        {
+            case 0:
+                impossibleEffect = 1;
+                break;
+            case 1:
+                impossibleEffect = 0;
+                break;
+            case 2:
+                impossibleEffect = 3;
+                break;
+            case 3:
+                impossibleEffect = 2;
+                break;
+        }
     }
 
     IEnumerator thinkingAnimation(){
