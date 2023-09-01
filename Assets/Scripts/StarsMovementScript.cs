@@ -37,6 +37,7 @@ public class StarsMovementScript : MonoBehaviour
 
     private void OnEnable() {
         epsilon = Random.Range(-115f,115f);
+        rectPos = this.gameObject.GetComponent<RectTransform>();
         rectPos.anchoredPosition = new Vector2(rectPos.anchoredPosition.x,epsilon);
     }
 }

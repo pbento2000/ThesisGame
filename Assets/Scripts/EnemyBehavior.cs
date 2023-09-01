@@ -124,9 +124,10 @@ public class EnemyBehavior : MonoBehaviour
         if (health < 0)
         {
             interfaceManager.addToCombo(true);
-            interfaceManager.saveKill(isPlayerEnemy);
             if(isTutorial){
                 GameObject.Find("TutorialManager").GetComponent<TutorialManager>().decreaseEnemyCount();
+            }else{
+                interfaceManager.saveKill(isPlayerEnemy);
             }
             for(int i = 0; i < levels.Length; i++){
                 if(i <= level){
@@ -141,7 +142,9 @@ public class EnemyBehavior : MonoBehaviour
         }
         else
         {
-            interfaceManager.saveHit(isPlayerEnemy);
+            if(!isTutorial){
+                interfaceManager.saveHit(isPlayerEnemy);
+            }
             impactTimer = maxImpactTime;
             impacted = true;
             impactVector = impact;

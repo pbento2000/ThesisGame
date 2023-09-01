@@ -283,6 +283,7 @@ public class InterfaceManager : MonoBehaviour
         }
         this.comboText.fontSize = fontSize + comboMultiplier*0.75f;
         if(comboMultiplier <= 45 && orangeStars.Length != 0 && blueStars.Length != 0){
+            print((comboMultiplier/5)*2);
             orangeStars[(comboMultiplier/5)*2].SetActive(true);
             orangeStars[(comboMultiplier/5)*2+1].SetActive(true);
             blueStars[(comboMultiplier/5)*2].SetActive(true);

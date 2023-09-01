@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6475644266690988962
+--- !u!1 &6236700905119659491
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7690295234971993085}
-  - component: {fileID: 6590066683936078380}
+  - component: {fileID: 5966393141997908204}
+  - component: {fileID: 1308055975335892767}
   m_Layer: 0
   m_Name: Trailer
   m_TagString: Untagged
@@ -17,14 +17,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &7690295234971993085
+--- !u!4 &5966393141997908204
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6475644266690988962}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 6236700905119659491}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32,14 +32,14 @@ Transform:
   m_Father: {fileID: 6509863617050936084}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!96 &6590066683936078380
+--- !u!96 &1308055975335892767
 TrailRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6475644266690988962}
+  m_GameObject: {fileID: 6236700905119659491}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -104,10 +104,10 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 0.68235296, b: 0.93725497, a: 1}
-      key1: {r: 0.007843138, g: 0.70980394, b: 1, a: 1}
+      key0: {r: 0.9843138, g: 0.56078434, b: 0.07450981, a: 1}
+      key1: {r: 0.9843138, g: 0.56078434, b: 0.07450981, a: 1}
       key2: {r: 1, g: 1, b: 1, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 1, g: 1, b: 1, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
@@ -115,7 +115,7 @@ TrailRenderer:
       ctime0: 0
       ctime1: 32768
       ctime2: 65535
-      ctime3: 0
+      ctime3: 65535
       ctime4: 0
       ctime5: 0
       ctime6: 0
@@ -150,11 +150,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6509863617050936084}
   - component: {fileID: 2854999540157314511}
-  - component: {fileID: 8591088830199371542}
-  - component: {fileID: -5999989231912732174}
-  - component: {fileID: 5451457989068650640}
+  - component: {fileID: 8760976415259364997}
   m_Layer: 0
-  m_Name: NPCBullet
+  m_Name: NPCBulletEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,11 +166,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8528670307353066516}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.388, y: 0.207, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7690295234971993085}
+  - {fileID: 5966393141997908204}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -228,23 +226,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &8591088830199371542
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528670307353066516}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
---- !u!114 &-5999989231912732174
+--- !u!114 &8760976415259364997
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -253,22 +235,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8528670307353066516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 615947e06deb1484a8ab7faf9478ebb8, type: 3}
+  m_Script: {fileID: 11500000, guid: d874c583321e3444fa7a0f06f150e865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3.02
---- !u!114 &5451457989068650640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528670307353066516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2833e22373dd4484098dac687588b808, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifespan: 5
-  isPlayer: 0
-  bEffect: {fileID: 8528670307353066516, guid: c399024370e96bd458e011bf7125b359, type: 3}
