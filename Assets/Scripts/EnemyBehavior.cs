@@ -24,7 +24,7 @@ public class EnemyBehavior : MonoBehaviour
 
     //Multipliers affected by pulse effect and effect related variables
     private float impactMultiplier = 1f;
-    private float movementSpeedMultiplier = 1f;
+    [SerializeField] private float movementSpeedMultiplier = 1f;
     private float scoreMultiplier = 1f;
     private float effectTimer = 15f;
     private float remainingTime = 0f;
@@ -40,7 +40,7 @@ public class EnemyBehavior : MonoBehaviour
     Sprite spriteDuringEffect;
 
     float distanceFromCenter = 10f;
-    float farFromScreen = 1f;
+    [SerializeField] float farFromScreen = 1f;
 
     //Variables for avoiding enemy overlap
     List<float> vectorTimes = new List<float>();
@@ -84,14 +84,21 @@ public class EnemyBehavior : MonoBehaviour
             }
 
             if(isPlayerEnemy){
-                farFromScreen = Mathf.Clamp(Mathf.Pow(Vector3.Distance(transform.position, player.transform.position) / 10f, 5f), 1f, 5f);
+                if (Vector3.Distance(player.transform.position, this.transform.position) > 5f)
+                    farFromScreen = Mathf.Clamp(Mathf.Pow(Vector3.Distance(transform.position, player.transform.position) / 10f, 5f), 1f, 5f);
+                else farFromScreen = 1f;
             }else{
+                if (Vector3.Distance(player.transform.position, this.transform.position) > 5f)
                 farFromScreen = Mathf.Clamp(Mathf.Pow(Vector3.Distance(transform.position, playerPos.transform.position) / 10f, 5f), 1f, 5f);
+                else farFromScreen = 1f;
             }
             
             //Debug.Log(farFromScreen);
 
-            transform.position = transform.position - vectorFromPlayer.normalized * Time.fixedDeltaTime * movementSpeedMultiplier * farFromScreen;
+            vectorFromPlayer = vectorFromPlayer.normalized;
+            vectorFromPlayer.z = 0f;
+
+            transform.position = transform.position - vectorFromPlayer * Time.fixedDeltaTime * movementSpeedMultiplier * farFromScreen;
         }
 
         if (impacted)

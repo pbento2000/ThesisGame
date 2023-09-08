@@ -115,6 +115,9 @@ public class NPCShootManager : MonoBehaviour
                     pistol.rotation = Quaternion.Euler(0f, 0f, 360f - angle);
                 }
 
+                AudioManagerScript audio = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+                audio.playNpcBulletSound();
+
                 Instantiate(bullet, pistol.position, bulletRotation);
                 bulletCounter += 1;
                 onCooldown = true;
@@ -180,11 +183,11 @@ public class NPCShootManager : MonoBehaviour
         //Code for different npc positioning based on its personality
 
         if (preferredEffect == 0)
-            playerPosition = new Vector2(player.position.x, player.position.y) - newVector.normalized;
+            playerPosition = new Vector2(player.position.x, player.position.y) - newVector.normalized * 1.5f;
         if (preferredEffect == 1)
             playerPosition = new Vector2(player.position.x, player.position.y) + newVector.normalized;
         if (preferredEffect == 2)
-            playerPosition = new Vector2(player.position.x, player.position.y) + newVectorForPlayer.normalized;
+            playerPosition = new Vector2(player.position.x, player.position.y) + newVectorForPlayer.normalized * 1.5f;
         if (preferredEffect == 3)
             playerPosition = new Vector2(player.position.x, player.position.y) - newVectorForPlayer.normalized;
 
@@ -218,7 +221,7 @@ public class NPCShootManager : MonoBehaviour
                 playerEnemiesPosition /= playerEnemiesCounter+2;
                 playerNpcVector = (playerEnemiesPosition - transform.position) / (1 / Mathf.Pow(Vector3.Distance(transform.position, playerPosition), 2f));
 
-                if(Vector3.Distance(playerEnemiesPosition, transform.position) < 3f){
+                if(Vector3.Distance(playerEnemiesPosition, transform.position) < 0.5f){
                     sendPulse(effectOnHOld);
                 }
             }

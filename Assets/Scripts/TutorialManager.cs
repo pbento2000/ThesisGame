@@ -87,6 +87,8 @@ public class TutorialManager : MonoBehaviour
             Time.timeScale = 1f;
             Time.fixedDeltaTime = 0.02f;
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            AudioManagerScript audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManagerScript>();
+            audio.playMenuMusic();
         }
         else if(bookCounter > 0 && Input.GetButtonDown("Continue")){
             bookTextTutorial.text = bookPhrases[bookCounter];

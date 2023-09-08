@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class BulletManager : MonoBehaviour
@@ -30,6 +31,8 @@ public class BulletManager : MonoBehaviour
         }
 
         if((Input.GetAxis("FireNew") > 0.1f || Input.GetButton("Fire")) && !onCooldown && canShoot){
+            AudioManagerScript audio = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+            audio.playBulletSound();
             onCooldown = true;
             Instantiate(bullet, pistol.position, pistol.rotation);
             delayTimer = delay;

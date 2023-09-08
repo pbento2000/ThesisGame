@@ -27,7 +27,9 @@ public class SharedBulletBehavior : MonoBehaviour
     {
         if(lifespan < 0f){
             if(isPlayer){
-                interfaceManager.saveMiss();
+                interfaceManager.saveMissPlayer();
+            }else{
+                interfaceManager.saveMissNPC();
             }
             Destroy(gameObject);
         }else{

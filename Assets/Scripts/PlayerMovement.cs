@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private bool impacted = false;
     private float impactStrength = 0f;
     Vector3 impactVector;
-    private float strength = 0.75f;
+    private float strength = 30f;
 
     void FixedUpdate()
     {
@@ -22,13 +22,13 @@ public class PlayerMovement : MonoBehaviour
         if (impacted)
         {
             //Debug.Log(impactVector * impactTimer * impactStrength);
-            transform.position = transform.position + impactVector * impactTimer * impactStrength;
+            transform.position = transform.position + impactVector * impactTimer * impactStrength * Time.fixedDeltaTime;
             impactTimer -= Time.fixedDeltaTime*0.75f;
         }
         else
         {
-            transform.Translate(Input.GetAxis("Horizontal") * horizontalForce * 40f * Time.fixedDeltaTime, 0f, 0f);
-            transform.Translate(0f, Input.GetAxis("Vertical") * verticalForce * 40f * Time.fixedDeltaTime, 0f);
+            transform.Translate(Input.GetAxis("Horizontal") * horizontalForce * 30f * Time.fixedDeltaTime, 0f, 0f);
+            transform.Translate(0f, Input.GetAxis("Vertical") * verticalForce * 30f * Time.fixedDeltaTime, 0f);
         }
 
         if (impactTimer <= 0f)

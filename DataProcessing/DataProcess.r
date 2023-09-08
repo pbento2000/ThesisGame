@@ -47,6 +47,18 @@ resultsLog <- resultsLog %>%
 resultsLog <- resultsLog %>%
     mutate(PLAYER_ACCURACY_CompSF = CompSF_HIT_PLAYER_PLAYER_ENEMY / (CompSF_HIT_PLAYER_PLAYER_ENEMY + CompSF_MISS_PLAYER_PLAYER_ENEMY))
 
+# resultsLog <- resultsLog %>%
+#     mutate(COMPANION_ACCURACY_CompSF = CompSF_HIT_PLAYER_PLAYER_ENEMY / (CompSF_HIT_COMPANION_COMPANION_ENEMY + CompSF_MISS_COMPANION_COMPANION_ENEMY))
+
+# resultsLog <- resultsLog %>%
+#     mutate(COMPANION_ACCURACY_CompSF = CompSF_HIT_PLAYER_PLAYER_ENEMY / (CompSF_HIT_COMPANION_COMPANION_ENEMY + CompSF_MISS_COMPANION_COMPANION_ENEMY))
+
+# resultsLog <- resultsLog %>%
+#     mutate(COMPANION_ACCURACY_CompSF = CompSF_HIT_PLAYER_PLAYER_ENEMY / (CompSF_HIT_COMPANION_COMPANION_ENEMY + CompSF_MISS_COMPANION_COMPANION_ENEMY))
+
+# resultsLog <- resultsLog %>%
+#     mutate(COMPANION_ACCURACY_CompSF = CompSF_HIT_PLAYER_PLAYER_ENEMY / (CompSF_HIT_COMPANION_COMPANION_ENEMY + CompSF_MISS_COMPANION_COMPANION_ENEMY))
+
 # Deal with answers
 
 interestVars <- colnames(res_csv)

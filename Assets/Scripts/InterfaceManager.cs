@@ -23,6 +23,7 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] Image[] effectIcons;
     [SerializeField] GameObject[] effectButtons;
     public bool isMenuOpen;
+    public bool openOnce;
     int effectChosen = -1;
     [SerializeField] RectTransform effectCooldown;
     [SerializeField] RectTransform aoeCooldown;
@@ -308,6 +309,8 @@ public class InterfaceManager : MonoBehaviour
 
     internal void openMenu()
     {
+        AudioManagerScript audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManagerScript>();
+        audio.decreaseGamePitch();
         for(int i = 0; i < effectButtons.Length; i++){
             effectButtons[i].SetActive(true);
         }
@@ -316,6 +319,8 @@ public class InterfaceManager : MonoBehaviour
 
     internal void closeMenu()
     {
+        AudioManagerScript audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManagerScript>();
+        audio.increaseGamePitch();
         if(effectChosen != -1){
             effectIcon.sprite = effectIcons[effectChosen].sprite;
             effectIcon.color = white;
@@ -347,6 +352,8 @@ public class InterfaceManager : MonoBehaviour
     public void returnToMenu(){
         storage.saveScore(scoreFloat, comboMultiplier);
         storage.saveInfo();
+        AudioManagerScript audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManagerScript>();
+        audio.playMenuMusic();
 
         //Add code to store info
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
@@ -450,9 +457,14 @@ public class InterfaceManager : MonoBehaviour
         storage.saveHit(secondsInt, scoreFloat, comboMultiplier, isPlayerEnemy);
     }
 
-    internal void saveMiss()
+    internal void saveMissPlayer()
     {
-        storage.saveMiss(secondsInt, scoreFloat, comboMultiplier);
+        storage.saveMissPlayer(secondsInt, scoreFloat, comboMultiplier);
+    }
+
+    internal void saveMissNPC()
+    {
+        storage.saveMissNPC(secondsInt, scoreFloat, comboMultiplier);
     }
 
     /*

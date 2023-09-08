@@ -225,6 +225,9 @@ public class MainMenuBehavior : MonoBehaviour
 
     public void setTypeOfNPC(int type)
     {
+        AudioManagerScript audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManagerScript>();
+        audio.playGameMusic();
+        storage.setTutorialFlag(false);
         storage.setTypeOfNPC(type);
         storage.addButtonToDisable(npcButtons[type + 1].name);
         SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
@@ -254,6 +257,9 @@ public class MainMenuBehavior : MonoBehaviour
     }
 
     public void LoadTutorial(){
+        AudioManagerScript audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManagerScript>();
+        audio.stopMusic();
+        storage.setTutorialFlag(true);
         storage.cleanList();
         storage.addButtonToDisable(npcButtons[0].name);
         SceneManager.LoadScene("Tutorial", LoadSceneMode.Single);

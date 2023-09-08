@@ -10,6 +10,7 @@ TagManager:
   - NPC
   - ButtonNPC
   - Storage
+  - AudioManager
   layers:
   - Default
   - TransparentFX

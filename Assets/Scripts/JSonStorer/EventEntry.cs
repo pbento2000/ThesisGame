@@ -145,13 +145,24 @@ public static class EventManager
         return entry;
     }
 
-    internal static Dictionary<string, string> saveMiss(int second, int studyId, int typeOfNPC, int score, int combo)
+    internal static Dictionary<string, string> saveMissPlayer(int second, int studyId, int typeOfNPC, int score, int combo)
     {
         Dictionary<string,string> entry = new Dictionary<string, string>();
         entry = fillGenericInfo(entry, studyId, typeOfNPC, score, combo);
         entry["event_Type"] = effects[7];
         entry["event_Actuator"] = agents[0];
         entry["event_Receiver"] = agents[2];
+        entry["time_Seconds"] = second.ToString();
+        return entry;
+    }
+
+    internal static Dictionary<string, string> saveMissNPC(int second, int studyId, int typeOfNPC, int score, int combo)
+    {
+        Dictionary<string,string> entry = new Dictionary<string, string>();
+        entry = fillGenericInfo(entry, studyId, typeOfNPC, score, combo);
+        entry["event_Type"] = effects[7];
+        entry["event_Actuator"] = agents[1];
+        entry["event_Receiver"] = agents[3];
         entry["time_Seconds"] = second.ToString();
         return entry;
     }
