@@ -323,10 +323,10 @@ public class NPCShootManager : MonoBehaviour
 
     void shuffleEffect(){
         int differentEffectPos = Random.Range(0,5);
-        int differentEffect = Random.Range(0, 3);
+        int differentEffect = Random.Range(0, 4);
         while(differentEffect == impossibleEffect || differentEffect == preferredEffect)
         {
-            differentEffect = Random.Range(0, 3);
+            differentEffect = Random.Range(0, 4);
         }
         
         effects[differentEffectPos] = differentEffect;
