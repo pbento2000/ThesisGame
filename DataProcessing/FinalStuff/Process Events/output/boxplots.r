@@ -30,7 +30,7 @@ hasModifiedLims = FALSE, yLimInf = 0, yLimSup= 1, yBy=1){
 
   upOrDown <- 0
   if(hasUpOrDown){
-    upOrDown <- as.integer(experimentslogByPlayer[,deparse(substitute(var))]) 
+    upOrDown <- as.integer(experimentslogByPlayer[,deparse(substitute(var))])
     upOrDown <- mod(upOrDown,2)
   }
 
@@ -63,9 +63,9 @@ hasModifiedLims = FALSE, yLimInf = 0, yLimSup= 1, yBy=1){
     scale_x_discrete(expand = expansion(add = 0.9))
 
     if(hasModifiedLims){
-      p <- p + scale_y_continuous(expand = expansion(mult = 0.2), labels = scales::label_number(scale_cut = scales::cut_short_scale()), limits = c(yLimInf, NA), breaks=seq(yLimInf, yLimSup,by=yBy))
+      p <- p + scale_y_continuous(expand = expansion(mult = 0.0), labels = scales::label_number(scale_cut = scales::cut_short_scale()), limits = c(yLimInf, yLimSup))#, breaks=seq(yLimInf, yLimSup,by=yBy))
     }else{
-      p <- p + scale_y_continuous(expand = expansion(mult = 0.2), labels = scales::label_number(scale_cut = scales::cut_short_scale()), limits = c(0, NA))
+      p <- p + scale_y_continuous(expand = expansion(mult = 0.0), labels = scales::label_number(scale_cut = scales::cut_short_scale()), limits = c(0, NA))
     }
     
     if(hasAngledXAxis){
@@ -101,141 +101,165 @@ computeBoxPlot(
   "Pref_Est_Exp_Rate/Pref_Exp_Rate_SC",
   hasAngledXAxis = TRUE,
   hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
+  hasModifiedLims = TRUE,
+  yLimInf = 0,
+  yLimSup = 14
 )
 
-computeBoxPlot(
-  X.I.see.myself.as.a.,
-  CompSF_EXPERIENCE_RATE,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("Exp_Rate_SF")),
-  "Pref_Est_Exp_Rate/Pref_Exp_Rate_SF",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   X.I.see.myself.as.a.,
+#   CompSF_EXPERIENCE_RATE,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("Exp_Rate_SF")),
+#   "Pref_Est_Exp_Rate/Pref_Exp_Rate_SF",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 14
+# )
 
-computeBoxPlot(
-  X.I.see.myself.as.a.,
-  CompOC_EXPERIENCE_RATE,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("Exp_Rate_OC")),
-  "Pref_Est_Exp_Rate/Pref_Exp_Rate_OC",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   X.I.see.myself.as.a.,
+#   CompOC_EXPERIENCE_RATE,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("Exp_Rate_OC")),
+#   "Pref_Est_Exp_Rate/Pref_Exp_Rate_OC",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 14
+# )
 
-computeBoxPlot(
-  X.I.see.myself.as.a.,
-  CompOF_EXPERIENCE_RATE,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("Exp_Rate_OF")),
-  "Pref_Est_Exp_Rate/Pref_Exp_Rate_OF",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   X.I.see.myself.as.a.,
+#   CompOF_EXPERIENCE_RATE,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("Exp_Rate_OF")),
+#   "Pref_Est_Exp_Rate/Pref_Exp_Rate_OF",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 14
+# )
 
-computeBoxPlot(
-  OBSERVED_QUADRANT,
-  CompSC_EXPERIENCE_RATE,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("Exp_Rate_SC")),
-  "Pref_Observed_Exp_Rate/Pref_Observed_Exp_Rate_SC",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   OBSERVED_QUADRANT,
+#   CompSC_EXPERIENCE_RATE,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("Exp_Rate_SC")),
+#   "Pref_Observed_Exp_Rate/Pref_Observed_Exp_Rate_SC",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 14
+# )
 
-computeBoxPlot(
-  OBSERVED_QUADRANT,
-  CompSF_EXPERIENCE_RATE,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("Exp_Rate_SF")),
-  "Pref_Observed_Exp_Rate/Pref_Observed_Exp_Rate_SF",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   OBSERVED_QUADRANT,
+#   CompSF_EXPERIENCE_RATE,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("Exp_Rate_SF")),
+#   "Pref_Observed_Exp_Rate/Pref_Observed_Exp_Rate_SF",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 14
+# )
 
-computeBoxPlot(
-  OBSERVED_QUADRANT,
-  CompOC_EXPERIENCE_RATE,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("Exp_Rate_OC")),
-  "Pref_Observed_Exp_Rate/Pref_Observed_Exp_Rate_OC",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   OBSERVED_QUADRANT,
+#   CompOC_EXPERIENCE_RATE,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("Exp_Rate_OC")),
+#   "Pref_Observed_Exp_Rate/Pref_Observed_Exp_Rate_OC",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 14
+# )
 
-computeBoxPlot(
-  OBSERVED_QUADRANT,
-  CompOF_EXPERIENCE_RATE,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("Exp_Rate_OF")),
-  "Pref_Observed_Exp_Rate/Pref_Observed_Exp_Rate_OF",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   OBSERVED_QUADRANT,
+#   CompOF_EXPERIENCE_RATE,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("Exp_Rate_OF")),
+#   "Pref_Observed_Exp_Rate/Pref_Observed_Exp_Rate_OF",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 14
+# )
 
-#GEQ
+# #GEQ
 
-computeBoxPlot(
-  X.I.see.myself.as.a.,
-  GEQ_SCORE_SC_PSYCHOLOGICAL_INVOLVEMENT_EMPATHY,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("GEQ_EMPATHY_SC")),
-  "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_SC",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   X.I.see.myself.as.a.,
+#   GEQ_SCORE_SC_PSYCHOLOGICAL_INVOLVEMENT_EMPATHY,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("GEQ_EMPATHY_SC")),
+#   "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_SC",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 8
+# )
 
-computeBoxPlot(
-  X.I.see.myself.as.a.,
-  GEQ_SCORE_SF_PSYCHOLOGICAL_INVOLVEMENT_EMPATHY,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("GEQ_EMPATHY_SF")),
-  "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_SF",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   X.I.see.myself.as.a.,
+#   GEQ_SCORE_SF_PSYCHOLOGICAL_INVOLVEMENT_EMPATHY,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("GEQ_EMPATHY_SF")),
+#   "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_SF",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 8
+# )
 
-computeBoxPlot(
-  X.I.see.myself.as.a.,
-  GEQ_SCORE_OC_PSYCHOLOGICAL_INVOLVEMENT_EMPATHY,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("GEQ_EMPATHY_OC")),
-  "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_OC",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   X.I.see.myself.as.a.,
+#   GEQ_SCORE_OC_PSYCHOLOGICAL_INVOLVEMENT_EMPATHY,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("GEQ_EMPATHY_OC")),
+#   "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_OC",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 8
+# )
 
-computeBoxPlot(
-  X.I.see.myself.as.a.,
-  GEQ_SCORE_OF_PSYCHOLOGICAL_INVOLVEMENT_EMPATHY,
-  No_SigLab,
-  expression(bold(widehat(Preference))),
-  expression(bold("GEQ_EMPATHY_OF")),
-  "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_OF",
-  hasAngledXAxis = TRUE,
-  hasUpOrDown = TRUE,
-  hasModifiedLims = FALSE
-)
+# computeBoxPlot(
+#   X.I.see.myself.as.a.,
+#   GEQ_SCORE_OF_PSYCHOLOGICAL_INVOLVEMENT_EMPATHY,
+#   No_SigLab,
+#   expression(bold(widehat(Preference))),
+#   expression(bold("GEQ_EMPATHY_OF")),
+#   "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_OF",
+#   hasAngledXAxis = TRUE,
+#   hasUpOrDown = TRUE,
+#   hasModifiedLims = TRUE,
+#   yLimInf = 0,
+#   yLimSup = 8
+# )
 
 #FAZER RESTO DO BOXPLOT
