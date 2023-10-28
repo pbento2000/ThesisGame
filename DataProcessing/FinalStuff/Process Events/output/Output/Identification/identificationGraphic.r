@@ -17,8 +17,9 @@ data <- data.frame(realQuadrant, Perceived_Quadrant, Frequency)
 p <- ggplot(data, aes(fill=Perceived_Quadrant, y=Frequency, x=realQuadrant)) + 
     geom_bar(position="dodge", stat="identity") + xlab(expression(bold("Quadrant"))) + 
     ylab(expression(bold("Frequency"))) + ggtitle(expression(bold("Quadrant Identification"))) + 
-    labs(fill = expression(bold("Perceived Quadrant"))) + 
-    scale_y_continuous(expand = expansion(mult = 0.0), limits = c(0, NA))
+    labs(fill = expression(bold("Perceived\nQuadrant"))) + 
+    scale_y_continuous(expand = expansion(mult = 0.0), limits = c(0, NA)) +
+    theme(plot.title = element_text(hjust = 0.5))
 
 ggsave("identifyGraph.png", width = 5, height = 5, units = "in", dpi = 300)
 

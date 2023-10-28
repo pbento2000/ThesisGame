@@ -51,7 +51,7 @@ hasModifiedLims = FALSE, yLimInf = 0, yLimSup= 1, yBy=1){
   
   p <- ggplot(df, aes(x={{var}}, y={{metric}})) + 
     stat_boxplot(geom = "errorbar", width=0.2, lwd=1) + 
-    geom_boxplot(fill="#7d00bc", color="black", width=0.3, lwd=1) +
+    geom_boxplot(fill="#00a0e4", color="black", width=0.3, lwd=1) +
     theme(plot.title = element_text(size=labelSize*1.6), legend.text = element_text(size=labelSize), axis.text = element_text(size = labelSize*1.8), 
     axis.title = element_text(size = labelSize*1.8, face = "bold"), legend.title = element_blank(), legend.position = 'bottom') + 
     guides(col = guide_legend(ncol = 2)) + 
@@ -218,7 +218,7 @@ newFrame[,"No_SigLab"] <- '' # OF diferente de OC e OF diferente de SF
 
 newFrame$No_SigLab[newFrame$variable == "OF"] <- 'a'
 newFrame$No_SigLab[newFrame$variable == "OC"] <- 'b'
-newFrame$No_SigLab[newFrame$variable == "SF"] <- 'c'
+newFrame$No_SigLab[newFrame$variable == "SF"] <- 'b'
 
 
 computeBoxPlot(
@@ -257,6 +257,9 @@ newFrame$variable <- as.factor(newFrame$variable)
 
 newFrame[,"No_SigLab"] <- '' # Embora tenha dado significativo, tudo igual pelo Boferoni (SC diferente de OC e SF caso contrário)
 
+newFrame$No_SigLab[newFrame$variable == "SC"] <- 'a'
+newFrame$No_SigLab[newFrame$variable == "OC"] <- 'b'
+newFrame$No_SigLab[newFrame$variable == "SF"] <- 'b'
 
 computeBoxPlot(
     newFrame,
@@ -296,7 +299,7 @@ newFrame[,"No_SigLab"] <- '' # OF diferente de OC e OF diferente de SF
 
 newFrame$No_SigLab[newFrame$variable == "OF"] <- 'a'
 newFrame$No_SigLab[newFrame$variable == "OC"] <- 'b'
-newFrame$No_SigLab[newFrame$variable == "SF"] <- 'c'
+newFrame$No_SigLab[newFrame$variable == "SF"] <- 'b'
 
 
 computeBoxPlot(
@@ -409,12 +412,16 @@ newFrame$variable <- as.factor(newFrame$variable)
 
 newFrame[,"No_SigLab"] <- '' #Embora significativo, pelo bonferoni tudo igual (SC diferente de OC e SF caso contrario)
 
+newFrame$No_SigLab[newFrame$variable == "SC"] <- 'a'
+newFrame$No_SigLab[newFrame$variable == "OC"] <- 'b'
+newFrame$No_SigLab[newFrame$variable == "SF"] <- 'b'
+
 computeBoxPlot(
     newFrame,
     variable,
     value,
     No_SigLab,
-    expression(bold("GEQ_EMPATHY_SC")),
+    expression(bold("Empathy")),
     bold(widehat("Self-Challenger")),
     "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_SC",
     hasAngledXAxis = TRUE,
@@ -453,7 +460,7 @@ computeBoxPlot(
     variable,
     value,
     No_SigLab,
-    expression(bold("GEQ_EMPATHY_SF")),
+    expression(bold("Empathy")),
     bold(widehat("Self-Facilitator")),
     "Pref_Est_GEQ_EMPATHY/Pref_Est_GEQ_EMPATHY_SF",
     hasAngledXAxis = TRUE,
@@ -522,8 +529,8 @@ newFrame[,"No_SigLab"] <- '' # OF diferente dos outros 3
 
 newFrame$No_SigLab[newFrame$variable == "OF"] <- 'a'
 newFrame$No_SigLab[newFrame$variable == "OC"] <- 'b'
-newFrame$No_SigLab[newFrame$variable == "SF"] <- 'c'
-newFrame$No_SigLab[newFrame$variable == "SC"] <- 'd'
+newFrame$No_SigLab[newFrame$variable == "SF"] <- 'b'
+newFrame$No_SigLab[newFrame$variable == "SC"] <- 'b'
 
 computeBoxPlot(
     newFrame,
@@ -561,7 +568,7 @@ newFrame$variable <- as.factor(newFrame$variable)
 
 newFrame[,"No_SigLab"] <- '' # SC diferente de SF e OC
 
-newFrame$No_SigLab[newFrame$variable == "OC"] <- 'c'
+newFrame$No_SigLab[newFrame$variable == "OC"] <- 'b'
 newFrame$No_SigLab[newFrame$variable == "SF"] <- 'b'
 newFrame$No_SigLab[newFrame$variable == "SC"] <- 'a'
 
@@ -570,7 +577,7 @@ computeBoxPlot(
     variable,
     value,
     No_SigLab,
-    expression(bold("GEQ_EMPATHY_SC")),
+    expression(bold("Empathy")),
     bold("Self-Challenger"),
     "Pref_Observed_Est_GEQ_EMPATHY/Pref_Observed_Est_GEQ_EMPATHY_SC",
     hasAngledXAxis = TRUE,
@@ -603,15 +610,15 @@ newFrame[,"No_SigLab"] <- '' #OF diferente dos outros 3
 
 newFrame$No_SigLab[newFrame$variable == "OF"] <- 'a'
 newFrame$No_SigLab[newFrame$variable == "OC"] <- 'b'
-newFrame$No_SigLab[newFrame$variable == "SF"] <- 'c'
-newFrame$No_SigLab[newFrame$variable == "SC"] <- 'd'
+newFrame$No_SigLab[newFrame$variable == "SF"] <- 'b'
+newFrame$No_SigLab[newFrame$variable == "SC"] <- 'b'
 
 computeBoxPlot(
     newFrame,
     variable,
     value,
     No_SigLab,
-    expression(bold("GEQ_EMPATHY_SF")),
+    expression(bold("Empathy")),
     bold("Self-Facilitator"),
     "Pref_Observed_Est_GEQ_EMPATHY/Pref_Observed_Est_GEQ_EMPATHY_SF",
     hasAngledXAxis = TRUE,
@@ -686,6 +693,82 @@ computeBoxPlot(
     expression(bold("Empathy")),
     bold("Others-Facilitator"),
     "Pref_Observed_Est_GEQ_EMPATHY/Pref_Observed_Est_GEQ_EMPATHY_OF",
+    hasAngledXAxis = TRUE,
+    hasUpOrDown = TRUE,
+    hasModifiedLims = TRUE,
+    yLimInf = 0,
+    yLimSup = 7
+)
+
+# Behavioral Involvment OF (EST)
+
+newFrame <- experimentslogByPlayer[experimentslogByPlayer$X.I.see.myself.as.a. == 1,]
+
+newFrame <- newFrame[,c("GEQ_SCORE_SC_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT","GEQ_SCORE_SF_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT","GEQ_SCORE_OC_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT","GEQ_SCORE_OF_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT")]
+
+newFrame <- melt(newFrame)
+
+newFrame$variable <- as.character(newFrame$variable)
+
+# print(colnames(sc_exprate))
+
+newFrame$variable[newFrame$variable == "GEQ_SCORE_SC_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT"] <- "SC"
+newFrame$variable[newFrame$variable == "GEQ_SCORE_SF_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT"] <- "SF"
+newFrame$variable[newFrame$variable == "GEQ_SCORE_OC_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT"] <- "OC"
+newFrame$variable[newFrame$variable == "GEQ_SCORE_OF_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT"] <- "OF"
+
+newFrame$variable <- as.factor(newFrame$variable)
+
+newFrame[,"No_SigLab"] <- '' # OF diferente de SC
+newFrame$No_SigLab[newFrame$variable == "OF"] <- 'a'
+newFrame$No_SigLab[newFrame$variable == "SC"] <- 'b'
+
+computeBoxPlot(
+    newFrame,
+    variable,
+    value,
+    No_SigLab,
+    expression(bold("Behavioral Involvement")),
+    bold(widehat("Self-Facilitator")),
+    "Pref_Est_GEQ_BINVOLVEMENT/Pref_Est_GEQ_BINVOLVEMENT_SF",
+    hasAngledXAxis = TRUE,
+    hasUpOrDown = TRUE,
+    hasModifiedLims = TRUE,
+    yLimInf = 0,
+    yLimSup = 7
+)
+
+# Behavioral Involvment OF (OBS)
+
+newFrame <- experimentslogByPlayer[experimentslogByPlayer$OBSERVED_QUADRANT == 1,]
+
+newFrame <- newFrame[,c("GEQ_SCORE_SC_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT","GEQ_SCORE_SF_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT","GEQ_SCORE_OC_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT","GEQ_SCORE_OF_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT")]
+
+newFrame <- melt(newFrame)
+
+newFrame$variable <- as.character(newFrame$variable)
+
+# print(colnames(sc_exprate))
+
+newFrame$variable[newFrame$variable == "GEQ_SCORE_SC_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT"] <- "SC"
+newFrame$variable[newFrame$variable == "GEQ_SCORE_SF_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT"] <- "SF"
+newFrame$variable[newFrame$variable == "GEQ_SCORE_OC_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT"] <- "OC"
+newFrame$variable[newFrame$variable == "GEQ_SCORE_OF_PSYCHOLOGICAL_BEHAVIOURAL_INVOLVEMENT"] <- "OF"
+
+newFrame$variable <- as.factor(newFrame$variable)
+
+newFrame[,"No_SigLab"] <- '' # OF diferente de SC
+newFrame$No_SigLab[newFrame$variable == "OF"] <- 'a'
+newFrame$No_SigLab[newFrame$variable == "SC"] <- 'b'
+
+computeBoxPlot(
+    newFrame,
+    variable,
+    value,
+    No_SigLab,
+    expression(bold("Behavioral Involvement")),
+    bold("Self-Facilitator"),
+    "Pref_Observed_Est_GEQ_BINVOLVEMENT/Pref_Observed_Est_GEQ_BINVOLVEMENT_SF",
     hasAngledXAxis = TRUE,
     hasUpOrDown = TRUE,
     hasModifiedLims = TRUE,
